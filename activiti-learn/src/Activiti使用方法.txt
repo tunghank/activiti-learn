@@ -1,0 +1,11 @@
+使用Activiti 步驟
+1.倒入lib
+activity-rest\WWB-INF\lib\*.jar
+2.加入配置文件
+activity-rest\WWB-INF\classes\activiti-context.xml
+改成activiti.cfg.xml
+3.畫圖
+4.使用Activiti相官API操作流程
+  A.得到核心流程引擎對象
+  B.得到需要的服務對象實例
+  C.使用服務對象相關方法
