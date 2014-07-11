@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="LeaveFlow" name="請假流程" isExecutable="true">
+  <process id="LeaveFlow2" name="請假流程" isExecutable="true">
     <startEvent id="startevent1" name="Start"></startEvent>
-    <userTask id="員工請假" name="員工請假" activiti:assignee="User"></userTask>
-    <userTask id="主管審批" name="主管審批" activiti:assignee="Manager"></userTask>
-    <userTask id="老闆審批" name="老闆審批" activiti:assignee="Boss"></userTask>
+    <userTask id="員工請假" name="員工請假" activiti:candidateUsers="User,Hank"></userTask>
+    <userTask id="主管審批" name="主管審批" activiti:candidateUsers="Manager"></userTask>
+    <userTask id="老闆審批" name="老闆審批" activiti:candidateGroups="Boss"></userTask>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow1" name="to 員工請假" sourceRef="startevent1" targetRef="員工請假"></sequenceFlow>
     <sequenceFlow id="flow2" name="to 主管審批" sourceRef="員工請假" targetRef="主管審批"></sequenceFlow>
     <sequenceFlow id="flow3" name="to 老闆審批" sourceRef="主管審批" targetRef="老闆審批"></sequenceFlow>
     <sequenceFlow id="flow4" name="to End" sourceRef="老闆審批" targetRef="endevent1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_LeaveFlow">
-    <bpmndi:BPMNPlane bpmnElement="LeaveFlow" id="BPMNPlane_LeaveFlow">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_LeaveFlow2">
+    <bpmndi:BPMNPlane bpmnElement="LeaveFlow2" id="BPMNPlane_LeaveFlow2">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="265.0" y="10.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
