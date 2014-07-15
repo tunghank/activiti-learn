@@ -13,7 +13,7 @@ import com.cista.system.to.SysFunctionTo;
 import com.cista.system.to.SysRoleFunctionTo;
 import com.cista.system.to.SysRoleTo;
 import com.cista.system.util.BaseAction;
-import com.cista.system.util.CLTUtil;
+import com.cista.system.util.CistaUtil;
 
 public class FunctionManage extends BaseAction{	
 	
@@ -34,7 +34,7 @@ public class FunctionManage extends BaseAction{
 		FunctionDao functionDAO = new FunctionDao();
 		// parent list
 		ArrayList parentList = new ArrayList();
-		parentList 	= (ArrayList) functionDAO.searchFunctionList("",CLTUtil.FUNCTION_FOLDER,"");		
+		parentList 	= (ArrayList) functionDAO.searchFunctionList("",CistaUtil.FUNCTION_FOLDER,"");		
 		List<SysFunctionTo> result = (List<SysFunctionTo>) parentList;		
 		request.setAttribute("Data", result);
 		
@@ -55,24 +55,24 @@ public class FunctionManage extends BaseAction{
 		data = (ArrayList) functionDAO.searchFunctionList(this.parentId,this.cls,this.functionName);
 		logger.debug(data == null ? "0":data.size());
 		
-		int pageSize = CLTUtil.REPORT_PAGE_SIZE;
+		int pageSize = CistaUtil.REPORT_PAGE_SIZE;
         int resultSize = -1;
         int pages = -1;
 		
 		List result = new ArrayList();
 		resultSize = (null == data? 0 : data.size());		
-		pages = CLTUtil.calcPages(resultSize, pageSize);
-		result = CLTUtil.cutResult(data, this.pageNo, pageSize);
+		pages = CistaUtil.calcPages(resultSize, pageSize);
+		result = CistaUtil.cutResult(data, this.pageNo, pageSize);
 		
 		if (result == null){ 
 			addActionMessage("No data found.");
 			return INPUT;
 		}
 		
-		request.setAttribute(CLTUtil.PAGE_SIZE, "" + pageSize);
-        request.setAttribute(CLTUtil.RESULT_SIZE, "" + resultSize);
-        request.setAttribute(CLTUtil.PAGES, "" + pages);
-        request.setAttribute(CLTUtil.PAGENO, "" + this.pageNo);       
+		request.setAttribute(CistaUtil.PAGE_SIZE, "" + pageSize);
+        request.setAttribute(CistaUtil.RESULT_SIZE, "" + resultSize);
+        request.setAttribute(CistaUtil.PAGES, "" + pages);
+        request.setAttribute(CistaUtil.PAGENO, "" + this.pageNo);       
         request.setAttribute("parentId", "" + this.parentId);       
         request.setAttribute("cls", "" + this.cls);       
 		request.setAttribute("data", result);
@@ -199,7 +199,7 @@ public class FunctionManage extends BaseAction{
 		
 		// parent list
 		ArrayList parentList = new ArrayList();
-		parentList 	= (ArrayList) functionDAO.searchFunctionList("",CLTUtil.FUNCTION_FOLDER,"");
+		parentList 	= (ArrayList) functionDAO.searchFunctionList("",CistaUtil.FUNCTION_FOLDER,"");
 		request.setAttribute("ParentList", parentList);
 		
 		return SUCCESS;

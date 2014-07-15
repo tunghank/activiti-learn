@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import com.cista.system.to.SysRoleTo;
 import com.cista.system.to.SysUserTo;
 import com.cista.system.util.BaseDao;
-import com.cista.system.util.CLTUtil;
+import com.cista.system.util.CistaUtil;
 
 public class UserDao extends BaseDao{
 
@@ -231,9 +231,9 @@ public class UserDao extends BaseDao{
 				}
 				
 				// subcon : but password is not error format
-				if (!sysUser.getCompany().equals(CLTUtil.CLT_ROLE)){
+				if (!sysUser.getCompany().equals(CistaUtil.CLT_ROLE)){
 					try	{
-						newPassword = CLTUtil.decodePasswd(sysUser.getPassword());
+						newPassword = CistaUtil.decodePasswd(sysUser.getPassword());
 					}catch(Exception e)	{
 						newPassword = erroorPas;
 					}					

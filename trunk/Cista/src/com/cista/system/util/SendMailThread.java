@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.mail.MessagingException;
 
-import com.cista.system.util.CLTUtil;
+import com.cista.system.util.CistaUtil;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,7 +40,7 @@ public class SendMailThread extends Thread {
     public void run(){
         try{
 
-            	CLTUtil.sendHTMLMail(this.smtpSvr, this.from,
+            	CistaUtil.sendHTMLMail(this.smtpSvr, this.from,
                         this.inToList, this.inCcList,this.inBccList,
                         this.inSubject, this.inContents);
             	logger.debug("-----------Mail Send----------");       	

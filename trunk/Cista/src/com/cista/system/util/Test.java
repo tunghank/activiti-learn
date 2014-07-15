@@ -1,6 +1,6 @@
 package com.cista.system.util;
 
-import com.cista.system.util.CLTUtil;
+import com.cista.system.util.CistaUtil;
 public class Test {
 
 	/**
@@ -8,7 +8,7 @@ public class Test {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		System.out.println ( CLTUtil.encodePasswd("222222") );
+		System.out.println ( CistaUtil.encodePasswd("222222") );
 	}
 
 }

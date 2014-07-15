@@ -2,7 +2,7 @@ package com.cista.system.util;
 
 import java.io.Serializable;
 
-import com.cista.system.util.CLTUtil;
+import com.cista.system.util.CistaUtil;
 
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -26,8 +26,8 @@ public class BaseDao extends JdbcDaoSupport implements Serializable {
 	 */
 	public BaseDao() {
 		super();
-        this.setDataSource(CLTUtil.getDataSource());
-        this.setTransactionTemplate(CLTUtil.getTransactionTemplate());
+        this.setDataSource(CistaUtil.getDataSource());
+        this.setTransactionTemplate(CistaUtil.getTransactionTemplate());
         this.simpleJdbcTemplate = new SimpleJdbcTemplate(this.getDataSource());
         this.setSimpleJdbcTemplate(this.simpleJdbcTemplate);
     }

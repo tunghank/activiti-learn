@@ -2,7 +2,7 @@ package com.cista.system.account.action;
 
 import java.util.List;
 
-import com.cista.system.util.CLTUtil;
+import com.cista.system.util.CistaUtil;
 
 import com.opensymphony.xwork2.ActionSupport;
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +33,7 @@ public class LogoutAction extends ActionSupport implements ServletRequestAware ,
 		
         //1.1 Remove Session value.
 		if (session!=null){
-			session.removeAttribute(CLTUtil.CUR_USERINFO);
+			session.removeAttribute(CistaUtil.CUR_USERINFO);
 			session.invalidate();
 		}
         

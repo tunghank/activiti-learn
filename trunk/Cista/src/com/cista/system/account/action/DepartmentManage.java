@@ -8,7 +8,7 @@ import org.apache.struts2.ServletActionContext;
 import com.cista.system.account.dao.DepartmentDao;
 import com.cista.system.to.SysDepartmentTo;
 import com.cista.system.util.BaseAction;
-import com.cista.system.util.CLTUtil;
+import com.cista.system.util.CistaUtil;
 
 public class DepartmentManage extends BaseAction{
 	
@@ -76,14 +76,14 @@ public class DepartmentManage extends BaseAction{
 		List  data = new ArrayList();		
 		data = (ArrayList) departmentDAO.searchDepartmentList(this.departName);
 		
-		int pageSize = CLTUtil.REPORT_PAGE_SIZE;
+		int pageSize = CistaUtil.REPORT_PAGE_SIZE;
 	    int resultSize = -1;
 	    int pages = -1;
 		
 		List result = new ArrayList();
 		resultSize = null == data? 0 : data.size();		
-		pages = CLTUtil.calcPages(resultSize, pageSize);
-		result = CLTUtil.cutResult(data, this.pageNo, pageSize);
+		pages = CistaUtil.calcPages(resultSize, pageSize);
+		result = CistaUtil.cutResult(data, this.pageNo, pageSize);
 		if (result == null){ 
 			addActionMessage("No data found.");	
 			return INPUT;
@@ -91,10 +91,10 @@ public class DepartmentManage extends BaseAction{
 		
 		request = ServletActionContext.getRequest();
 	
-		request.setAttribute(CLTUtil.PAGE_SIZE, "" + pageSize);
-	    request.setAttribute(CLTUtil.RESULT_SIZE, "" + resultSize);
-	    request.setAttribute(CLTUtil.PAGES, "" + pages);
-	    request.setAttribute(CLTUtil.PAGENO, "" + this.pageNo);
+		request.setAttribute(CistaUtil.PAGE_SIZE, "" + pageSize);
+	    request.setAttribute(CistaUtil.RESULT_SIZE, "" + resultSize);
+	    request.setAttribute(CistaUtil.PAGES, "" + pages);
+	    request.setAttribute(CistaUtil.PAGENO, "" + this.pageNo);
 	    request.setAttribute("departName", "" + this.departName);
 
 	    request.setAttribute("Data", result);

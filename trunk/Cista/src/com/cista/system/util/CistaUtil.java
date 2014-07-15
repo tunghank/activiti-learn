@@ -390,12 +390,12 @@ public class CistaUtil {
 		String serverName = request.getServerName();
 		String serverPort = String.valueOf(request.getServerPort());
 		String reqUrl = "http://" + serverName + ":" + serverPort + "/";		
-		String sysAdminMail = CLTUtil.getMessage("IE.sysadmin.email");
+		String sysAdminMail = CistaUtil.getMessage("IE.sysadmin.email");
 		String contentsStr="";
 
 		// 1.6.1 mail smtp server defined in the configure file , himax.property
-		String smtpSvr = CLTUtil.getConfig("SMTPServer");
-		contentsStr = CLTUtil.insertUserComment(reqUrl,user);
+		String smtpSvr = CistaUtil.getConfig("SMTPServer");
+		contentsStr = CistaUtil.insertUserComment(reqUrl,user);
         
 		// 1.6.4 Send Mail
 		// Send Mail
@@ -414,7 +414,7 @@ public class CistaUtil {
     	int baseTo = reqUrl.indexOf("/", baseFrom + 2);
     	baseUrl = reqUrl.substring(0, baseTo);
     	toUrl = baseUrl;
-    	String strPassword = (user.getCompany().equals(CLTUtil.CLT_ROLE)?"(Please use Windows Login Password)":CLTUtil.decodePasswd(user.getPassword()));    	
+    	String strPassword = (user.getCompany().equals(CistaUtil.CLT_ROLE)?"(Please use Windows Login Password)":CistaUtil.decodePasswd(user.getPassword()));    	
     	
     	contentsStr =  "<html><head><meta http-equiv='Content-Type' "
     		+ "content='text/html; charset=UTF8'></head><body>" +"<P></P> " +"<P></P> "     		
@@ -516,7 +516,7 @@ public class CistaUtil {
         if (GLOBAL_PROPERTIES == null) {
             GLOBAL_PROPERTIES = new Properties();
             try {
-            	ClassLoader classLoader = CLTUtil.class.getClassLoader();
+            	ClassLoader classLoader = CistaUtil.class.getClassLoader();
                
                 GLOBAL_PROPERTIES.load(classLoader.getResourceAsStream(
                     GLOBAL_PROPERTIES_FILE));

@@ -16,7 +16,7 @@ import com.cista.system.to.SysRoleTo;
 import com.cista.system.to.SysUserRoleTo;
 import com.cista.system.to.SysUserTo;
 import com.cista.system.util.BaseAction;
-import com.cista.system.util.CLTUtil;
+import com.cista.system.util.CistaUtil;
 
 
 
@@ -80,14 +80,14 @@ public class UserManage extends BaseAction  {
 				logger.debug("Internal User");
 				//1.0 Internal User User Check
 				if (ldapConfigService.checkOUUser(curUser.getUserId(), password)) {
-					if (curUser.getActive().equals(CLTUtil.USER_ACTIVE)) {
+					if (curUser.getActive().equals(CistaUtil.USER_ACTIVE)) {
 						// 1.0 Get Current session
 						session = ServletActionContext.getRequest().getSession(
 								true);
 						// 1.1 Remove Session value.
-						session.removeAttribute(CLTUtil.CUR_USERINFO);
+						session.removeAttribute(CistaUtil.CUR_USERINFO);
 						// 1.2 Set Current User Information to seeion
-						session.setAttribute(CLTUtil.CUR_USERINFO,
+						session.setAttribute(CistaUtil.CUR_USERINFO,
 								curUser);
 						// update last login time and IP
 						userDAO.saveLastLoginInfo(userId, ServletActionContext.getRequest().getRemoteAddr());
@@ -122,15 +122,15 @@ public class UserManage extends BaseAction  {
 				logger.debug("Not internal user");
 				//1.1 Not internal user User Check
 				
-				if (userDAO.validate(userId, CLTUtil.encodePasswd(password))) {
-					if (curUser.getActive().equals(CLTUtil.USER_ACTIVE)){
+				if (userDAO.validate(userId, CistaUtil.encodePasswd(password))) {
+					if (curUser.getActive().equals(CistaUtil.USER_ACTIVE)){
 						// 1.0 Get Current session
 						session = ServletActionContext.getRequest().getSession(
 								true);
 						// 1.1 Remove Session value.
-						session.removeAttribute(CLTUtil.CUR_USERINFO);
+						session.removeAttribute(CistaUtil.CUR_USERINFO);
 						// 1.2 Set Current User Information to seeion
-						session.setAttribute(CLTUtil.CUR_USERINFO,
+						session.setAttribute(CistaUtil.CUR_USERINFO,
 								curUser);
 						// update last login time and IP
 						userDAO.saveLastLoginInfo(userId, ServletActionContext.getRequest().getRemoteAddr());
@@ -195,24 +195,24 @@ public class UserManage extends BaseAction  {
 		this.pageNo = 0 == this.pageNo ? 1: this.pageNo;		
 
 		//for paging
-		int pageSize = CLTUtil.REPORT_PAGE_SIZE;
+		int pageSize = CistaUtil.REPORT_PAGE_SIZE;
         int resultSize = -1;
         int pages = -1;
 
 		userList = (ArrayList)userDAO.getUserList(this.userId, this.roleId);
 		resultSize = null == userList? 0 : userList.size();
-		pages = CLTUtil.calcPages(resultSize, pageSize);
-		result = CLTUtil.cutResult(userList, this.pageNo, pageSize);
+		pages = CistaUtil.calcPages(resultSize, pageSize);
+		result = CistaUtil.cutResult(userList, this.pageNo, pageSize);
 		
 		if( result == null ) {
 			addActionMessage("No data found.");
 			return INPUT;
 		}
 		
-		request.setAttribute(CLTUtil.PAGE_SIZE, "" + pageSize);
-        request.setAttribute(CLTUtil.RESULT_SIZE, "" + resultSize);
-        request.setAttribute(CLTUtil.PAGES, "" + pages);
-        request.setAttribute(CLTUtil.PAGENO, "" + this.pageNo);        
+		request.setAttribute(CistaUtil.PAGE_SIZE, "" + pageSize);
+        request.setAttribute(CistaUtil.RESULT_SIZE, "" + resultSize);
+        request.setAttribute(CistaUtil.PAGES, "" + pages);
+        request.setAttribute(CistaUtil.PAGENO, "" + this.pageNo);        
         request.setAttribute("userId", this.userId);
         request.setAttribute("roleId", this.roleId);       
 		request.setAttribute("result", result);
@@ -225,7 +225,7 @@ public class UserManage extends BaseAction  {
 		request= ServletActionContext.getRequest();
 		String curUser="admin";		
 		int updateNum=0;
-		SysUserTo curUserTo =  (SysUserTo)  request.getSession().getAttribute(CLTUtil.CUR_USERINFO);
+		SysUserTo curUserTo =  (SysUserTo)  request.getSession().getAttribute(CistaUtil.CUR_USERINFO);
 		if (null != curUserTo) {
 			curUser = curUserTo.getUserId();
 		}
@@ -317,7 +317,7 @@ public class UserManage extends BaseAction  {
 	public String userSave() throws Exception {
 		
 		 // 1.0 Get Current User
-		SysUserTo curUser = (SysUserTo) request.getSession().getAttribute(CLTUtil.CUR_USERINFO);
+		SysUserTo curUser = (SysUserTo) request.getSession().getAttribute(CistaUtil.CUR_USERINFO);
 		SysUserTo newUser = new SysUserTo();
 		UserDao userDao = new UserDao();
 		UserRoleDao userRoleDao = new UserRoleDao();
@@ -343,14 +343,14 @@ public class UserManage extends BaseAction  {
 			return INPUT;
 		}		
 		//1.3 Get Himax User Form Data
-		if ( userRole.equals(CLTUtil.CLT_ROLE)){
+		if ( userRole.equals(CistaUtil.CLT_ROLE)){
 			logger.debug("Himax User");			
 			newUser.setCompany("Himax");
 			newUser.setPassword("N/A");			
 		}else{
 			logger.debug("Subcon User");
 			newUser.setCompany(this.company);
-			newUser.setPassword(CLTUtil.encodePasswd(password));
+			newUser.setPassword(CistaUtil.encodePasswd(password));
 		}
 		
 		// 新增 user
@@ -362,7 +362,7 @@ public class UserManage extends BaseAction  {
 		
 //		// 新增 user role
 //		// 腳色 身分判斷 ???????????????????????????????????????????????
-//		int intRoleId = (userRole.equals(CLTUtil.HIMAX_ROLE)?2:3);
+//		int intRoleId = (userRole.equals(CistaUtil.HIMAX_ROLE)?2:3);
 //		// ??????????????????????????????????????????????
 //		result = userRoleDao.insertUserRole(this.userId, intRoleId);
 //		if (result != 1){
@@ -373,8 +373,8 @@ public class UserManage extends BaseAction  {
 //		}
 		
 		// send mail to new user		
-		String mailSubject = CLTUtil.getMessage("IE.email.createUser.subject", this.realName);				
-		CLTUtil.sendInitialUserMail(request , response , mailSubject, newUser,curUser.getEmail());
+		String mailSubject = CistaUtil.getMessage("IE.email.createUser.subject", this.realName);				
+		CistaUtil.sendInitialUserMail(request , response , mailSubject, newUser,curUser.getEmail());
 
 		addActionMessage(getText("IE.createUser.message.success.insertUserInDB"));
 		return SUCCESS;
@@ -387,7 +387,7 @@ public class UserManage extends BaseAction  {
 		UserDao userDAO = new UserDao();
 		
 		session = ServletActionContext.getRequest().getSession(true);
-		inUser = (SysUserTo) session.getAttribute(CLTUtil.CUR_USERINFO); 
+		inUser = (SysUserTo) session.getAttribute(CistaUtil.CUR_USERINFO); 
 		inUser = userDAO.getUserDetail(inUser.getUserId());		
 		request.setAttribute("CurUser", inUser);	
 		
@@ -407,7 +407,7 @@ public class UserManage extends BaseAction  {
 			curUser.setLastIp(this.lastIp);
 			curUser.setLastTime(this.lastTime);
 			curUser.setUpdateBy(this.userId);
-			curUser.setPassword(CLTUtil.encodePasswd(password));
+			curUser.setPassword(CistaUtil.encodePasswd(password));
 			int result = userDAO.updateUser(curUser);
 			if (result != 1){
 				addActionMessage(getText("IE.modifyProfile.message.fail"));
@@ -421,8 +421,8 @@ public class UserManage extends BaseAction  {
 		
 		// reset session user data (修改自己 更新session)
 		session = ServletActionContext.getRequest().getSession(true);
-		session.removeAttribute(CLTUtil.CUR_USERINFO);		
-		session.setAttribute(CLTUtil.CUR_USERINFO,curUser);
+		session.removeAttribute(CistaUtil.CUR_USERINFO);		
+		session.setAttribute(CistaUtil.CUR_USERINFO,curUser);
 		
 		return SUCCESS;
 	}
@@ -454,9 +454,9 @@ public class UserManage extends BaseAction  {
 		// company List
 		ArrayList companyList = new ArrayList();
 		
-		if (this.userCompany.equals(CLTUtil.VENDOR_ROLE)){		
+		if (this.userCompany.equals(CistaUtil.VENDOR_ROLE)){		
 			companyList = (ArrayList) sapVendorDao.getAllVendor();
-		}else if (this.userCompany.equals(CLTUtil.CUSTOMER_ROLE)){
+		}else if (this.userCompany.equals(CistaUtil.CUSTOMER_ROLE)){
 			companyList = (ArrayList) sapCustomerDao.getAllCustomer();
 		}
 		
@@ -472,7 +472,7 @@ public class UserManage extends BaseAction  {
 		SysUserTo newUser = new SysUserTo();		
 		newUser = userDao.getUserDetail(this.userId);
 		
-		SysUserTo curUser = (SysUserTo) request.getSession().getAttribute(CLTUtil.CUR_USERINFO);
+		SysUserTo curUser = (SysUserTo) request.getSession().getAttribute(CistaUtil.CUR_USERINFO);
 		
 		if (newUser != null){
 			String strCompany = newUser.getCompany()!=null?newUser.getCompany():"";
@@ -483,10 +483,10 @@ public class UserManage extends BaseAction  {
 			newUser.setUpdateBy(this.updateBy);			
 			
 			//判斷user
-			if (strCompany.equals(CLTUtil.CLT_ROLE)){
+			if (strCompany.equals(CistaUtil.CLT_ROLE)){
 				newUser.setEmail(this.email);
 			}else{			
-				newUser.setPassword(CLTUtil.encodePasswd(this.password));
+				newUser.setPassword(CistaUtil.encodePasswd(this.password));
 				newUser.setCompany(this.company);
 			}	
 				
@@ -500,8 +500,8 @@ public class UserManage extends BaseAction  {
 			// 更新自己時 ,重設session 資料
 			if (curUser.getUserId().equals(this.userId)){
 				session = ServletActionContext.getRequest().getSession(true);
-				session.removeAttribute(CLTUtil.CUR_USERINFO);		
-				session.setAttribute(CLTUtil.CUR_USERINFO,curUser);
+				session.removeAttribute(CistaUtil.CUR_USERINFO);		
+				session.setAttribute(CistaUtil.CUR_USERINFO,curUser);
 			}
 			
 //			// set user role			
