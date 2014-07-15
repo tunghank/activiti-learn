@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import ="com.cista.system.util.CLTUtil"%>
+<%@ page import ="com.cista.system.util.CistaUtil"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ page import ="com.cista.system.to.SysDepartmentTo"%>
@@ -8,10 +8,10 @@
 	String contextPath = (String)request.getContextPath();
 
 	// for paging
-	String pageSize 	= (String)request.getAttribute(CLTUtil.PAGE_SIZE);
-    String resultSize 	= (String)request.getAttribute(CLTUtil.RESULT_SIZE);
-    String pages 		= (String)request.getAttribute(CLTUtil.PAGES);
-    String pageNo 		= (String)request.getAttribute(CLTUtil.PAGENO);
+	String pageSize 	= (String)request.getAttribute(CistaUtil.PAGE_SIZE);
+    String resultSize 	= (String)request.getAttribute(CistaUtil.RESULT_SIZE);
+    String pages 		= (String)request.getAttribute(CistaUtil.PAGES);
+    String pageNo 		= (String)request.getAttribute(CistaUtil.PAGENO);
 
 	//Criteria
     String departName 	= (String)request.getAttribute("departName");

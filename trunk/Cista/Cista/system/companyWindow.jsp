@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="java.util.List"%>
-<%@ page import ="com.cista.system.util.CLTUtil"%>
+<%@ page import ="com.cista.system.util.CistaUtil"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <HTML>
 	<HEAD>
@@ -29,12 +29,12 @@
 			</tr>
 			<tr class="portlet-title-bg1">
 				<td>
-					<input type="radio" name="selectCompany" value="<%=CLTUtil.VENDOR_ROLE%>" checked onclick = 'setRadioValue("<%=CLTUtil.VENDOR_ROLE%>");'><%=CLTUtil.VENDOR_ROLE%>
+					<input type="radio" name="selectCompany" value="<%=CistaUtil.VENDOR_ROLE%>" checked onclick = 'setRadioValue("<%=CistaUtil.VENDOR_ROLE%>");'><%=CistaUtil.VENDOR_ROLE%>
 				</td>
 			</tr>
 			<tr class="portlet-title-bg2">
 				<td>
-					<input type="radio" name="selectCompany" value="<%=CLTUtil.CUSTOMER_ROLE%>" onclick = 'setRadioValue("<%=CLTUtil.CUSTOMER_ROLE%>");' ><%=CLTUtil.CUSTOMER_ROLE%>
+					<input type="radio" name="selectCompany" value="<%=CistaUtil.CUSTOMER_ROLE%>" onclick = 'setRadioValue("<%=CistaUtil.CUSTOMER_ROLE%>");' ><%=CistaUtil.CUSTOMER_ROLE%>
 				</td>
 			</tr>
 			<tr class="portlet-title-bg1">

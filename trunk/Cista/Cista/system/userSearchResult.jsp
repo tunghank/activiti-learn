@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="java.util.List"%>
-<%@ page import ="com.cista.system.util.CLTUtil"%>
+<%@ page import ="com.cista.system.util.CistaUtil"%>
 <%@ page import ="com.cista.system.to.SysUserTo"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%
@@ -8,10 +8,10 @@
 	List<SysUserTo> result = (List<SysUserTo>)request.getAttribute("result");
 
 	// for paging
-	String pageSize = (String)request.getAttribute(CLTUtil.PAGE_SIZE);
-    String resultSize = (String)request.getAttribute(CLTUtil.RESULT_SIZE);
-    String pages = (String)request.getAttribute(CLTUtil.PAGES);
-    String pageNo = (String)request.getAttribute(CLTUtil.PAGENO);
+	String pageSize = (String)request.getAttribute(CistaUtil.PAGE_SIZE);
+    String resultSize = (String)request.getAttribute(CistaUtil.RESULT_SIZE);
+    String pages = (String)request.getAttribute(CistaUtil.PAGES);
+    String pageNo = (String)request.getAttribute(CistaUtil.PAGENO);
 
 	//Criteria
     String userId = (String)request.getAttribute("userId");
@@ -111,13 +111,13 @@
 
 	function modifyUser(userId,company){
 		var strCompany ="";
-		if(company != "<%=CLTUtil.CLT_ROLE%>"){
+		if(company != "<%=CistaUtil.CLT_ROLE%>"){
 			strCompany = window.showModalDialog('/system/companyWindow.jsp',null,"dialogWidth='195px';dialogHeight='140px';status='no';help=no");
 		}
 
 		// �ϥΪ̪������� �ȹw�] vendor
 		if(strCompany == undefined ) {
-			strCompany = "<%=CLTUtil.VENDOR_ROLE%>" ;
+			strCompany = "<%=CistaUtil.VENDOR_ROLE%>" ;
 		}
 		$('userCompany').value = strCompany;
 

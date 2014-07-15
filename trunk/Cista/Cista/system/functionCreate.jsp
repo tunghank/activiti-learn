@@ -2,7 +2,7 @@
 <%@ page import ="java.text.DateFormat"%>
 <%@ page import ="java.util.List"%>
 <%@ page import ="java.text.SimpleDateFormat"%>
-<%@ page import ="com.cista.system.util.CLTUtil"%>
+<%@ page import ="com.cista.system.util.CistaUtil"%>
 <%@ page import ="com.cista.system.to.SysFunctionTo"%>
 <%@ page import ="com.cista.system.to.SysRoleTo"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
@@ -138,8 +138,8 @@
 					<td>
 						<select type="text" class = "Himax-col-width" id = "cls" name="cls">
 							<option value = ''>-----</option>
-							<% for (int i = 0 ; i < CLTUtil.FUNCTION_CLS.length ; i ++) {%>
-								<option value = "<%=CLTUtil.FUNCTION_CLS[i]%>"><%=CLTUtil.FUNCTION_CLS[i]%></option>
+							<% for (int i = 0 ; i < CistaUtil.FUNCTION_CLS.length ; i ++) {%>
+								<option value = "<%=CistaUtil.FUNCTION_CLS[i]%>"><%=CistaUtil.FUNCTION_CLS[i]%></option>
 							<%}%>
 						</select>
 					</td>

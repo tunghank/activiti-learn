@@ -3,7 +3,7 @@
 <%@ page import ="java.text.SimpleDateFormat"%>
 <%@ page import ="java.util.Date"%>
 <%@ page import ="java.util.List"%>
-<%@ page import ="com.cista.system.util.CLTUtil"%>
+<%@ page import ="com.cista.system.util.CistaUtil"%>
 <%@ page import ="com.cista.system.to.SysUserTo"%>
 <%@ page import ="com.cista.system.to.SysDepartmentTo"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
@@ -13,7 +13,7 @@
   List<SysDepartmentTo> allDepartments = (List<SysDepartmentTo>) request.getAttribute("department");
   
   // current user
-  SysUserTo curUser = (SysUserTo) session.getAttribute(CLTUtil.CUR_USERINFO);
+  SysUserTo curUser = (SysUserTo) session.getAttribute(CistaUtil.CUR_USERINFO);
   String curUserId = curUser.getUserId();  
 %>
 <html>
@@ -33,12 +33,12 @@
 
 		// loading to do
 		function doInit(){
-			userType("<%=CLTUtil.CLT_ROLE%>")
+			userType("<%=CistaUtil.CLT_ROLE%>")
 		}
 
 		// user 類型切換
 		function userType(v){
-			if (v == "<%=CLTUtil.CLT_ROLE%>"){
+			if (v == "<%=CistaUtil.CLT_ROLE%>"){
 				$('rowPassword').hide();
 				$('rowConfirmPassword').hide();
 				$('rowSubconPosition').hide();	$('rowHimaxPosition').show();
@@ -48,11 +48,11 @@
 				$('rowVendorCompany').hide();
 				$('rowCustomerCompany').hide();
 			}else {
-				if (v == "<%=CLTUtil.VENDOR_ROLE%>"){
+				if (v == "<%=CistaUtil.VENDOR_ROLE%>"){
 					$('rowVendorCompany').show();
 					$('rowCustomerCompany').hide();
 				}
-				else if (v == "<%=CLTUtil.CUSTOMER_ROLE%>"){
+				else if (v == "<%=CistaUtil.CUSTOMER_ROLE%>"){
 					$('rowVendorCompany').hide();
 					$('rowCustomerCompany').show();
 				}
@@ -118,7 +118,7 @@
 
 			// 依不同角色確認
 			// himax
-			if (curUserRole == "<%=CLTUtil.CLT_ROLE%>"){
+			if (curUserRole == "<%=CistaUtil.CLT_ROLE%>"){
 				if ($F('userId') != "" && $F('userId').length != "6"){ 	// user ID不可小於或大於 6 個字
 					errorFlag=1;
 					alert("User id must in 6 characters");
@@ -152,14 +152,14 @@
 					alert("User ID format error");
 					return;
 				}
-				if (curUserRole == "<%=CLTUtil.VENDOR_ROLE%>"){
+				if (curUserRole == "<%=CistaUtil.VENDOR_ROLE%>"){
 					if ($F('vendorCompany') == ""){ 
 						errorFlag=1;
 						alert("Company must be select");
 						return;
 					}
 				}
-				else if (curUserRole == "<%=CLTUtil.CUSTOMER_ROLE%>"){
+				else if (curUserRole == "<%=CistaUtil.CUSTOMER_ROLE%>"){
 					if ($F('customerCompany') == ""){ 
 						errorFlag=1;
 						alert("Company must be select");
@@ -191,15 +191,15 @@
 			// 資料設定(設定傳回參數)
 			if (errorFlag==0){
 				msg.innerHTML = "Processing data , please wait a minutes...";
-				if (curUserRole == "<%=CLTUtil.CLT_ROLE%>"){
+				if (curUserRole == "<%=CistaUtil.CLT_ROLE%>"){
 					$('email').value = $('emailID').value + "@" + $('himaxEmailBox').value;
 					$('department').value = $('himaxDepartment').value;
 					$('position').value = $('himaxPosition').value;
 				}else{
-					if (curUserRole == "<%=CLTUtil.VENDOR_ROLE%>"){
+					if (curUserRole == "<%=CistaUtil.VENDOR_ROLE%>"){
 						$('company').value = $('vendorCompany').value;
 					}
-					else if (curUserRole == "<%=CLTUtil.CUSTOMER_ROLE%>"){
+					else if (curUserRole == "<%=CistaUtil.CUSTOMER_ROLE%>"){
 						$('company').value = $('customerCompany').value;
 					}
 					$('email').value = $('userId').value;
@@ -286,16 +286,16 @@
 					<td align="left" class="portlet-title-bg3" width="15%">Company Type</td>
 					<td class="portlet-title-bg3">
 						<input type="radio"
-							id = "userRole" name="userRole" value="<%=CLTUtil.CLT_ROLE%>" 
-							onclick = "userType('<%=CLTUtil.CLT_ROLE%>');" checked><%=CLTUtil.CLT_ROLE%>
+							id = "userRole" name="userRole" value="<%=CistaUtil.CLT_ROLE%>" 
+							onclick = "userType('<%=CistaUtil.CLT_ROLE%>');" checked><%=CistaUtil.CLT_ROLE%>
 
 						<input type="radio"
-							id = "userRole" name="userRole" value="<%=CLTUtil.SUBCON_ROLE%>"
-							onclick ="userType('<%=CLTUtil.VENDOR_ROLE%>');"><%=CLTUtil.VENDOR_ROLE%>
+							id = "userRole" name="userRole" value="<%=CistaUtil.SUBCON_ROLE%>"
+							onclick ="userType('<%=CistaUtil.VENDOR_ROLE%>');"><%=CistaUtil.VENDOR_ROLE%>
 
 						<input type="radio"
-							id = "userRole" name="userRole" value="<%=CLTUtil.SUBCON_ROLE%>"
-							onclick ="userType('<%=CLTUtil.CUSTOMER_ROLE%>');"><%=CLTUtil.CUSTOMER_ROLE%>
+							id = "userRole" name="userRole" value="<%=CistaUtil.SUBCON_ROLE%>"
+							onclick ="userType('<%=CistaUtil.CUSTOMER_ROLE%>');"><%=CistaUtil.CUSTOMER_ROLE%>
 					<td> 
 				</tr>
  
@@ -409,8 +409,8 @@
 						<!--himax mailbox-->
 						<select name="himaxEmailBox" id ="himaxEmailBox">
 							<option value = ''>-----</option>
-							<%	for (int i = 0 ; i < CLTUtil.MAIL_BOX.length ;i++){%>
-								<option value = <%=CLTUtil.MAIL_BOX[i][0]%>><%=CLTUtil.MAIL_BOX[i][1]%>
+							<%	for (int i = 0 ; i < CistaUtil.MAIL_BOX.length ;i++){%>
+								<option value = <%=CistaUtil.MAIL_BOX[i][0]%>><%=CistaUtil.MAIL_BOX[i][1]%>
 							<%	}%>
 						</select>
 					</td>
@@ -454,8 +454,8 @@
 						<select id = "himaxPosition" name="himaxPosition" 
 								class = "Himax-asl-col-middle" >
 							<option value = ''>-----</option>
-							<% for (int i = 0 ; i < CLTUtil.POSITION.length ; i++){%>
-								<option value = '<%=CLTUtil.POSITION[i]%>' ><%=CLTUtil.POSITION[i]%></option>
+							<% for (int i = 0 ; i < CistaUtil.POSITION.length ; i++){%>
+								<option value = '<%=CistaUtil.POSITION[i]%>' ><%=CistaUtil.POSITION[i]%></option>
 							<%}%>
 						</select>
 					</td>

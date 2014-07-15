@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import ="java.text.DateFormat"%>
 <%@ page import ="java.text.SimpleDateFormat"%>
-<%@ page import ="com.cista.system.util.CLTUtil"%>
+<%@ page import ="com.cista.system.util.CistaUtil"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 
 <HTML>
