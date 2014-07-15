@@ -149,10 +149,10 @@ public class ProcessInstanceTest {
 		// E.查看流程狀態
 		
 		@Test
-		public void queryTask() throws Exception {
-			String taskId = "1608";
-			taskService.complete(taskId);
-
+		public void queryProcessState() throws Exception {
+			String processInstanceId = "1605";
+			ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+			System.out.println("pId: " + processInstance.getId() + ", ActivitiId: " + processInstance.getActivityId());
 					
 		}
 		
