@@ -1,15 +1,15 @@
 <%@ page errorPage="/common/chkerror.jsp" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import ="com.cista.system.util.CLTUtil"%>
+<%@ page import ="com.cista.system.util.CistaUtil"%>
 <%@ page import ="com.cista.system.to.SysUserTo"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%
     String contextPath = (String)request.getContextPath();
-    String EXCEP_MSG_SESSION =CLTUtil.getMessage("System.error.access.nologin");
+    String EXCEP_MSG_SESSION =CistaUtil.getMessage("System.error.access.nologin");
 
   	// get current user info
     SysUserTo curUserTo =
-            (SysUserTo) request.getSession().getAttribute(CLTUtil.CUR_USERINFO);
+            (SysUserTo) request.getSession().getAttribute(CistaUtil.CUR_USERINFO);
     // check session
     if (null == curUserTo) {
         throw new Exception(EXCEP_MSG_SESSION);

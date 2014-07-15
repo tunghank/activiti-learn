@@ -10,13 +10,13 @@
 <%@ page import ="com.cista.system.to.TSAPVendorTo"%>
 <%@ page import ="com.cista.system.to.TSAPCustomerTo"%>
 <%@ page import ="com.cista.system.to.SysUserRoleTo"%>
-<%@ page import ="com.cista.system.util.CLTUtil"%>
+<%@ page import ="com.cista.system.util.CistaUtil"%>
 <%@ page import ="com.cista.system.to.SysDepartmentTo"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 
 <%
 	SysUserTo curUser = (SysUserTo) request.getAttribute("CurUser");
-	SysUserTo inUser = (SysUserTo) session.getAttribute(CLTUtil.CUR_USERINFO);
+	SysUserTo inUser = (SysUserTo) session.getAttribute(CistaUtil.CUR_USERINFO);
 
 	// Data index
 	String curUserCompany = (curUser != null)?curUser.getCompany():"";
@@ -39,7 +39,7 @@
 		var flag = 0;
 
 		function doInit(){
-			if ( jsComany == "<%=CLTUtil.CLT_ROLE%>"){
+			if ( jsComany == "<%=CistaUtil.CLT_ROLE%>"){
 				SelectItem_Combo2($('chkDepartmentList') , "<%=curUserDepartment%>");
 				SelectItem_Combo2($('chkPositionList') , "<%=curUserPosition%>");
 			}else{
@@ -65,7 +65,7 @@
 			}
 
 			// �̤��P����T�{
-			if (jsComany == "<%=CLTUtil.CLT_ROLE%>"){
+			if (jsComany == "<%=CistaUtil.CLT_ROLE%>"){
 				if ($F('email') == ""){ 
 					//msg.innerHTML += "<br>" + (++cnt)+". " + " Email must be input";
 					flag=1;
@@ -114,7 +114,7 @@
 			checkData();
 			if (flag==0){
 				msg.innerHTML = "Processing data , please wait a minutes...";
-				if (jsComany == "<%=CLTUtil.CLT_ROLE%>"){
+				if (jsComany == "<%=CistaUtil.CLT_ROLE%>"){
 					$('department').value = $('chkDepartmentList').value;
 					$('position').value = $('chkPositionList').value;
 				}else{
@@ -197,7 +197,7 @@
 			</tbody>
 
 			<!--subcon column--->
-			<%if(!curUserCompany.equals(CLTUtil.CLT_ROLE)){%>
+			<%if(!curUserCompany.equals(CistaUtil.CLT_ROLE)){%>
 
 				<!--vendor/customer company-->
 				<tr class = "portlet-title-bg1">
@@ -207,7 +207,7 @@
 								class = "Himax-col-width">
 							<option value = "">-----</option>
 					<%
-						if(userCompany.equals(CLTUtil.VENDOR_ROLE)){
+						if(userCompany.equals(CistaUtil.VENDOR_ROLE)){
 							List<TSAPVendorTo> allCompany = (List<TSAPVendorTo>) request.getAttribute("CompanyList");
 							if (allCompany != null && allCompany.size() >0 ){
 								for(TSAPVendorTo info : allCompany){
@@ -215,7 +215,7 @@
 								<option value = <%=info.getVendorCode()%>><%=info.getVendorCode()%> - <%=info.getShortName()%></option>
 					<%}
 							}
-						}else if (userCompany.equals(CLTUtil.CUSTOMER_ROLE)){
+						}else if (userCompany.equals(CistaUtil.CUSTOMER_ROLE)){
 							List<TSAPCustomerTo> allCompany = (List<TSAPCustomerTo>) request.getAttribute("CompanyList");
 							if (allCompany != null && allCompany.size() >0 ){
 								for(TSAPCustomerTo info : allCompany){
@@ -235,7 +235,7 @@
 					<td>Password<BLINK class = "Himax-col-star"> *</BLINK></td>
 					<td><input 	type="text" 
 								id = "password" name="password" class = "Himax-col-width" onChange = "checkData();"
-								value = "<%=(curUser.getPassword() != "Decode Error" ? CLTUtil.decodePasswd(curUser.getPassword()) : curUser.getPassword())%>"/>
+								value = "<%=(curUser.getPassword() != "Decode Error" ? CistaUtil.decodePasswd(curUser.getPassword()) : curUser.getPassword())%>"/>
 					</td>
 				</tr>
 
@@ -295,8 +295,8 @@
 						<select name="chkPositionList" id ="chkPositionList" onChange = "checkData();"
 								class = "Himax-asl-col-middle">
 							<option value = "">-----
-							<%for (int i = 0 ; i<CLTUtil.POSITION.length ; i++){%>
-								<option value = <%=CLTUtil.POSITION[i]%>><%=CLTUtil.POSITION[i]%>
+							<%for (int i = 0 ; i<CistaUtil.POSITION.length ; i++){%>
+								<option value = <%=CistaUtil.POSITION[i]%>><%=CistaUtil.POSITION[i]%>
 							<%}%>
 						</select>
 					</td>

@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import ="java.util.List"%>
 <%@ page import ="java.util.ArrayList"%>
-<%@ page import ="com.cista.system.util.CLTUtil"%>
+<%@ page import ="com.cista.system.util.CistaUtil"%>
 <%@ page import ="com.cista.system.to.SysFunctionTo"%>
 
 <%@ taglib prefix="s" uri="/struts-tags" %>
@@ -44,7 +44,7 @@
 				errorFlag=1;
 			}
 
-			if ($F('cls') == "<%=CLTUtil.FUNCTION_FILE%>" ){ 
+			if ($F('cls') == "<%=CistaUtil.FUNCTION_FILE%>" ){ 
 				if($F('hrefTarget') == ""){
 					msg.innerHTML += "<br>" + (++cnt)+". " +" Href Target must be select !!"; 
 					errorFlag=1;
@@ -131,8 +131,8 @@
 					<td>
 						<select type="text" class = "Himax-col-width" id = "cls" name="cls">
 							<option value = ''>-----</option>
-							<% for (int i = 0 ; i < CLTUtil.FUNCTION_CLS.length ; i ++) {%>
-								<option value = "<%=CLTUtil.FUNCTION_CLS[i]%>"><%=CLTUtil.FUNCTION_CLS[i]%></option>
+							<% for (int i = 0 ; i < CistaUtil.FUNCTION_CLS.length ; i ++) {%>
+								<option value = "<%=CistaUtil.FUNCTION_CLS[i]%>"><%=CistaUtil.FUNCTION_CLS[i]%></option>
 							<%}%>
 						</select>
 					</td>

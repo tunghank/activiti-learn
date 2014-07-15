@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.ArrayList"%>
-<%@ page import ="com.cista.system.util.CLTUtil"%>
+<%@ page import ="com.cista.system.util.CistaUtil"%>
 <%@ page import ="com.cista.system.to.SysRoleFunctionTo"%>
 <%@ page import ="com.cista.system.to.SysFunctionTo"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
@@ -114,7 +114,7 @@
 				onclick="radCheck(this);"  value='<%=strFunctionId%>'
 			></td>
 			<td class= "Himax-asl-col-small">
-				<%if(strCls.equals(CLTUtil.FUNCTION_FILE)){%> <font color = "blue">
+				<%if(strCls.equals(CistaUtil.FUNCTION_FILE)){%> <font color = "blue">
 				<%}else %> <font color = "green">
 					<%=strCls%>
 				</font>

@@ -2,7 +2,7 @@
 <%@ page import ="java.text.DateFormat"%>
 <%@ page import ="java.util.Date"%>
 <%@ page import ="java.text.SimpleDateFormat"%>
-<%@ page import ="com.cista.system.util.CLTUtil"%>
+<%@ page import ="com.cista.system.util.CistaUtil"%>
 <%@ page import ="com.cista.system.to.SysUserTo"%>
 
 <%@ taglib prefix="s" uri="/struts-tags" %>
@@ -26,7 +26,7 @@
 			var cnt = 0;
 			msg.innerHTML = "Verify data error , please check your data is correct !!";
 
-			if (curUserRole != "<%=CLTUtil.CLT_ROLE%>"){
+			if (curUserRole != "<%=CistaUtil.CLT_ROLE%>"){
 				if ($F('password') == ""){ 
 					msg.innerHTML += "<br>" + (++cnt)+". " + " Password must be input"; 
 					errorFlag=1;
@@ -88,7 +88,7 @@
 							type="password" 
 							id= "password" name="password" 
 							class = "Himax-col-width"
-							value = "<%=CLTUtil.decodePasswd(curUser.getPassword())%>"/></td> 
+							value = "<%=CistaUtil.decodePasswd(curUser.getPassword())%>"/></td> 
 				</tr>
 
 				<tr id = "rowConfirmPassword">
@@ -97,7 +97,7 @@
 							type="password" 
 							id = "confirmPassword" name="confirmPassword" 
 							class = "Himax-col-width"
-							value = "<%=CLTUtil.decodePasswd(curUser.getPassword())%>"/></td>
+							value = "<%=CistaUtil.decodePasswd(curUser.getPassword())%>"/></td>
 				</tr>
 <%
 	}

@@ -1,11 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import ="com.cista.system.util.CLTUtil"%>
+<%@ page import ="com.cista.system.util.CistaUtil"%>
 <%@ page import ="com.cista.system.to.SysUserTo"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%
 	String contextPath = (String)request.getContextPath();
 	SysUserTo curUser =
-            (SysUserTo) request.getSession().getAttribute(CLTUtil.CUR_USERINFO);
+            (SysUserTo) request.getSession().getAttribute(CistaUtil.CUR_USERINFO);
 %>
 <html>
 <head>
