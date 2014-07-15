@@ -48,9 +48,9 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
  * @version 1.0
  */
 
-public class CLTUtil {
-    protected final static Log logger = LogFactory.getLog(CLTUtil.class);
-    public static final String GLOBAL_PROPERTIES_FILE = "clt.properties";
+public class CistaUtil {
+    protected final static Log logger = LogFactory.getLog(CistaUtil.class);
+    public static final String GLOBAL_PROPERTIES_FILE = "cista.properties";
     private static Properties GLOBAL_PROPERTIES = null;
     
 	/** Himax Site Code */
