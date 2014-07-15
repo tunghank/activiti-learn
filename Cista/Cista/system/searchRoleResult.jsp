@@ -1,8 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import ="com.clt.system.util.CLTUtil"%>
+<%@ page import ="com.cista.system.util.CLTUtil"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.ArrayList"%>
-<%@ page import ="com.clt.system.to.SysRoleTo"%>
+<%@ page import ="com.cista.system.to.SysRoleTo"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%
 	String contextPath = (String)request.getContextPath();

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Map"%>
-<%@ page import="com.clt.system.ajax.to.SmartSearchTo"%>
+<%@ page import="com.cista.system.ajax.to.SmartSearchTo"%>
 <%
 	String contextPath = (String)request.getContextPath();
 	List<Map<String, Object>> resultList = (List<Map<String, Object>>)request.getAttribute("result");

@@ -5,13 +5,13 @@
 <%@ page import ="java.util.ArrayList"%>
 <%@ page import ="javax.swing.JOptionPane"%>
 <%@ page import ="java.text.SimpleDateFormat"%>
-<%@ page import ="com.clt.system.to.SysUserTo"%>
-<%@ page import ="com.clt.system.to.SysRoleTo"%>
-<%@ page import ="com.clt.system.to.TSAPVendorTo"%>
-<%@ page import ="com.clt.system.to.TSAPCustomerTo"%>
-<%@ page import ="com.clt.system.to.SysUserRoleTo"%>
-<%@ page import ="com.clt.system.util.CLTUtil"%>
-<%@ page import ="com.clt.system.to.SysDepartmentTo"%>
+<%@ page import ="com.cista.system.to.SysUserTo"%>
+<%@ page import ="com.cista.system.to.SysRoleTo"%>
+<%@ page import ="com.cista.system.to.TSAPVendorTo"%>
+<%@ page import ="com.cista.system.to.TSAPCustomerTo"%>
+<%@ page import ="com.cista.system.to.SysUserRoleTo"%>
+<%@ page import ="com.cista.system.util.CLTUtil"%>
+<%@ page import ="com.cista.system.to.SysDepartmentTo"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 
 <%
@@ -56,7 +56,7 @@
 			var reg =/^[a-z_0-9]+@+[a-z_0-9]+([.][a-z_0-9]+)*$/;
 			flag = 0;
 
-			// ¦@³q©Ê¸ê®Æ½T»{
+			// ï¿½@ï¿½qï¿½Ê¸ï¿½Æ½Tï¿½{
 			if ($F('realName') == ""){ 
 				//msg.innerHTML += "<br>" + (++cnt)+". " + " Real Name must be input";
 				flag=1;
@@ -64,7 +64,7 @@
 				return;
 			}
 
-			// ¨Ì¤£¦P¨¤¦â½T»{
+			// ï¿½Ì¤ï¿½ï¿½Pï¿½ï¿½ï¿½ï¿½Tï¿½{
 			if (jsComany == "<%=CLTUtil.CLT_ROLE%>"){
 				if ($F('email') == ""){ 
 					//msg.innerHTML += "<br>" + (++cnt)+". " + " Email must be input";
@@ -109,7 +109,7 @@
 			if(flag == 0) msg.innerHTML = "";
 		}
 		
-		// ³]©w ¶Ç¦^°Ñ¼Æ
+		// ï¿½]ï¿½w ï¿½Ç¦^ï¿½Ñ¼ï¿½
 		function setParameters(){
 			checkData();
 			if (flag==0){

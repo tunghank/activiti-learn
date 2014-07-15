@@ -1,6 +1,6 @@
 <%@ page isErrorPage="true" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import ="com.clt.system.util.CLTUtil"%>
+<%@ page import ="com.cista.system.util.CLTUtil"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%
     String contextPath = (String)request.getContextPath();

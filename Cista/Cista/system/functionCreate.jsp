@@ -2,9 +2,9 @@
 <%@ page import ="java.text.DateFormat"%>
 <%@ page import ="java.util.List"%>
 <%@ page import ="java.text.SimpleDateFormat"%>
-<%@ page import ="com.clt.system.util.CLTUtil"%>
-<%@ page import ="com.clt.system.to.SysFunctionTo"%>
-<%@ page import ="com.clt.system.to.SysRoleTo"%>
+<%@ page import ="com.cista.system.util.CLTUtil"%>
+<%@ page import ="com.cista.system.to.SysFunctionTo"%>
+<%@ page import ="com.cista.system.to.SysRoleTo"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 
 <%
@@ -49,25 +49,25 @@
 					errorFlag=1;
 				}
 				
-				// ¸ê®Æ§¨¥²¶ñ
+				// ï¿½ï¿½Æ§ï¿½ï¿½ï¿½ï¿½ï¿½
 				if ($F('cls') == "folder" && $F('hrefTarget') != ""){ 
 					msg.innerHTML += "<br>" + (++cnt)+". " +" Href Target can't be select !!"; 
 					errorFlag=1;
 				}
 
-				// ¸ê®Æ§¨¥²¶ñ
+				// ï¿½ï¿½Æ§ï¿½ï¿½ï¿½ï¿½ï¿½
 				if ($F('cls') == "folder" && $F('url') != ""){ 
 					msg.innerHTML += "<br>" + (++cnt)+". " +" URL can't be inut !!"; 
 					errorFlag=1;
 				}
 
-				// ºô­¶¥²¶ñ
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				if ($F('cls') == "file" && $F('hrefTarget') == ""){ 
 					msg.innerHTML += "<br>" + (++cnt)+". " +" Href Target must be select !!"; 
 					errorFlag=1;
 				}
 
-				// ºô­¶¥²¶ñ
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				if ($F('cls') == "file" && $F('url') == ""){ 
 					msg.innerHTML += "<br>" + (++cnt)+". " +" URL must be inut !!"; 
 					errorFlag=1;
