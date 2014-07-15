@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+	Mode = 0 : Single-select
+	Mode = 1 : Multi-select
+-->
+
+<SmartSearches>
+	<!-- Sample:
+		<SmartSearch name="HimaxPartNum">
+		<title>Himax Part Number</title>
+		<table>LHP_GOODS_MVT</table>
+		<keyColumn>HIMAX_PART_NUM</keyColumn>
+		<mode>1</mode>
+		<columns>
+		<column>HIMAX_PART_NUM</column>
+		</columns>
+		</SmartSearch>
+	-->
+	<SmartSearch name="ERPPartNum">
+		<title>Part Num</title>
+		<table>MTL_DESCR_ELEMENT_VALUES_V V, MTL_SYSTEM_ITEMS_B MSIB</table>
+		<keyColumn>SEGMENT1</keyColumn>
+		<mode>0</mode>
+	</SmartSearch>
+</SmartSearches>

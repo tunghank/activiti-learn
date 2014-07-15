@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<datasources>
+    <local-tx-datasource>
+        <jndi-name>CLTQUO_ERP</jndi-name>
+        <connection-definition>javax.sql.DataSource</connection-definition>
+        <jmx-invoker-name>jboss:service=invoker,type=jrmp</jmx-invoker-name>
+        <min-pool-size>0</min-pool-size>
+        <max-pool-size>10</max-pool-size>
+        <metadata>
+            <type-mapping>Oracle9i</type-mapping>
+        </metadata>
+        <local-transaction/>
+        <user-name>wf_worker</user-name>
+        <password>wf123456</password>
+        <driver-class>oracle.jdbc.driver.OracleDriver</driver-class>
+        <connection-url>jdbc:oracle:thin:@10.200.10.60:1527/CLONE</connection-url>
+    </local-tx-datasource>
+
+	<local-tx-datasource>
+        <jndi-name>CLTQUO</jndi-name>
+        <rar-name>jboss-local-jdbc.rar</rar-name>
+        <connection-definition>javax.sql.DataSource</connection-definition>
+        <jmx-invoker-name>jboss:service=invoker,type=jrmp</jmx-invoker-name>
+        <min-pool-size>0</min-pool-size>
+        <max-pool-size>10</max-pool-size>
+        <metadata>
+            <type-mapping>Oracle9i</type-mapping>
+        </metadata>
+        <type-mapping>Oracle9i</type-mapping>
+        <local-transaction/>
+        <user-name>quo</user-name>
+        <password>quo</password>
+        <driver-class>oracle.jdbc.driver.OracleDriver</driver-class>
+        <connection-url>jdbc:oracle:thin:@10.200.9.66:1525:testwf78</connection-url>
+    </local-tx-datasource>
+
+
+</datasources>

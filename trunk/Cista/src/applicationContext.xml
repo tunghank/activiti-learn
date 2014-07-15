@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="CLTDataSource"
+		class="org.springframework.jndi.JndiObjectFactoryBean">
+		<!-- WebLogic -->
+		<!--  <property name="jndiName" value="CLTQUO"></property> -->
+		<property name="jndiName" value="java:/CLTQUO"></property>
+	</bean>
+
+	<bean id="CLTTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource">
+			<ref local="CLTDataSource" />
+		</property>
+	</bean>
+
+	<bean id="CLTTransactionTemplate"
+		class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager">
+			<ref local="CLTTransactionManager" />
+		</property>
+	</bean>
+
+	<!-- ERP -->
+	<bean id="CLTERPDataSource"
+		class="org.springframework.jndi.JndiObjectFactoryBean">
+		<!-- WebLogic -->
+		<!--  <property name="jndiName" value="CLTQUO_ERP"></property> -->
+		<property name="jndiName" value="java:/CLTQUO_ERP"></property>
+	</bean>
+
+	<bean id="CLTERPTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource">
+			<ref local="CLTERPDataSource" />
+		</property>
+	</bean>
+
+	<bean id="CLTERPTransactionTemplate"
+		class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager">
+			<ref local="CLTERPTransactionManager" />
+		</property>
+	</bean>
+
+</beans>
