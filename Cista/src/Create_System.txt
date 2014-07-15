@@ -1,0 +1,1903 @@
+ALTER TABLE SYS_USER_ROLE ADD CONSTRAINT PK_SYS_USER_ROLE
+	PRIMARY KEY (ID)
+USING INDEX
+  TABLESPACE  TS_IESINDX_SMA
+/
+ALTER TABLE SYS_USER ADD CONSTRAINT PK_SYS_USER
+	PRIMARY KEY (USER_ID)
+USING INDEX
+  TABLESPACE  TS_IESINDX_SMA
+/
+ALTER TABLE SYS_TRACING ADD CONSTRAINT PK_SYS_TRACING
+	PRIMARY KEY (ID)
+USING INDEX
+  TABLESPACE  TS_IESINDX_SMA
+/
+ALTER TABLE SYS_ROLE_FUNCTION ADD CONSTRAINT PK_SYS_ROLE_FUNCTION
+	PRIMARY KEY (ID)
+USING INDEX
+  TABLESPACE  TS_IESINDX_SMA
+/
+ALTER TABLE SYS_ROLE ADD CONSTRAINT PK_SYS_ROLE
+	PRIMARY KEY (ROLE_ID)
+USING INDEX
+  TABLESPACE  TS_IESINDX_SMA
+/
+ALTER TABLE SYS_LDAP_CONFIG ADD CONSTRAINT PK_SYS_LDAP_CONFIG 
+	PRIMARY KEY (LDAP_SITE)
+USING INDEX
+  TABLESPACE  TS_IESINDX_SMA
+/
+ALTER TABLE SYS_FUNCTION ADD CONSTRAINT PK_SYS_FUNCTION 
+	PRIMARY KEY (ID)
+USING INDEX
+  TABLESPACE  TS_IESINDX_SMA
+/
+
+INSERT INTO sys_department
+VALUES
+('Himax','CS','CS','20090601104616')
+/
+INSERT INTO sys_department
+VALUES
+('Himax','Purchase','Purchase','20090504190239')
+/
+INSERT INTO sys_department
+VALUES
+('Himax','Finance','Finance','20090504190330')
+/
+INSERT INTO sys_department
+VALUES
+('Himax','QC','QC','20090107093126')
+/
+INSERT INTO sys_department
+VALUES
+('Himax','IT','IT','20090107093217')
+/
+INSERT INTO sys_department
+VALUES
+('Himax','Device','Device','20090107093228')
+/
+INSERT INTO sys_department
+VALUES
+('Himax','Sales','Sales','20090508131615')
+/
+
+INSERT INTO sys_fun_parameter_value
+VALUES
+('EN','EN_TYPE','1',1,'Export to Customer','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('EN','EN_TYPE','2',2,'Export to Vendor','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('EN','EN_TYPE','3',3,'No Reference','20090505103455')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('EN','SHIPPED_BY','01',1,'Air','20090505142149')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('EN','SHIPPED_BY','02',2,'Sea','20090505142216')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('EN','SHIPPED_BY','03',3,'Hand Carry','20090505142239')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('EN','SHIPPED_BY','04',4,'Third Party Logistics','20090505142302')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('EN','SHIPPED_BY','05',5,'Express','20090505142346')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('EN','SHIPPED_BY','06',6,'Others','20090505142404')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','HOURS','00:00',1,'00:00','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','HOURS','01:00',2,'01:00','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','HOURS','02:00',3,'02:00','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','HOURS','03:00',4,'03:00','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','HOURS','04:00',5,'04:00','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','HOURS','05:00',6,'05:00','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','HOURS','06:00',7,'06:00','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','HOURS','07:00',8,'07:00','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','HOURS','08:00',9,'08:00','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','HOURS','09:00',10,'09:00','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','HOURS','10:00',11,'10:00','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','HOURS','11:00',12,'11:00','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','HOURS','12:00',13,'12:00','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','HOURS','13:00',14,'13:00','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','HOURS','14:00',15,'14:00','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','HOURS','15:00',16,'15:00','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','HOURS','16:00',17,'16:00','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','HOURS','17:00',18,'17:00','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','HOURS','18:00',19,'18:00','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','HOURS','19:00',20,'19:00','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','HOURS','20:00',21,'20:00','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','HOURS','21:00',22,'21:00','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','HOURS','22:00',23,'22:00','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','HOURS','23:00',24,'23:00','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('EN','PKG_UOM','KAR',1,'CAR','20090506084307')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('EN','PKG_UOM','CTN',2,'CTN','20090506084329')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('EN','PKG_UOM','PC',3,'PC','20090506084457')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','SHIPPED_BY','01',1,'Air','20090505142149')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','SHIPPED_BY','02',2,'Sea','20090505142216')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','SHIPPED_BY','03',3,'Hand Carry','20090505142239')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','SHIPPED_BY','04',4,'Third Party Logistics','20090505142302')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','SHIPPED_BY','05',5,'Express','20090505142346')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','SHIPPED_BY','06',6,'Others','20090505142404')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','IN_TYPE','1',1,'Reference to P/O','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','IN_TYPE','2',2,'Reference to RMA (SO)','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','IN_TYPE','3',3,'Customer Consigned','20090505103455')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','IN_TYPE','4',4,'No reference','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','IN_TYPE','5',5,'Reference to RMA (EN)','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','IN_TYPE','6',6,'Reference to Material Document','20090505103455')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','IN_TYPE','7',7,'Reference to GIB Monthly','20090505103455')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','ADP',1,'Andoran peseta','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','AED',2,'United Arab Emirates Dirham','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','AFA',3,'Afghani (Old)','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','AFN',4,'Afghani','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','ALL',5,'Albanian Lek','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','AMD',6,'Armenian Dram','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','ANG',7,'West Indian Guilder','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','AOA',8,'Angolanische Kwanza','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','AON',9,'Angolan New Kwanza (Old)','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','AOR',10,'Angolan Kwanza Reajustado (Old)','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','ARS',11,'Argentine Peso','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','ATS',12,'Austrian Schilling','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','AUD',13,'Australian Dollar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','AWG',14,'Aruban Guilder','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','AZM',15,'Azerbaijan Manat','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','BAM',16,'Bosnia and Herzegovina Convertible Mark','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','BBD',17,'Barbados Dollar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','BDT',18,'Bangladesh Taka','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','BEF',19,'Belgian Franc','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','BGN',20,'Bulgarian Lev','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','BHD',21,'Bahrain Dinar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','BIF',22,'Burundi Franc','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','BMD',23,'Bermudan Dollar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','BND',24,'Brunei Dollar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','BOB',25,'Boliviano','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','BRL',26,'Brazilian Real','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','BSD',27,'Bahaman Dollar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','BTN',28,'Bhutan Ngultrum','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','BWP',29,'Botswana Pula','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','BYB',30,'Belorussian Ruble (Old)','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','BYR',31,'Belorussian Ruble','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','BZD',32,'Belize Dollar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','CAD',33,'Canadian Dollar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','CDF',34,'Congolese Franc','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','CFP',35,'French Franc (Pacific Islands)','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','CHF',36,'Swiss Franc','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','CLP',37,'Chilean Peso','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','CNY',38,'Chinesische Yuan (international)','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','COP',39,'Colombian Peso','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','CRC',40,'Costa Rica Colon','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','CUP',41,'Cuban Peso','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','CVE',42,'Cape Verde Escudo','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','CYP',43,'Cyprus Pound','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','CZK',44,'Czech Krona','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','DEM',45,'German Mark','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','DEM3',46,'(Internal) German Mark (3 dec.places)','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','DJF',47,'Djibouti Franc','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','DKK',48,'Danish Krone','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','DOP',49,'Dominican Peso','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','DZD',50,'Algerian Dinar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','ECS',51,'Ecuadorian Sucre (  > USD)','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','EEK',52,'Estonian Krone','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','EGP',53,'Egyptian Pound','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','ERN',54,'Eritrean Nafka','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','ESP',55,'Spanish Peseta','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','ETB',56,'Ethiopian Birr','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','EUR',57,'European Euro','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','FIM',58,'Finnish markka','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','FJD',59,'Fiji Dollar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','FKP',60,'Falkland Pound','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','FRF',61,'French Franc','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','GBP',62,'British Pound','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','GEL',63,'Georgian Lari','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','GHC',64,'Ghanian Cedi','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','GIP',65,'Gibraltar Pound','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','GMD',66,'Gambian Dalasi','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','GNF',67,'Guinean Franc','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','GRD',68,'Greek Drachma','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','GTQ',69,'Guatemalan Quetzal','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','GWP',70,'Guinea Peso','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','GYD',71,'Guyana Dollar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','HKD',72,'Hong Kong Dollar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','HNL',73,'Honduran Lempira','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','HRK',74,'Croatian Kuna','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','HTG',75,'Haitian Gourde','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','HUF',76,'Hungarian Forint','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','IDR',77,'Indonesian Rupiah','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','IEP',78,'Irish Punt','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','ILS',79,'Israeli Scheckel','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','INR',80,'Indian Rupee','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','IQD',81,'Iraqui Dinar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','IRR',82,'Iranian Rial','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','ISK',83,'Iceland Krona','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','ITL',84,'Italian Lira','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','JMD',85,'Jamaican Dollar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','JOD',86,'Jordanian Dinar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','JPY',87,'Japanese Yen','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','KES',88,'Kenyan Shilling','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','KGS',89,'Kyrgyzstan Som','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','KHR',90,'Cambodian Riel','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','KMF',91,'Comoros Franc','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','KPW',92,'North Korean Won','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','KRW',93,'South Korean Won','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','KWD',94,'Kuwaiti Dinar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','KYD',95,'Cayman Dollar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','KZT',96,'Kazakstanian Tenge','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','LAK',97,'Laotian Kip','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','LBP',98,'Lebanese Pound','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','LKR',99,'Sri Lankan Rupee','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','LRD',100,'Liberian Dollar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','LSL',101,'Lesotho Loti','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','LTL',102,'Lithuanian Lita','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','LUF',103,'Luxembourg Franc','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','LVL',104,'Latvian Lat','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','LYD',105,'Libyan Dinar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','MAD',106,'Moroccan Dirham','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','MDL',107,'Moldavian Leu','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','MGF',108,'Madagascan Franc','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','MKD',109,'Macedonian Denar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','MMK',110,'Myanmar Kyat','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','MNT',111,'Mongolian Tugrik','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','MOP',112,'Macao Pataca','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','MRO',113,'Mauritanian Ouguiya','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','MTL',114,'Maltese Lira','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','MUR',115,'Mauritian Rupee','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','MVR',116,'Maldive Rufiyaa','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','MWK',117,'Malawi Kwacha','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','MXN',118,'Mexican Pesos','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','MYR',119,'Malaysian Ringgit','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','MZM',120,'Mozambique Metical','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','NAD',121,'Namibian Dollar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','NGN',122,'Nigerian Naira','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','NIO',123,'Nicaraguan Cordoba Oro','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','NLG',124,'Dutch Guilder','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','NOK',125,'Norwegian Krone','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','NPR',126,'Nepalese Rupee','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','NZD',127,'New Zealand Dollars','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','OMR',128,'Omani Rial','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','PAB',129,'Panamanian Balboa','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','PEN',130,'Peruvian New Sol','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','PGK',131,'Papua New Guinea Kina','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','PHP',132,'Philippine Peso','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','PKR',133,'Pakistani Rupee','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','PLN',134,'Polish Zloty (new)','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','PTE',135,'Portuguese Escudo','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','PYG',136,'Paraguayan Guarani','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','QAR',137,'Qatar Rial','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','RMB',138,'Chinesische Renminbi (national)','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','ROL',139,'Romanian Leu','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','RUB',140,'Russian Ruble','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','RWF',141,'Rwandan Franc','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','SAR',142,'Saudi Riyal','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','SBD',143,'Solomon Islands Dollar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','SCR',144,'Seychelles Rupee','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','SDD',145,'Sudanese Dinar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','SDP',146,'Sudanese Pound','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','SEK',147,'Swedish Krona','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','SGD',148,'Singapore Dollar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','SHP',149,'St.Helena Pound','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','SIT',150,'Slovenian Tolar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','SKK',151,'Slovakian Krona','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','SLL',152,'Sierra Leone Leone','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','SOS',153,'Somalian Shilling','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','SRG',154,'Surinam Guilder','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','STD',155,'Sao Tome / Principe Dobra','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','SVC',156,'El Salvador Colon','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','SYP',157,'Syrian Pound','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','SZL',158,'Swaziland Lilangeni','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','THB',159,'Thailand Baht','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','TJR',160,'Tajikistani Ruble (Old)','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','TJS',161,'Tajikistani Somoni','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','TMM',162,'Turkmenistani Manat','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','TND',163,'Tunisian Dinar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','TOP',164,'Tongan Pa anga','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','TPE',165,'Timor Escudo','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','TRL',166,'Turkish Lira','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','TTD',167,'Trinidad and Tobago Dollar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','TWD',168,'New Taiwan Dollar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','TZS',169,'Tanzanian Shilling','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','UAH',170,'Ukraine Hryvnia','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','UGX',171,'Ugandan Shilling','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','USD',172,'United States Dollar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','USDN',173,'(Internal) United States Dollar (5 Dec.)','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','UYU',174,'Uruguayan Peso (new)','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','UZS',175,'Uzbekistan Som','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','VEB',176,'Venezuelan Bolivar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','VND',177,'Vietnamese Dong','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','VUV',178,'Vanuatu Vatu','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','WST',179,'Samoan Tala','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','XAF',180,'Gabon CFA Franc BEAC','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','XCD',181,'East Carribean Dollar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','XDS',182,'St. Christopher Dollar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','XEU',183,'European Currency Unit (E.C.U.)','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','XOF',184,'Benin CFA Franc BCEAO','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','XPF',185,'CFP Franc','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','YER',186,'Yemeni Ryal','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','YUM',187,'New Yugoslavian Dinar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','ZAR',188,'South African Rand','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','ZMK',189,'Zambian Kwacha','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','ZRN',190,'Zaire (Old)','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IE','WAERS','ZWD',191,'Zimbabwean Dollar','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','APP_TYPE','G1',1,'外貨進口','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','APP_TYPE','G2',2,'本地補稅案件','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','APP_TYPE','G7',3,'國貨復進口','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','APP_TYPE','D2',4,'保稅貨出保稅倉進口','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','APP_TYPE','D7',5,'保稅倉相互轉儲或運往保稅廠','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','APP_TYPE','D8',6,'外貨進保稅倉','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','APP_TYPE','B6',7,'保稅廠輸入貨物(原料)','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','APP_TYPE','G3',8,'外貨復出口','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','APP_TYPE','G5',9,'國貨出口','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','APP_TYPE','D1',10,'課稅區售與或退回保稅倉','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','APP_TYPE','D5',11,'保稅倉貨物出口','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','APP_TYPE','D9',12,'國貨進保稅倉','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','APP_TYPE','B1',13,'課稅區售與保稅廠','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','APP_TYPE','B2',14,'保稅廠相互交易或售與保稅倉','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','APP_TYPE','B8',15,'保稅廠進口貨物(原料)復出口','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','APP_TYPE','B9',16,'保稅廠產品出口','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','APP_TYPE','ZZ',17,'非海關報單','20090505103433')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','PKG_UOM','CTN',2,'CTN','20090506084329')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','PKG_UOM','KAR',1,'CAR','20090506084307')
+/
+INSERT INTO sys_fun_parameter_value
+VALUES
+('IN','PKG_UOM','PC',3,'PC','20090506084457')
+/
+
+INSERT INTO sys_function
+VALUES
+(11,1,'IE Function','folder',0,NULL,NULL,'20090504190553')
+/
+INSERT INTO sys_function
+VALUES
+(12,11,'Export Function','folder',0,NULL,NULL,'20090504190629')
+/
+INSERT INTO sys_function
+VALUES
+(13,12,'Update EN','file',1,'UpdateENPre.action','mainFrame','20090504190653')
+/
+INSERT INTO sys_function
+VALUES
+(40,2,'Assign User Role','file',1,'SearchUserRolePre.action','mainFrame','20090514163754')
+/
+INSERT INTO sys_function
+VALUES
+(42,12,'Query EN','file',1,'QueryENPre.action','mainFrame','20090523092612')
+/
+INSERT INTO sys_function
+VALUES
+(43,12,'Initial Material EN','file',1,'InitialMaterialENPre.action','mainFrame','20090526192651')
+/
+INSERT INTO sys_function
+VALUES
+(9,2,'Modify Role','file',1,'SearchRolePre.action','mainFrame','20090305151619')
+/
+INSERT INTO sys_function
+VALUES
+(1,1,'HimaxIE Function','folder',0,NULL,NULL,'20081229172624')
+/
+INSERT INTO sys_function
+VALUES
+(2,1,'Admin','folder',0,NULL,NULL,'20081229172624')
+/
+INSERT INTO sys_function
+VALUES
+(8,2,'Search Department','file',1,'SearchDepartmentPre.action','mainFrame','20090204101701')
+/
+INSERT INTO sys_function
+VALUES
+(10,2,'Assign Function Role ','file',1,'SearchRoleFunctionPre.action','mainFrame','20090318142521')
+/
+INSERT INTO sys_function
+VALUES
+(41,16,'Query IN Report','file',1,'QueryINPre.action','mainFrame','20090515092650')
+/
+INSERT INTO sys_function
+VALUES
+(7,2,'Search Function','file',1,'SearchFunctionPre.action','mainFrame','2009051104030')
+/
+INSERT INTO sys_function
+VALUES
+(15,1,'System Doc','folder',0,NULL,NULL,'20090504190554')
+/
+INSERT INTO sys_function
+VALUES
+(3,2,'Search User','file',1,'UserSearchPre.action','mainFrame','20090504190630')
+/
+INSERT INTO sys_function
+VALUES
+(16,11,'Import Function','folder',0,NULL,NULL,'20090513083407')
+/
+INSERT INTO sys_function
+VALUES
+(14,16,'Update IN','file',1,'UpdateINPre.action','mainFrame','20090511104030')
+/
+
+INSERT INTO sys_ldap_config
+VALUES
+('Himax','ldap://10.240.230.161:389','com.sun.jndi.ldap.LdapCtxFactory','dc=himax,dc=com,dc=tw','simple','cavell','cavelladmin','20070908132538')
+/
+INSERT INTO sys_ldap_config
+VALUES
+('HimaxCN','ldap://10.240.151.161:389','com.sun.jndi.ldap.LdapCtxFactory','dc=himax,dc=com,dc=cn','simple','pidbadmin','pidb5050880','20070908132538')
+/
+
+INSERT INTO sys_role
+VALUES
+(1,'Administrator','20081230120153')
+/
+INSERT INTO sys_role
+VALUES
+(2,'Himax','20081230120153')
+/
+INSERT INTO sys_role
+VALUES
+(3,'Forwarder','20081230120215')
+/
+INSERT INTO sys_role
+VALUES
+(4,'Broker','20090511104811')
+/
+
+INSERT INTO sys_role_function
+VALUES
+(14,3,13,'20090504190909')
+/
+INSERT INTO sys_role_function
+VALUES
+(47,1,40,'20090514163754')
+/
+INSERT INTO sys_role_function
+VALUES
+(52,2,16,'20090523092923')
+/
+INSERT INTO sys_role_function
+VALUES
+(50,2,1,'20090523092923')
+/
+INSERT INTO sys_role_function
+VALUES
+(51,2,11,'20090523092923')
+/
+INSERT INTO sys_role_function
+VALUES
+(9,1,9,'20090123082903')
+/
+INSERT INTO sys_role_function
+VALUES
+(53,2,15,'20090523092923')
+/
+INSERT INTO sys_role_function
+VALUES
+(10,1,10,'20090202173016')
+/
+INSERT INTO sys_role_function
+VALUES
+(54,2,42,'20090523092923')
+/
+INSERT INTO sys_role_function
+VALUES
+(55,2,41,'20090523092923')
+/
+INSERT INTO sys_role_function
+VALUES
+(58,1,41,'20090525172341')
+/
+INSERT INTO sys_role_function
+VALUES
+(7,1,8,'20090122132545')
+/
+INSERT INTO sys_role_function
+VALUES
+(5,1,7,'20090120154757')
+/
+INSERT INTO sys_role_function
+VALUES
+(59,1,42,'20090526192211')
+/
+INSERT INTO sys_role_function
+VALUES
+(2,2,2,'20090508090259')
+/
+INSERT INTO sys_role_function
+VALUES
+(1,1,1,'20090507172651')
+/
+INSERT INTO sys_role_function
+VALUES
+(3,1,3,'20090511104015')
+/
+INSERT INTO sys_role_function
+VALUES
+(12,1,11,'20090511115932')
+/
+INSERT INTO sys_role_function
+VALUES
+(13,2,12,'20090511115945')
+/
+INSERT INTO sys_role_function
+VALUES
+(15,1,13,'20090511120038')
+/
+INSERT INTO sys_role_function
+VALUES
+(17,1,14,'20090511120048')
+/
+INSERT INTO sys_role_function
+VALUES
+(18,1,15,'20090511120059')
+/
+INSERT INTO sys_role_function
+VALUES
+(16,3,14,'20090511105028')
+/
+
+INSERT INTO sys_user
+VALUES
+('70093','70093','6DA903E2099DCE0E','70093','Fowarder','Eng.','NA','NA','1','20090601115742','10.240.229.150','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70097','70097','6DA903E2099DCE0E','70097','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70098','70098','6DA903E2099DCE0E','70098','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70099','70099','6DA903E2099DCE0E','70099','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70102','70102','6DA903E2099DCE0E','70102','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70107','70107','6DA903E2099DCE0E','70107','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70112','70112','6DA903E2099DCE0E','70112','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('900730','Hank_Tang','900730','Himax','IT','Eng.','hank_tang@himax.com.tw','06-5050880-58364','1','20090601115603','10.240.229.150','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('900141','Daisy_Shyu','900141','Himax','CS','Eng.','daisy_shyu@himax.com.tw','06-5050880-58251','2','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('700006','Joan_Chang','700006','Himax','CS','Eng.','joan_chang@himaxanalogic.com.tw','06-5050880-23500','2','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('900267','Nina_Liao','900267','Himax','CS','Eng.','nina_liao@himax.com.tw','06-5050880-38810','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('900660','Maggie_Wang','900660','Himax','CS','Eng.','maggie_wang@himax.com.tw','06-5050880-38813','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('900581','Bella_Yu','900581','Himax','CS','Eng.','bella_yu@himax.com.tw','06-5050880-38814','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('900957','Doris_Chen','900957','Himax','CS','Eng.','doris_chen@himax.com.tw','06-5050880-38824','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('901017','Jasmie_Chang','901017','Himax','CS','Eng.','jasmie_chang@himax.com.tw','06-5050880-38827','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('901100','Janice_Su','901100','Himax','CS','Eng.','janice_su@himax.com.tw','06-5050880-58225','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('900677','Angelica_Huang','900677','Himax','CS','Eng.','angelica_huang@himax.com.tw','06-5050880-58335','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('900844','Jewel_Lee','900844','Himax','CS','Eng.','jewel_lee@himax.com.tw','06-5050880-58385','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('900874','Justi_Hsu','900874','Himax','CS','Eng.','justi_hsu@himax.com.tw','06-5050880-58495','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('990051','Glen_Hsieh','990051','Himax','CS','Eng.','y_glen_hsieh@himax.com.tw','06-5050880-58687','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('990046','Aneko_Huang','990046','Himax','CS','Eng.','y_aneko_huang@himax.com.tw','06-5050880-58224','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('900397','Amanda_Huang','900397','Himax','Purchase','Eng.','amanda_huang@himax.com.tw','06-5050880-58202','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('900516','Michelle_Lo','900516','Himax','Purchase','Eng.','michelle_lo@himax.com.tw','06-5050880-58282','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+
+INSERT INTO sys_user
+VALUES
+('900549','Tanisha_Lee','900549','Himax','','Eng.','tanisha_lee@himax.com.tw','06-5050880-58495','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+
+INSERT INTO sys_user
+VALUES
+('900554','Joey_Fu','900554','Himax','IT','Eng.','joey_fu@himax.com.tw','06-5050880-58495','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+
+INSERT INTO sys_user
+VALUES
+('900152','Gladys','900152','Himax','Finance','Eng.','gladys@himax.com.tw','06-5050880-58935','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('901122','Carrie_Wu','901122','Himax','Finance','Eng.','carrie_wu@himax.com.tw','06-5050880-58573','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('901037','Claire_Liao','901037','Himax','Finance','Eng.','claire_liao@himax.com.tw','06-5050880-33202','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+
+INSERT INTO sys_user
+VALUES
+('900917','Rita_Hsieh','900917','Himax','CS','Eng.','rita_hsieh@himax.com.tw','06-5050880-58381','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+
+INSERT INTO sys_user
+VALUES
+('901427','Sheree_Tsai','901427','Himax','CS','Eng.','sheree_tsai@himax.com.tw','06-5050880-38820','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+
+INSERT INTO sys_user
+VALUES
+('901428','Brandy_Lin','901428','Himax','CS','Eng.','brandy_lin@himax.com.tw','06-5050880-38807','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+
+INSERT INTO sys_user_role
+VALUES
+(-24,'901427',2,'20090601115434')
+/
+
+INSERT INTO sys_user_role
+VALUES
+(-25,'901428',2,'20090601115434')
+/
+
+INSERT INTO sys_user
+VALUES
+('70001','70001','6DA903E2099DCE0E','70001','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70002','70002','6DA903E2099DCE0E','70002','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70003','70003','6DA903E2099DCE0E','70003','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70004','70004','6DA903E2099DCE0E','70004','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70005','70005','6DA903E2099DCE0E','70005','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70006','70006','6DA903E2099DCE0E','70006','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70007','70007','6DA903E2099DCE0E','70007','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70008','70008','6DA903E2099DCE0E','70008','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70011','70011','6DA903E2099DCE0E','70011','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70012','70012','6DA903E2099DCE0E','70012','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70013','70013','6DA903E2099DCE0E','70013','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70014','70014','6DA903E2099DCE0E','70014','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70015','70015','6DA903E2099DCE0E','70015','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70016','70016','6DA903E2099DCE0E','70016','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70017','70017','6DA903E2099DCE0E','70017','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70018','70018','6DA903E2099DCE0E','70018','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70019','70019','6DA903E2099DCE0E','70019','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70021','70021','6DA903E2099DCE0E','70021','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70022','70022','6DA903E2099DCE0E','70022','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70023','70023','6DA903E2099DCE0E','70023','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70024','70024','6DA903E2099DCE0E','70024','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70026','70026','6DA903E2099DCE0E','70026','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70027','70027','6DA903E2099DCE0E','70027','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70029','70029','6DA903E2099DCE0E','70029','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70030','70030','6DA903E2099DCE0E','70030','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70032','70032','6DA903E2099DCE0E','70032','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70034','70034','6DA903E2099DCE0E','70034','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70036','70036','6DA903E2099DCE0E','70036','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70037','70037','6DA903E2099DCE0E','70037','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70038','70038','6DA903E2099DCE0E','70038','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70039','70039','6DA903E2099DCE0E','70039','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70042','70042','6DA903E2099DCE0E','70042','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70053','70053','6DA903E2099DCE0E','70053','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70054','70054','6DA903E2099DCE0E','70054','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70057','70057','6DA903E2099DCE0E','70057','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70067','70067','6DA903E2099DCE0E','70067','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70072','70072','6DA903E2099DCE0E','70072','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70083','70083','6DA903E2099DCE0E','70083','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70084','70084','6DA903E2099DCE0E','70084','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70087','70087','6DA903E2099DCE0E','70087','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+INSERT INTO sys_user
+VALUES
+('70092','70092','6DA903E2099DCE0E','70092','Fowarder','Eng.','NA','NA','1','20090526192527','10.240.73.72','20080801154036','900730','980084','2009/05/11',NULL)
+/
+
+INSERT INTO sys_user_role
+VALUES
+(1,'900730',1,'20090601111636')
+/
+
+INSERT INTO sys_user_role
+VALUES
+(-2,'900267',2,'20090601115434')
+/
+INSERT INTO sys_user_role
+VALUES
+(-3,'900660',2,'20090601115434')
+/
+INSERT INTO sys_user_role
+VALUES
+(-4,'900581',2,'20090601115434')
+/
+INSERT INTO sys_user_role
+VALUES
+(-5,'900957',2,'20090601115434')
+/
+INSERT INTO sys_user_role
+VALUES
+(-6,'901017',2,'20090601115434')
+/
+INSERT INTO sys_user_role
+VALUES
+(-7,'901100',2,'20090601115434')
+/
+INSERT INTO sys_user_role
+VALUES
+(-8,'900677',2,'20090601115434')
+/
+INSERT INTO sys_user_role
+VALUES
+(-9,'900844',2,'20090601115434')
+/
+INSERT INTO sys_user_role
+VALUES
+(-10,'900874',2,'20090601115434')
+/
+INSERT INTO sys_user_role
+VALUES
+(-11,'990051',2,'20090601115434')
+/
+INSERT INTO sys_user_role
+VALUES
+(-12,'990046',2,'20090601115434')
+/
+INSERT INTO sys_user_role
+VALUES
+(-13,'900397',2,'20090601115434')
+/
+INSERT INTO sys_user_role
+VALUES
+(-14,'900516',2,'20090601115434')
+/
+
+INSERT INTO sys_user_role
+VALUES
+(-15,'900141',2,'20090601123734')
+/
+INSERT INTO sys_user_role
+VALUES
+(-16,'700006',2,'20090601123742')
+/
+
+INSERT INTO sys_user_role
+VALUES
+(-17,'900549',2,'20090601115434')
+/
+INSERT INTO sys_user_role
+VALUES
+(-18,'900554',2,'20090601115434')
+/
+
+INSERT INTO sys_user_role
+VALUES
+(-19,'900152',2,'20090601115434')
+/
+INSERT INTO sys_user_role
+VALUES
+(-20,'901122',2,'20090601115434')
+/
+INSERT INTO sys_user_role
+VALUES
+(-21,'901037',2,'20090601115434')
+/
+INSERT INTO sys_user_role
+VALUES
+(-22,'900917',2,'20090601115434')
+/
+
+INSERT INTO sys_user_role
+VALUES
+(-23,'980046',2,'20090601115434')
+/
+
+INSERT INTO sys_user_role
+VALUES
+(1,'70093',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(2,'70097',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(3,'70098',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(4,'70099',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(5,'70102',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(6,'70107',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(7,'70112',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(8,'70001',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(9,'70002',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(10,'70003',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(11,'70004',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(12,'70005',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(13,'70006',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(14,'70007',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(15,'70008',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(16,'70011',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(17,'70012',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(18,'70013',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(19,'70014',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(20,'70015',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(21,'70016',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(22,'70017',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(23,'70018',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(24,'70019',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(25,'70021',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(26,'70022',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(27,'70023',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(28,'70024',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(29,'70026',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(30,'70027',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(31,'70029',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(32,'70030',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(33,'70032',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(34,'70034',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(35,'70036',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(36,'70037',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(37,'70038',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(38,'70039',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(39,'70042',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(40,'70053',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(41,'70054',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(42,'70057',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(43,'70067',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(44,'70072',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(45,'70083',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(46,'70084',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(47,'70087',3,'20090601115539')
+/
+INSERT INTO sys_user_role
+VALUES
+(48,'70092',3,'20090601115539')
+/
+
+
+ALTER TABLE T_E_APP2SAP
+ ADD (
+  APP_FLAG VARCHAR2 (2)
+ )
+/
+ALTER TABLE T_I_APP2SAP
+ ADD (
+  APP_FLAG VARCHAR2 (2)
+ )
+/
+commit;
