@@ -2,7 +2,7 @@ package com.cista.system.util;
 
 import java.io.Serializable;
 
-import com.cista.system.util.CLTUtil;
+import com.cista.system.util.CistaUtil;
 
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -26,8 +26,8 @@ public class BaseErpDao extends JdbcDaoSupport implements Serializable {
 	 */
 	public BaseErpDao() {
 		super();
-        this.setDataSource(CLTUtil.getErpDataSource());
-        this.setTransactionTemplate(CLTUtil.getErpTransactionTemplate());
+        this.setDataSource(CistaUtil.getErpDataSource());
+        this.setTransactionTemplate(CistaUtil.getErpTransactionTemplate());
         this.simpleJdbcTemplate = new SimpleJdbcTemplate(this.getDataSource());
         this.setSimpleJdbcTemplate(this.simpleJdbcTemplate);
     }

@@ -26,7 +26,7 @@ public class LoginInterceptor extends AbstractInterceptor {
 		HttpServletRequest request= (HttpServletRequest) actionContext.get(StrutsStatics.HTTP_REQUEST);
 		HttpServletResponse response= (HttpServletResponse) actionContext.get(StrutsStatics.HTTP_RESPONSE);
 		
-		SysUserTo curUser = (SysUserTo)request.getSession().getAttribute(CLTUtil.CUR_USERINFO);
+		SysUserTo curUser = (SysUserTo)request.getSession().getAttribute(CistaUtil.CUR_USERINFO);
 		logger.debug("LoginInterceptor ");
 		String quoteHeaderUid = (String) request.getParameter("quoteHeaderUid");
 		quoteHeaderUid = null != quoteHeaderUid ? quoteHeaderUid : "" ;
@@ -40,7 +40,7 @@ public class LoginInterceptor extends AbstractInterceptor {
 		
 		if ( curUser == null ){
 			logger.debug("LoginInterceptor curUser == null");
-			actionSupport.addActionMessage(CLTUtil.getMessage("System.error.access.nologin"));
+			actionSupport.addActionMessage(CistaUtil.getMessage("System.error.access.nologin"));
 			return actionSupport.ERROR;
 		}else{
 			return invocation.invoke();

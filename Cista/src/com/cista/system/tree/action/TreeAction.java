@@ -17,7 +17,7 @@ import com.cista.system.to.MenuTo;
 import com.cista.system.to.SysUserTo;
 import com.cista.system.tree.dao.TreeDao;
 import com.cista.system.util.BaseAction;
-import com.cista.system.util.CLTUtil;
+import com.cista.system.util.CistaUtil;
 
 /**
  * @author 900730
@@ -33,7 +33,7 @@ public class TreeAction extends BaseAction {
 		TreeDao treeDao = new TreeDao();
 		
 		request= ServletActionContext.getRequest();
-		SysUserTo curUser = (SysUserTo)request.getSession().getAttribute(CLTUtil.CUR_USERINFO);
+		SysUserTo curUser = (SysUserTo)request.getSession().getAttribute(CistaUtil.CUR_USERINFO);
 		
 		if ( curUser == null ){
 			addActionMessage(getText("System.error.access.nologin"));
