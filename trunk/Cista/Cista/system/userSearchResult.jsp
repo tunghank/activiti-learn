@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="java.util.List"%>
-<%@ page import ="com.clt.system.util.CLTUtil"%>
-<%@ page import ="com.clt.system.to.SysUserTo"%>
+<%@ page import ="com.cista.system.util.CLTUtil"%>
+<%@ page import ="com.cista.system.to.SysUserTo"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%
 	String contextPath = (String)request.getContextPath();
@@ -115,7 +115,7 @@
 			strCompany = window.showModalDialog('/system/companyWindow.jsp',null,"dialogWidth='195px';dialogHeight='140px';status='no';help=no");
 		}
 
-		// 使用者直接關閉 值預設 vendor
+		// 嚙誕用者迎蕭嚙踝蕭嚙踝蕭嚙踝蕭 嚙褓預嚙稽 vendor
 		if(strCompany == undefined ) {
 			strCompany = "<%=CLTUtil.VENDOR_ROLE%>" ;
 		}

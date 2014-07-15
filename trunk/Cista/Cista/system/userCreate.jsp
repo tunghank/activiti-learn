@@ -3,9 +3,9 @@
 <%@ page import ="java.text.SimpleDateFormat"%>
 <%@ page import ="java.util.Date"%>
 <%@ page import ="java.util.List"%>
-<%@ page import ="com.clt.system.util.CLTUtil"%>
-<%@ page import ="com.clt.system.to.SysUserTo"%>
-<%@ page import ="com.clt.system.to.SysDepartmentTo"%>
+<%@ page import ="com.cista.system.util.CLTUtil"%>
+<%@ page import ="com.cista.system.to.SysUserTo"%>
+<%@ page import ="com.cista.system.to.SysDepartmentTo"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 
 <%

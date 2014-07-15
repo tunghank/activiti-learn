@@ -3,8 +3,8 @@
 <%@ page import="java.util.List"%>
 <%@ page import ="java.text.DateFormat"%>
 <%@ page import ="java.text.SimpleDateFormat"%>
-<%@ page import ="com.clt.system.util.CLTUtil"%>
-<%@ page import ="com.clt.system.to.SysFunctionTo"%>
+<%@ page import ="com.cista.system.util.CLTUtil"%>
+<%@ page import ="com.cista.system.to.SysFunctionTo"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 
 <%

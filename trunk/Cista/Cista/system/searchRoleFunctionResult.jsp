@@ -1,9 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.ArrayList"%>
-<%@ page import ="com.clt.system.util.CLTUtil"%>
-<%@ page import ="com.clt.system.to.SysRoleFunctionTo"%>
-<%@ page import ="com.clt.system.to.SysFunctionTo"%>
+<%@ page import ="com.cista.system.util.CLTUtil"%>
+<%@ page import ="com.cista.system.to.SysRoleFunctionTo"%>
+<%@ page import ="com.cista.system.to.SysFunctionTo"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%
 	String contextPath = (String)request.getContextPath();

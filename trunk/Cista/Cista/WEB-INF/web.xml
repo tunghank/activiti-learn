@@ -10,7 +10,7 @@
     <filter>
         <filter-name>struts2</filter-name>
         <!-- <filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class> -->
-        <filter-class>com.clt.framework.filter.NewFilterDispatcher</filter-class>
+        <filter-class>com.cista.framework.filter.NewFilterDispatcher</filter-class>
         <init-param>
             <param-name>encoding</param-name>
             <param-value>UTF-8</param-value>
@@ -38,7 +38,7 @@
 
 	 <filter>
         <filter-name>CharacterEncoding</filter-name>
-        <filter-class>com.clt.framework.filter.SetCharacterEncodingFilter</filter-class>
+        <filter-class>com.cista.framework.filter.SetCharacterEncodingFilter</filter-class>
         <init-param>
             <param-name>encoding</param-name>
             <param-value>UTF-8</param-value>

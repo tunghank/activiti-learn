@@ -2,8 +2,8 @@
 <%@ page import ="java.text.DateFormat"%>
 <%@ page import ="java.util.Date"%>
 <%@ page import ="java.text.SimpleDateFormat"%>
-<%@ page import ="com.clt.system.util.CLTUtil"%>
-<%@ page import ="com.clt.system.to.SysUserTo"%>
+<%@ page import ="com.cista.system.util.CLTUtil"%>
+<%@ page import ="com.cista.system.to.SysUserTo"%>
 
 <%@ taglib prefix="s" uri="/struts-tags" %>
 
