@@ -111,7 +111,7 @@
 
 	function modifyUser(userId,company){
 		var strCompany ="";
-		if(company != "<%=CistaUtil.CLT_ROLE%>"){
+		if(company != "<%=CistaUtil.CISTA_ROLE%>"){
 			strCompany = window.showModalDialog('/system/companyWindow.jsp',null,"dialogWidth='195px';dialogHeight='140px';status='no';help=no");
 		}
 

@@ -33,12 +33,12 @@
 
 		// loading to do
 		function doInit(){
-			userType("<%=CistaUtil.CLT_ROLE%>")
+			userType("<%=CistaUtil.CISTA_ROLE%>")
 		}
 
 		// user 類型切換
 		function userType(v){
-			if (v == "<%=CistaUtil.CLT_ROLE%>"){
+			if (v == "<%=CistaUtil.CISTA_ROLE%>"){
 				$('rowPassword').hide();
 				$('rowConfirmPassword').hide();
 				$('rowSubconPosition').hide();	$('rowHimaxPosition').show();
@@ -118,7 +118,7 @@
 
 			// 依不同角色確認
 			// himax
-			if (curUserRole == "<%=CistaUtil.CLT_ROLE%>"){
+			if (curUserRole == "<%=CistaUtil.CISTA_ROLE%>"){
 				if ($F('userId') != "" && $F('userId').length != "6"){ 	// user ID不可小於或大於 6 個字
 					errorFlag=1;
 					alert("User id must in 6 characters");
@@ -191,7 +191,7 @@
 			// 資料設定(設定傳回參數)
 			if (errorFlag==0){
 				msg.innerHTML = "Processing data , please wait a minutes...";
-				if (curUserRole == "<%=CistaUtil.CLT_ROLE%>"){
+				if (curUserRole == "<%=CistaUtil.CISTA_ROLE%>"){
 					$('email').value = $('emailID').value + "@" + $('himaxEmailBox').value;
 					$('department').value = $('himaxDepartment').value;
 					$('position').value = $('himaxPosition').value;
@@ -286,8 +286,8 @@
 					<td align="left" class="portlet-title-bg3" width="15%">Company Type</td>
 					<td class="portlet-title-bg3">
 						<input type="radio"
-							id = "userRole" name="userRole" value="<%=CistaUtil.CLT_ROLE%>" 
-							onclick = "userType('<%=CistaUtil.CLT_ROLE%>');" checked><%=CistaUtil.CLT_ROLE%>
+							id = "userRole" name="userRole" value="<%=CistaUtil.CISTA_ROLE%>" 
+							onclick = "userType('<%=CistaUtil.CISTA_ROLE%>');" checked><%=CistaUtil.CISTA_ROLE%>
 
 						<input type="radio"
 							id = "userRole" name="userRole" value="<%=CistaUtil.SUBCON_ROLE%>"
