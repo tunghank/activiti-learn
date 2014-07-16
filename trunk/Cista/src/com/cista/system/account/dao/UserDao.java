@@ -231,7 +231,7 @@ public class UserDao extends BaseDao{
 				}
 				
 				// subcon : but password is not error format
-				if (!sysUser.getCompany().equals(CistaUtil.CLT_ROLE)){
+				if (!sysUser.getCompany().equals(CistaUtil.CISTA_ROLE)){
 					try	{
 						newPassword = CistaUtil.decodePasswd(sysUser.getPassword());
 					}catch(Exception e)	{

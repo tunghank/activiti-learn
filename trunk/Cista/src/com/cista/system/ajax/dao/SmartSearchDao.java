@@ -6,9 +6,9 @@ import java.util.Map;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 
 import com.cista.system.ajax.to.SmartSearchTo;
-import com.cista.system.util.BaseErpDao;
+import com.cista.system.util.BaseDao;
 
-public class SmartSearchDao extends BaseErpDao {
+public class SmartSearchDao extends BaseDao {
     public List<Map<String, Object>> find(SmartSearchTo ss, String inputFieldValue) {
     	
     	logger.debug(inputFieldValue);
