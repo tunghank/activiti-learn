@@ -26,7 +26,7 @@
 			var cnt = 0;
 			msg.innerHTML = "Verify data error , please check your data is correct !!";
 
-			if (curUserRole != "<%=CistaUtil.CLT_ROLE%>"){
+			if (curUserRole != "<%=CistaUtil.CISTA_ROLE%>"){
 				if ($F('password') == ""){ 
 					msg.innerHTML += "<br>" + (++cnt)+". " + " Password must be input"; 
 					errorFlag=1;

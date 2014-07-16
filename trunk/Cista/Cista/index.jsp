@@ -4,8 +4,7 @@
 <%
   String contextPath = (String)request.getContextPath();
    
-  String quoteHeaderUid = (String)request.getAttribute("quoteHeaderUid");
-  quoteHeaderUid = null != quoteHeaderUid ? quoteHeaderUid : "" ;
+
 %>
 <HTML>
 <HEAD>
@@ -121,7 +120,7 @@ Ext.onReady(function() {
 				<td width="4">&nbsp;
 				</td>
 				<td>
-				<input type="hidden" name="quoteHeaderUid" id="quoteHeaderUid" value="<%=quoteHeaderUid%>" />&nbsp;
+
 				<input type="submit" value="Submit" class="button"/>&nbsp;&nbsp;<input type="reset" value="Reset" class="button" />
 				</td>
 			  </tr>

@@ -39,7 +39,7 @@
 		var flag = 0;
 
 		function doInit(){
-			if ( jsComany == "<%=CistaUtil.CLT_ROLE%>"){
+			if ( jsComany == "<%=CistaUtil.CISTA_ROLE%>"){
 				SelectItem_Combo2($('chkDepartmentList') , "<%=curUserDepartment%>");
 				SelectItem_Combo2($('chkPositionList') , "<%=curUserPosition%>");
 			}else{
@@ -65,7 +65,7 @@
 			}
 
 			// �̤��P����T�{
-			if (jsComany == "<%=CistaUtil.CLT_ROLE%>"){
+			if (jsComany == "<%=CistaUtil.CISTA_ROLE%>"){
 				if ($F('email') == ""){ 
 					//msg.innerHTML += "<br>" + (++cnt)+". " + " Email must be input";
 					flag=1;
@@ -114,7 +114,7 @@
 			checkData();
 			if (flag==0){
 				msg.innerHTML = "Processing data , please wait a minutes...";
-				if (jsComany == "<%=CistaUtil.CLT_ROLE%>"){
+				if (jsComany == "<%=CistaUtil.CISTA_ROLE%>"){
 					$('department').value = $('chkDepartmentList').value;
 					$('position').value = $('chkPositionList').value;
 				}else{
@@ -197,7 +197,7 @@
 			</tbody>
 
 			<!--subcon column--->
-			<%if(!curUserCompany.equals(CistaUtil.CLT_ROLE)){%>
+			<%if(!curUserCompany.equals(CistaUtil.CISTA_ROLE)){%>
 
 				<!--vendor/customer company-->
 				<tr class = "portlet-title-bg1">
