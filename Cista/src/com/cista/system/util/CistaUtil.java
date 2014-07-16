@@ -53,8 +53,8 @@ public class CistaUtil {
     public static final String GLOBAL_PROPERTIES_FILE = "cista.properties";
     private static Properties GLOBAL_PROPERTIES = null;
     
-	/** Himax Site Code */
-	public static final String CLT_SITE = "CHILIN";
+	/** Cista Site Code */
+	public static final String CISTA_SITE = "CISTA";
 	
     /** Spring */
     
@@ -95,7 +95,7 @@ public class CistaUtil {
     public static final String split = "%";
     
     // account common setting
-    public static final String CLT_ROLE = "CHILIN";
+    public static final String CISTA_ROLE = "CISTA";
     public static final String SUBCON_ROLE = "Subcon"; 
     public static final String VENDOR_ROLE = "Vendor";
     public static final String CUSTOMER_ROLE = "Customer";
@@ -104,10 +104,7 @@ public class CistaUtil {
     public static final String FUNCTION_FOLDER = "folder";
     public static final String[] FUNCTION_CLS = {"file","folder"};
     public static final String[][] MAIL_BOX = {
-    		{"chilintech.com.tw"			,"chilintech.com.tw(奇菱)"}
-			,{"linmoug.com.cn"		,"linmoug.com.cn (菱茂)"}
-			,{"linchaun.com.cn"		,"linchaun.com.cn (菱展)"}
-			,{"linshine.com.cn"			,"linshine.com.cn (菱翔)"}											
+    		{"cistadesign.com"			,"cistadesign.com(CISTA)"}										
 	};
 
     
@@ -414,7 +411,7 @@ public class CistaUtil {
     	int baseTo = reqUrl.indexOf("/", baseFrom + 2);
     	baseUrl = reqUrl.substring(0, baseTo);
     	toUrl = baseUrl;
-    	String strPassword = (user.getCompany().equals(CistaUtil.CLT_ROLE)?"(Please use Windows Login Password)":CistaUtil.decodePasswd(user.getPassword()));    	
+    	String strPassword = (user.getCompany().equals(CistaUtil.CISTA_ROLE)?"(Please use Windows Login Password)":CistaUtil.decodePasswd(user.getPassword()));    	
     	
     	contentsStr =  "<html><head><meta http-equiv='Content-Type' "
     		+ "content='text/html; charset=UTF8'></head><body>" +"<P></P> " +"<P></P> "     		
@@ -655,7 +652,7 @@ public class CistaUtil {
      */
     public static DataSource getDataSource() {
         initialize();
-        return (DataSource) context.getBean("CLTDataSource");
+        return (DataSource) context.getBean("SystemDataSource");
     }
 
     /**
@@ -664,7 +661,7 @@ public class CistaUtil {
      */
     public static TransactionTemplate getTransactionTemplate() {
         initialize();
-        return (TransactionTemplate) context.getBean("CLTTransactionTemplate");
+        return (TransactionTemplate) context.getBean("SystemTransactionTemplate");
     }
     
     
@@ -674,37 +671,11 @@ public class CistaUtil {
      */
     public static DataSourceTransactionManager getTransactionManager() {
         initialize();
-        return (DataSourceTransactionManager) context.getBean("CLTTransactionManager");
+        return (DataSourceTransactionManager) context.getBean("SystemTransactionManager");
     }
     
     
-    /**
-     * Return ERP JDBC DataSource.
-     * @return DataSource.
-     */
-    public static DataSource getErpDataSource() {
-        initialize();
-        return (DataSource) context.getBean("CLTERPDataSource");
-    }
 
-    /**
-     * Return a ERP TransactionTemplate.
-     * @return TransactionTemplate.
-     */
-    public static TransactionTemplate getErpTransactionTemplate() {
-        initialize();
-        return (TransactionTemplate) context.getBean("CLTERPTransactionTemplate");
-    }
-    
-    
-    /**
-     * Return a ERP TransactionTemplate.
-     * @return TransactionTemplate.
-     */
-    public static DataSourceTransactionManager getErpTransactionManager() {
-        initialize();
-        return (DataSourceTransactionManager) context.getBean("CLTERPTransactionManager");
-    }
     
     public static int calcPages(int resultSize, int pageSize) {
         int pages = resultSize / pageSize;

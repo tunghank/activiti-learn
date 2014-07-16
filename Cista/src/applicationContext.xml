@@ -6,8 +6,9 @@
 	<bean id="CLTDataSource"
 		class="org.springframework.jndi.JndiObjectFactoryBean">
 		<!-- WebLogic -->
-		<!--  <property name="jndiName" value="CLTQUO"></property> -->
-		<property name="jndiName" value="java:/CLTQUO"></property>
+		<property name="jndiName" value="CISTA"></property>
+		<!-- JBOSS -->
+		<!--  <property name="jndiName" value="java:/CLTQUO"></property> -->
 	</bean>
 
 	<bean id="CLTTransactionManager"
@@ -24,26 +25,5 @@
 		</property>
 	</bean>
 
-	<!-- ERP -->
-	<bean id="CLTERPDataSource"
-		class="org.springframework.jndi.JndiObjectFactoryBean">
-		<!-- WebLogic -->
-		<!--  <property name="jndiName" value="CLTQUO_ERP"></property> -->
-		<property name="jndiName" value="java:/CLTQUO_ERP"></property>
-	</bean>
-
-	<bean id="CLTERPTransactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource">
-			<ref local="CLTERPDataSource" />
-		</property>
-	</bean>
-
-	<bean id="CLTERPTransactionTemplate"
-		class="org.springframework.transaction.support.TransactionTemplate">
-		<property name="transactionManager">
-			<ref local="CLTERPTransactionManager" />
-		</property>
-	</bean>
 
 </beans>

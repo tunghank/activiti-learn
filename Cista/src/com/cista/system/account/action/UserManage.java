@@ -343,7 +343,7 @@ public class UserManage extends BaseAction  {
 			return INPUT;
 		}		
 		//1.3 Get Himax User Form Data
-		if ( userRole.equals(CistaUtil.CLT_ROLE)){
+		if ( userRole.equals(CistaUtil.CISTA_ROLE)){
 			logger.debug("Himax User");			
 			newUser.setCompany("Himax");
 			newUser.setPassword("N/A");			
@@ -483,7 +483,7 @@ public class UserManage extends BaseAction  {
 			newUser.setUpdateBy(this.updateBy);			
 			
 			//判斷user
-			if (strCompany.equals(CistaUtil.CLT_ROLE)){
+			if (strCompany.equals(CistaUtil.CISTA_ROLE)){
 				newUser.setEmail(this.email);
 			}else{			
 				newUser.setPassword(CistaUtil.encodePasswd(this.password));
