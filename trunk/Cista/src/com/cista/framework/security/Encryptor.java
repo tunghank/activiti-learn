@@ -83,7 +83,11 @@ public class Encryptor {
 		Encryptor ent = new Encryptor();
 		String test = "aseadmin";
 		String ret = ent.encodeStrOf(test);
-		// System.out.println(ret) ;
+		System.out.println(ret) ;
+		
+		test = "6DA903E2099DCE0E";
+		ret = ent.decodeStrOf(test);
+		System.out.println(ret) ;
 		// System.out.println(ent.decodeStrOf("65FB6975229659467D3819B7B8FC56211E105380FFF9CA1AD21182AAC7EDA9E0"));
 	}
 

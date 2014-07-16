@@ -145,7 +145,7 @@ public class UserManage extends BaseAction  {
 					return INPUT;
 				}
 			}
-			return INPUT;
+			return SUCCESS;
 		}else{
 			addActionMessage(getText("System.login.message.login.fail.noid"));
 			logger.debug(getText("System.login.message.login.fail.noid"));
