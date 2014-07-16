@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
-	<bean id="CLTDataSource"
+	<bean id="SystemDataSource"
 		class="org.springframework.jndi.JndiObjectFactoryBean">
 		<!-- WebLogic -->
 		<property name="jndiName" value="CISTA"></property>
@@ -11,17 +11,17 @@
 		<!--  <property name="jndiName" value="java:/CLTQUO"></property> -->
 	</bean>
 
-	<bean id="CLTTransactionManager"
+	<bean id="SystemTransactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource">
-			<ref local="CLTDataSource" />
+			<ref local="SystemDataSource" />
 		</property>
 	</bean>
 
-	<bean id="CLTTransactionTemplate"
+	<bean id="SystemTransactionTemplate"
 		class="org.springframework.transaction.support.TransactionTemplate">
 		<property name="transactionManager">
-			<ref local="CLTTransactionManager" />
+			<ref local="SystemTransactionManager" />
 		</property>
 	</bean>
 

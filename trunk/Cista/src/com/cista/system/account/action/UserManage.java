@@ -56,9 +56,7 @@ public class UserManage extends BaseAction  {
 	private String selectUserId;
 	private String chkRolesList;
 
-	//For Quotation Project
-	private String quoteHeaderUid;
-	
+
 	//20110629
 	public String userLogin() throws Exception {
 		UserDao userDAO = new UserDao();
@@ -92,16 +90,7 @@ public class UserManage extends BaseAction  {
 						// update last login time and IP
 						userDAO.saveLastLoginInfo(userId, ServletActionContext.getRequest().getRemoteAddr());
 						logger.debug(getText("System.login.message.login.success"));
-						
-						//是否要導到Quote Function
-						String quoteHeaderUid = this.getQuoteHeaderUid();
-						quoteHeaderUid = null != quoteHeaderUid ? quoteHeaderUid : "" ;
-						if (!quoteHeaderUid.equals("")){
-							request.setAttribute("quoteHeaderUid", quoteHeaderUid);
-							return "quote";
-						}else{
-							return SUCCESS;
-						}
+
 
 
 					} else {
@@ -138,15 +127,7 @@ public class UserManage extends BaseAction  {
 						logger.debug(getText(
 								"System.login.message.login.success"));
 						
-						//是否要導到Quote Function
-						String quoteHeaderUid = this.getQuoteHeaderUid();
-						quoteHeaderUid = null != quoteHeaderUid ? quoteHeaderUid : "" ;
-						if (!quoteHeaderUid.equals("")){
-							request.setAttribute("quoteHeaderUid", quoteHeaderUid);
-							return "quote";
-						}else{
-							return SUCCESS;
-						}
+
 					}else{
 						addActionMessage(getText("" +
 								"System.login.message.login.fail.account.inactive"));
@@ -164,6 +145,7 @@ public class UserManage extends BaseAction  {
 					return INPUT;
 				}
 			}
+			return INPUT;
 		}else{
 			addActionMessage(getText("System.login.message.login.fail.noid"));
 			logger.debug(getText("System.login.message.login.fail.noid"));
@@ -690,12 +672,7 @@ public class UserManage extends BaseAction  {
 	public void setUserCompany(String userCompany) {
 		this.userCompany = userCompany;
 	}
-	public String getQuoteHeaderUid() {
-		return quoteHeaderUid;
-	}
-	public void setQuoteHeaderUid(String quoteHeaderUid) {
-		this.quoteHeaderUid = quoteHeaderUid;
-	}
+
 
 
 }
