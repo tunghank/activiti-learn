@@ -22,8 +22,7 @@
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">    
 <!-- CSS Config -->
-<link href="<%=contextPath%>/css/resources/css/ext-all.css" rel="stylesheet" type="text/css"/>
-<link href="<%=contextPath%>/css/clt_quo.css" rel="stylesheet" type="text/css">
+<link href="<%=contextPath%>/css/CistaSystem.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" media="all" href="<%=contextPath%>/js/jscalendar-1.0/calendar-blue2.css" title="aqua" />
 <%
 	//disable browser client cache.
@@ -38,10 +37,12 @@
 <!-- import the language module -->
 <script type="text/javascript" src="<%=contextPath%>/js/jscalendar-1.0/lang/calendar-en.js"></script>
 
+<!-- Ext JS Config -->
+<link rel="stylesheet" type="text/css" media="all" href="<%=contextPath%>/css/resources/css/ext-all.css"   title="aqua" />
+<script type="text/javascript" src="<%=contextPath%>/js/extjs42/bootstrap.js"></script
+
 <!-- JS Config -->
 <script type="text/javascript" src="<%=contextPath%>/js/prototype1603.js"></script>
-<script type="text/javascript" src="<%=contextPath%>/js/adapter/ext/ext-base.js"></script>
-<script type="text/javascript" src="<%=contextPath%>/js/ext-all-debug.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/js/StringEnhance.js"></script>
 <!-- import Smart Search Script -->
 <script type="text/javascript" src="<%=contextPath%>/js/dynamicTable.js"></script>
