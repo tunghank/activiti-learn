@@ -20,8 +20,7 @@
 <meta http-equiv="expires" content="0">    
  
 <!-- CSS Config -->
-<link href="<%=contextPath%>/css/resources/css/ext-all.css" rel="stylesheet" type="text/css"/>
-<link href="<%=contextPath%>/css/clt_quo.css" rel="stylesheet" type="text/css">
+<link href="<%=contextPath%>/css/CistaSystem.css" rel="stylesheet" type="text/css">
 <%
 	//disable browser client cache.
 	response.setHeader("Pragma","No-cache");

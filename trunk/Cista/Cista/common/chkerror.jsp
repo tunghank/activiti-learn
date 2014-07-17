@@ -20,8 +20,7 @@
 <meta http-equiv="expires" content="0">
  
 <!-- CSS Config -->
-<link href="<%=contextPath%>/css/resources/css/ext-all.css" rel="stylesheet" type="text/css"/>
-<link href="<%=contextPath%>/css/clt_quo.css" rel="stylesheet" type="text/css">
+<link href="<%=contextPath%>/css/CistaSystem.css" rel="stylesheet" type="text/css">
 <%
 	//disable browser client cache.
 	response.setHeader("Pragma","No-cache");
@@ -29,9 +28,9 @@
 	response.setDateHeader("Expires", 0);
 %>
 
-<!-- JS Config -->
-<script type="text/javascript" src="<%=contextPath%>/js/adapter/ext/ext-base.js"></script>
-<script type="text/javascript" src="<%=contextPath%>/js/ext-all.js"></script>
+<!-- Ext JS Config -->
+<link rel="stylesheet" type="text/css" media="all" href="<%=contextPath%>/css/resources/css/ext-all.css"   title="aqua" />
+<script type="text/javascript" src="<%=contextPath%>/js/extjs42/bootstrap.js"></script>
 <script type="text/javascript">
 
 Ext.onReady(function() {

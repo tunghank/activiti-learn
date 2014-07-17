@@ -15,8 +15,8 @@
 <meta http-equiv="expires" content="0">    
  
 <!-- CSS Config -->
-<link href="<%=contextPath%>/css/resources/css/ext-all.css" rel="stylesheet" type="text/css"/>
-<link href="<%=contextPath%>/css/clt_quo.css" rel="stylesheet" type="text/css">
+
+<link href="<%=contextPath%>/css/CistaSystem.css" rel="stylesheet" type="text/css">
 <%
 	//disable browser client cache.
 	response.setHeader("Pragma","No-cache");
@@ -24,26 +24,26 @@
 	response.setDateHeader("Expires", 0);
 %>
 
-<!-- JS Config -->
-<script type="text/javascript" src="<%=contextPath%>/js/adapter/ext/ext-base.js"></script>
-<script type="text/javascript" src="<%=contextPath%>/js/ext-all-debug.js"></script>
+<!-- Ext JS Config -->
+<link rel="stylesheet" type="text/css" media="all" href="<%=contextPath%>/css/resources/css/ext-all.css"   title="aqua" />
+<script type="text/javascript" src="<%=contextPath%>/js/extjs42/bootstrap.js"></script>
+
+
 <script type="text/javascript">
 
 Ext.onReady(function() {
 	//Header
 	var headerPage = new Ext.Panel({
 		region:'north',
-		contentEl: 'north',//id為center的div
-		height:'5%',
-		title:'<s:text name="System.system.welcome.message" />',
-		bodyStyle: 'background-color: #BDE6FB'
+		height:'4%',
+		title:'<s:text name="System.system.welcome.message" />'
 
 	});
 
 	//Main
 	var mainPage = new Ext.Panel({
 		region:'center',
-		height:'85%',
+		height:'86%',
 		bodyStyle: 'padding:5%',
 		contentEl: 'center'//id為center的div
 	});
@@ -52,7 +52,7 @@ Ext.onReady(function() {
 	var footerPage = new Ext.Panel({
 		region:'south',
 		height:'10%',
-		title:'<s:text name="System.system.title" />',
+		
 		bodyStyle: 'padding:5px;background-color: #BDE6FB',
 		contentEl: 'south'//id為center的div
 
@@ -81,17 +81,16 @@ Ext.onReady(function() {
 <BODY bgColor=#ffffff leftMargin=0 topMargin=0>
 <div id="north"></div>
 <div id="center">
-	<table border="0" cellpadding="0" align="center" cellspacing="20" width="80%">
+	<table border="0" cellpadding="0" align="center" cellspacing="10" width="80%">
 	  <tr>
-		<td valign="top" width="60%" align="left"> <p><span class="LoginTitle"><font color="#FF9933"><b><font color="#FF6633" size='5'><s:text name="System.system.title" /></font></b></font></span><br>
-			<br>
-			<div valign="center" align="left"><img src="<%=contextPath%>/images/<s:text name='System.system.site'/>-Logo.png" width="380" height="140"></div>
+		<td valign="top" width="60%" align="left"> <p><span class="LoginTitle"><!-- <font color="#FF9933"><b><font color="#FF6633" size='5'><s:text name="System.system.title" /></font></b></font> --></span>
+			<div valign="center" align="left"><img src="<%=contextPath%>/images/<s:text name='System.system.site'/>-Logo.png" width="380" height="100"></div>
 			</p>
 			<br>
 			<br>
 		<!--Ext JS Form -->
-		<div class="x-box-blue"><div class="x-box-tl"><div class="x-box-tr"><div class="x-box-tc"></div></div></div></div>
-		<div class="x-box-blue"><div class="x-box-ml"><div class="x-box-mr"><div class="x-box-mc">
+		<div class="x-box-blue" style="width:80%"><div class="x-box-tl" ><div class="x-box-tr"><div class="x-box-tc"></div></div></div></div>
+		<div class="x-box-blue" style="width:80%"><div class="x-box-ml"><div class="x-box-mr"><div class="x-box-mc">
 
 		  <form name="loginForm" id="loginForm" action="Login.action" method="post">
 			<table height="120" width="400" border="0" cellspacing="2" cellpadding="2" align="center">
@@ -127,7 +126,7 @@ Ext.onReady(function() {
 			</table>
 
 		</div></div></div></div>
-		<div class="x-box-blue"><div class="x-box-bl"><div class="x-box-br"><div class="x-box-bc"></div></div></div></div>
+		<div class="x-box-blue" style="width:80%"><div class="x-box-bl"><div class="x-box-br"><div class="x-box-bc"></div></div></div></div>
 
 		  <br>
 		  <div align="left"><a href="<%=request.getContextPath()%>/login/forgotpassword.jsp" class="OrangeLine">
