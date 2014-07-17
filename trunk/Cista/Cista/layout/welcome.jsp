@@ -25,7 +25,7 @@
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 
 		//EXTJS4.0
-		/*var treeStore = new Ext.data.TreeStore ({
+		var treeStore = new Ext.data.TreeStore ({
 			expanded: true, 
 			proxy: {
 				type: 'ajax',
@@ -56,32 +56,6 @@
 		
 		setTimeout(function(){tree.expandAll();},0);
 		tree.getRootNode().expand(true);
-		*/
-
-	   var tree =    new Ext.tree.TreePanel({
-			id: 'tree-panel',
-			title: '<s:text name="System.system.menu.function"/>',
-			//split: true,
-			//height: 300,
-			//minSize: 150,
-			autoScroll: true,
-			animate:true,
-			enableDD:false,
-			containerScroll: true,
-			// tree-specific configs:
-			rootVisible: false,
-			lines: false,
-			singleExpand: false,
-			useArrows: true,
-			loader: new Ext.tree.TreeLoader({
-				url:'<%=contextPath%>/ShowTree.action'
-			}),
-			root: new Ext.tree.AsyncTreeNode({
-				
-			})
-		});
-
-		
 
        var viewport = new Ext.Viewport({
             layout:'border',
