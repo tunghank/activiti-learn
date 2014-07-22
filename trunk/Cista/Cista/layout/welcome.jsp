@@ -76,7 +76,7 @@
 					contentEl: 'north',
                     id:'north-panel',
                     //title:'North',
-					height: 23,
+					height: 25,
                     layout:'accordion',
                     layoutConfig:{
                         animate:true
@@ -156,10 +156,10 @@ function MM_swapImage() { //v3.0
 		<img src="<%=contextPath%>/images/<s:text name='System.system.site'/>-Logo.png" width="65" height="17">
 	</div>
 
-	<div style="position:absolute;top:'10%';left:'30%';z-index:300">
+	<div style="position:absolute;top:'5%';left:'30%';z-index:300">
 		<TABLE  width="100%" border=0 cellPadding=0 cellSpacing=0 >
 			<tr>
-			 <td width="70%" valign="bottom" align="left"></td>
+			 <td width="70%" valign="top" align="left"></td>
 			  
 			  <td width="10%" valign="top" ><a href="<%=contextPath%>/Logout.action" target="_parent" onMouseOver="MM_swapImage('Logout','','<%=contextPath%>/images/Logout.png',1)" onMouseOut="MM_swapImgRestore()"><img src="<%=contextPath%>/images/LogoutOver.png" alt="Logout" name="Logout"  width="60" height="20" border="0"></a></td>
 
@@ -172,7 +172,7 @@ function MM_swapImage() { //v3.0
 		</TABLE>
 	</div>
 
-	<div style="position:absolute;top:'10%';left:'25%';z-index:200">
+	<div style="position:absolute;top:'10%';left:'23%';z-index:200">
 		<TABLE  width="100%" border=0 cellPadding=0 cellSpacing=0 >
 			<tr>
 			 <td width="100%" valign="bottom" align="left" ><span class="portlet_content"><b>Welcome :&nbsp;&nbsp;<%=curUser.getUserId()%> - <%=curUser.getRealName()%></b></span></td>
