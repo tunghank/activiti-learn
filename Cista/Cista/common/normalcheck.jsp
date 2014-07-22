@@ -39,7 +39,7 @@
 
 <!-- Ext JS Config -->
 <link rel="stylesheet" type="text/css" media="all" href="<%=contextPath%>/css/resources/css/ext-all.css"   title="aqua" />
-<script type="text/javascript" src="<%=contextPath%>/js/extjs42/bootstrap.js"></script
+<script type="text/javascript" src="<%=contextPath%>/js/extjs42/bootstrap.js"></script>
 
 <!-- JS Config -->
 <script type="text/javascript" src="<%=contextPath%>/js/prototype1603.js"></script>

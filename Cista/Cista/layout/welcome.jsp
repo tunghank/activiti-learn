@@ -153,7 +153,7 @@ function MM_swapImage() { //v3.0
 
 			  <td width="10%" valign="top"><a href='mailto:<s:text name="System.system.contantus.email"/>' target="_parent" onMouseOver="MM_swapImage('ContactUs','','<%=contextPath%>/images/ContactUs.png',1)" onMouseOut="MM_swapImgRestore()"><img src="<%=contextPath%>/images/ContactUsOver.png" alt="Contact Us" name="ContactUs"  width="60" height="20" border="0"></a></td>
 
-			  <td width="10%" valign="top"><!-- <a href="<%=contextPath%>/UserHome.action" target="mainFrame"  onMouseOver="MM_swapImage('Home','','<%=contextPath%>/images/Home.png',1)" onMouseOut="MM_swapImgRestore()">--><img src="<%=contextPath%>/images/HomeOver.png" alt="Home" name="Home"  width="60" height="20" border="0"></a> </td>
+			  <td width="10%" valign="top"><a href="<%=contextPath%>/UserHome.action" target="mainFrame"  onMouseOver="MM_swapImage('Home','','<%=contextPath%>/images/Home.png',1)" onMouseOut="MM_swapImgRestore()"><img src="<%=contextPath%>/images/HomeOver.png" alt="Home" name="Home"  width="60" height="20" border="0"></a> </td>
 			  <!---Home-->
 			  <td width="10%" valign="top"><a href="<%=contextPath%>/UserProfilePre.action" target="mainFrame" onMouseOver="MM_swapImage('myProfile','','<%=contextPath%>/images/myProfile.png',1)" onMouseOut="MM_swapImgRestore()"><img src="<%=contextPath%>/images/myProfileOver.png" alt="myProfile" name="myProfile"  width="60" height="20" border="0"></a></td>
 			</tr>
