@@ -10,6 +10,18 @@
 <html>
 <head>
 <jsp:include page="/common/normalcheck.jsp" />
+<style type="text/css">
+
+.x-panel.my-tree .x-panel-header
+{
+    display:none;
+	border: none;
+	background:none;
+	padding: 0px 0px 0px 0px;
+	height:0px;
+    width:0px;
+}
+</style>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="pragma" content="no-cache">
@@ -40,9 +52,8 @@
 			}]
 		}); 
 
-	   var tree =  new Ext.tree.TreePanel({
+	   var tree =  new Ext.tree.Panel({
 			id: 'tree-panel',
-			title: '<s:text name="System.system.menu.function"/>',
 			autoScroll: true,
 			animate:true,
 			enableDD:false,
@@ -51,6 +62,7 @@
 			lines: false,
 			singleExpand: false,
 			useArrows: true,
+			cls: 'my-tree',
 			store: treeStore
 		});
 		
@@ -73,9 +85,9 @@
                     region:'west',
 					contentEl: 'west',
                     id:'west-panel',
-                    title:'Menu Bar',
+                    title:'<s:text name="System.system.menu.function"/>',
                     split:true,
-                    width: 150,
+                    width: 200,
                     minSize: 150,
                     maxSize: 300,
                     collapsible: true,
