@@ -26,7 +26,7 @@
         <action name="UserCreatePre" class="com.cista.system.account.action.UserManage" method="userCreatePre">
           	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
-            	 <result name="success">/system/userCreate.jsp</result>
+            	 <result name="success">/system/UserCreate.jsp</result>
          </action>
 
 	 	<action name="UserSave" class="com.cista.system.account.action.UserManage" method="userSave">
@@ -58,14 +58,14 @@
          <action name="UserSearchPre" class="com.cista.system.account.action.UserManage" method="userSearchPre">
          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
-             <result name="success">/system/userSearch.jsp</result>
+             <result name="success">/system/UserSearch.jsp</result>
          </action>
          
          <action name="UserSearch" class="com.cista.system.account.action.UserManage" method="userSearch">
          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
-             <result name="success">/system/userSearchResult.jsp</result>
-             <result name="input">/system/userSearchResult.jsp</result>
+             <result name="success">/system/UserSearchResult.jsp</result>
+             <result name="input">/system/UserSearchResult.jsp</result>
          </action>
          
          <action name="DisableUser" class="com.cista.system.account.action.UserManage" method="disableUser">

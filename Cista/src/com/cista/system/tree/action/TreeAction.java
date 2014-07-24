@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
 
+import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
 
 import com.cista.system.to.MenuTo;
@@ -26,7 +27,7 @@ import com.cista.system.util.CistaUtil;
 public class TreeAction extends BaseAction {
 	private String menuString;
 	private List<MenuTo> trees;
-
+	
 
 	public String showTree() throws Exception {
 
@@ -50,7 +51,8 @@ public class TreeAction extends BaseAction {
 	        try {
 	            menuString = jsonObject.toString();
 	        } catch (Exception e) {
-	            menuString = "ss";
+	        	menuString = "";
+	        	logger.error(e.toString());
 	        }
 		}
 		// 1.3 Set AJAX response
