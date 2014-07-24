@@ -32,7 +32,7 @@
 	</script>
 </head>
 <BODY bgColor=#ffffff leftMargin=0 topMargin=0 >
-<table border="0" cellpadding="0" align="left" STYLE="margin-left:10px; width="90%" height="90%" >
+<table border="0" cellpadding="0" align="left" STYLE="margin-left:10px;" width="90%" height="90%" >
 	<tr>
 		<td class="Title">
 		<div align="left">
