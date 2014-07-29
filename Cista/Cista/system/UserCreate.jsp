@@ -56,35 +56,70 @@ Ext.onReady(function(){
     //}, this); 
 
 
+
+
 	//Form
 	var userForm = new  Ext.form.Panel({
         id: 'userForm',
 		title: 'User Information',
 		labelAlign: 'left',
 		frame:true,
-		height:200,
 		width:600,
-		renderTo: 'userForm',
+		renderTo: Ext.getBody(),
 		layout: "column",
+		bodyPadding: 10,
 	    defaults: {
-			columnWidth: .33,
 			border: false
 		},
 		fieldDefaults: {
-			labelWidth: 125,
 			msgTarget: 'side',
-			autoFitErrors: false
+			autoFitErrors: false,
+			labelSeparator :'：',//分隔符
+			labelWidth : 50,//標籤寬度
+			msgTarget : 'side',
+			width : 100			
 		},
-        items: [{
+        items: [{	//Role
 					xtype: "label",
 					columnWidth: .2,
 					anchor: "100",
-					text: '詢價單號:'
+					text: 'Role:'
+				},{
+					xtype: "textfield",
+					width: .8,
+					id:'userRole',
+					name: 'userRole',
+					readOnly:true
+				},{//User ID
+					xtype: "label",
+					columnWidth: .2,
+					text: 'User ID:'
 				},{
 					xtype: "textfield",
 					columnWidth: .8,
-					id:'queryQuoteFormInquiryNum',
-					name: 'queryQuoteFormInquiryNum',
+					id:'userId',
+					name: 'userId',
+					readOnly:true
+				},{//Real Name
+					xtype: "label",
+					columnWidth: .2,
+					text: 'Real Name:'
+				},{
+					xtype: "textfield",
+					columnWidth: .8,
+					width:200,
+					id:'realName',
+					name: 'realName',
+					readOnly:true
+				},{//Company
+					xtype: "label",
+					columnWidth: .2,
+					text: 'Company:'
+				},{
+					xtype: "textfield",
+					columnWidth: .8,
+					id:'company',
+					name: 'company',
 					readOnly:true
 				}]
     });
@@ -173,7 +208,7 @@ Ext.onReady(function(){
 
 	/** HTML Layout **/
 	#functionTitle  {position:absolute; visibility:visible; z-index:1; top:5px; left:5px;}
-	#userForm  {position:absolute; visibility:visible; z-index:2; top:20px; left:5px;}
+	#userForm  {position:absolute; visibility:visible; z-index:2; top:50px; left:5px; }
 	
 
 </style>
@@ -182,12 +217,13 @@ Ext.onReady(function(){
 
 
 <BODY bgColor=#FFFFFF leftMargin=0 topMargin=0 >
+
 <div id="functionTitle" >
-<table border="0" cellpadding="0" align="left" STYLE="margin-left:10px;" width="90%" height="90%" >
+<table border="0" cellpadding="0" align="left"  width=300 >
 	<tr>
 		<td class="Title">
 		<div align="left">
-			<table width="30%" border="0" cellspacing="0" cellpadding="0" align="left" class="OrangeLine">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0" align="left" class="OrangeLine">
 				<tr>
 					<td class="Title">System User Create Function</td>
 				</tr>
