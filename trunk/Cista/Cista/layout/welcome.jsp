@@ -156,8 +156,8 @@ function MM_swapImage() { //v3.0
 		<img src="<%=contextPath%>/images/<s:text name='System.system.site'/>-Logo.png" width="65" height="17">
 	</div>
 
-	<div style="position:absolute;top:'5%';left:'30%';z-index:300">
-		<TABLE  width="100%" border=0 cellPadding=0 cellSpacing=0 >
+	<div style="position:absolute;top:5%;left:70%;z-index:300">
+		<TABLE  width="100%" border=0 cellPadding=2 cellSpacing=0 >
 			<tr>
 			 <td width="70%" valign="top" align="left"></td>
 			  
@@ -172,7 +172,7 @@ function MM_swapImage() { //v3.0
 		</TABLE>
 	</div>
 
-	<div style="position:absolute;top:'10%';left:'23%';z-index:200">
+	<div style="position:absolute;top:10%;left:23%;z-index:200">
 		<TABLE  width="100%" border=0 cellPadding=0 cellSpacing=0 >
 			<tr>
 			 <td width="100%" valign="bottom" align="left" ><span class="portlet_content"><b>Welcome :&nbsp;&nbsp;<%=curUser.getUserId()%> - <%=curUser.getRealName()%></b></span></td>
@@ -181,7 +181,7 @@ function MM_swapImage() { //v3.0
 	</div>
 
   </div>
-  <div id="center">
+  <div id="center" style="width:100%;height:100%;">
   	<iframe width="100%" height="100%" name="mainFrame" frameborder="0"  src='' scrolling="auto" noresize>
 	
 	</iframe>
