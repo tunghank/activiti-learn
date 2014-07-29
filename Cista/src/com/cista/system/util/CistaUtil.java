@@ -101,10 +101,7 @@ public class CistaUtil {
     public static final String CISTA_ROLE = "1";
     public static final String VENDOR_ROLE = "2";
     public static final String CUSTOMER_ROLE = "3";
-    /*
-     * POSITION
-     */
-    public static final String[] POSITION = {"Engineer","Leader","Manager","VP","Other..."};
+
     
     public static final String FUNCTION_FILE = "file";
     public static final String FUNCTION_FOLDER = "folder";
