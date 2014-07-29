@@ -29,34 +29,26 @@
 <script type="text/javascript">
 Ext.onReady(function(){
     Ext.QuickTips.init();
-	//詢價 內容 Grid
+
+
+	 /*
+     * POSITION
+     */
+    var position = Ext.create('Ext.data.Store', {
+    fields: ['name', 'val'],
+    data : [
+        {"name":"Engineer", "val":"Engineer"},
+        {"name":"Leader", "val":"Leader"},
+        {"name":"Manager", "val":"Manager"},
+		{"name":"VP", "val":"VP"}
+
+		]
+	});
+
+	//User Information
     function formatDate(value){
         return value ? value.dateFormat('Y/m/d') : '';
     };
-
-
-
-	// the column model has information about grid columns
-    // dataIndex maps the column to the specific data field in
-    // the data store (created below)
-	
-	//checkbox選擇模型
-	//var sm = new Ext.grid.CheckboxSelectionModel({ checkOnly: true });
-	
-	// var sm:new Ext.grid.RowSelectionModel({singleSelection:true}) //選擇模型改為了行選擇模型
-	//var sm = new Ext.grid.CheckboxSelectionModel();
-	
-    //sm.handleMouseDown = Ext.emptyFn;//不響應MouseDown事件
-    //sm.on('rowselect',function(sm_,rowIndex,record){//行選中的時候
-       
-    //}, this);
-	
-	//sm.on('rowdeselect',function(sm_,rowIndex,record){//行未選中的時候
-       
-    //}, this); 
-
-
-
 
 	//Form
 	var userForm = new  Ext.form.Panel({
@@ -64,66 +56,230 @@ Ext.onReady(function(){
 		title: 'User Information',
 		labelAlign: 'left',
 		frame:true,
-		width:600,
-		renderTo: Ext.getBody(),
-		layout: "column",
-		bodyPadding: 10,
-	    defaults: {
+		height:360,
+		width:450,
+		renderTo: "userForm",
+		bodyPadding: 5,
+		autoScroll:true,
+		layout : {
+			type : 'table',
+			columns : 2
+		},
+		bodyStyle:'padding:5 5 5 5',//表單邊距
+		defaults:{//統一設置表單字段默認屬性
+			labelSeparator :'：',//分隔符
+			width : 400,//字段寬度
+			padding : 5,
+			allowBlank : false,//是否允許為空
+			labelAlign : 'left',//標籤對齊方式
+			msgTarget :'side',   //在字段的右邊顯示一個提示信息
+			frame:true,
 			border: false
 		},
-		fieldDefaults: {
-			msgTarget: 'side',
-			autoFitErrors: false,
-			labelSeparator :'：',//分隔符
-			labelWidth : 50,//標籤寬度
-			msgTarget : 'side',
-			width : 100			
-		},
-        items: [{	//Role
-					xtype: "label",
-					columnWidth: .2,
-					anchor: "100",
-					text: 'Role:'
-				},{
-					xtype: "textfield",
-					width: .8,
-					id:'userRole',
-					name: 'userRole',
-					readOnly:true
-				},{//User ID
-					xtype: "label",
-					columnWidth: .2,
-					text: 'User ID:'
-				},{
-					xtype: "textfield",
-					columnWidth: .8,
-					id:'userId',
-					name: 'userId',
-					readOnly:true
-				},{//Real Name
-					xtype: "label",
-					columnWidth: .2,
-					text: 'Real Name:'
-				},{
-					xtype: "textfield",
-					columnWidth: .8,
-					width:200,
-					id:'realName',
-					name: 'realName',
-					readOnly:true
-				},{//Company
-					xtype: "label",
-					columnWidth: .2,
-					text: 'Company:'
-				},{
-					xtype: "textfield",
-					columnWidth: .8,
-					id:'company',
-					name: 'company',
-					readOnly:true
-				}]
+		buttons :[
+					{
+						text : 'Submit',
+						handler : submit
+					},
+					{
+						text : 'Reset',
+						handler : reset
+					}
+				],
+		items : [
+					{
+						layout : 'form',
+						border: false,
+						items : [
+									{
+										xtype: 'radiogroup',
+										id:'userRole',
+										name: 'userRole',
+										fieldLabel: 'Role',
+										//arrange Radio Buttons into 2 columns
+										columns: 3,
+										itemId: 'userRole',
+										items: [
+											{
+												// 1
+												xtype: 'radiofield',
+												boxLabel: 'Cista',
+												name: 'role',
+												checked: true,
+												inputValue: '<%=CistaUtil.CISTA_ROLE%>'
+											},
+											{
+												// 3
+												xtype: 'radiofield',
+												boxLabel: 'Customer',
+												name: 'role',
+												inputValue: '<%=CistaUtil.CUSTOMER_ROLE%>'
+											},
+											{
+												// 2
+												xtype: 'radiofield',
+												boxLabel: 'Vendor',
+												name: 'role',
+												inputValue: '<%=CistaUtil.VENDOR_ROLE%>'
+											}
+										],            
+										listeners: {
+											change: function ( radio, newV, oldV, e ) {
+
+												if( newV['role'] == "1" ){
+													var customer = Ext.getCmp('customer');
+													customer.allowBlank = true;
+													customer.hide()
+													var vendor = Ext.getCmp('vendor');
+													vendor.allowBlank = true;
+													vendor.hide()
+
+												}else if (newV['role'] == "3"){
+													var customer = Ext.getCmp('customer');
+													customer.allowBlank = false;
+													customer.blankText = 'This should not be blank!'
+													customer.show()
+													var vendor = Ext.getCmp('vendor');
+													vendor.allowBlank = true;
+													vendor.hide()
+												}
+												else if (newV['role'] == "2"){
+													var customer = Ext.getCmp('customer');
+													customer.allowBlank = true;
+													customer.hide()
+													var vendor = Ext.getCmp('vendor');
+													vendor.allowBlank = false;
+													vendor.blankText = 'This should not be blank!'
+													vendor.show()
+												}
+											},
+											beforerender:function(me,eOpts){
+													var customer = Ext.getCmp('customer');
+													customer.allowBlank = true;
+													customer.hide()
+													var vendor = Ext.getCmp('vendor');
+													vendor.allowBlank = true;
+													vendor.hide()
+											}
+										}
+									},						
+									{
+										xtype: "textfield",
+										id:'userId',
+										name: 'userId',
+										fieldLabel : 'User ID',
+										allowBlank : false,
+										blankText: 'This should not be blank!'
+									},						
+									{
+										xtype: "textfield",
+										id:'email',
+										name: 'email',
+										fieldLabel : 'E-mail',
+										allowBlank : false,
+										blankText: 'This should not be blank!',
+										//驗證電子郵件格式的正則表達式
+										regex : /^([\w]+)(.[\w]+)*@([\w-]+\.){1,5}([A-Za-z]){2,4}$/,
+										vtype: 'email',
+										regexText:'E-mail格式錯誤'//驗證錯誤之後的提示信息,
+									},						
+									{
+										xtype: "textfield",
+										id:'realName',
+										name: 'realName',
+										fieldLabel : 'Real Name',
+										allowBlank : false,
+										blankText: 'This should not be blank!'
+									},						
+									{
+										xtype: "textfield",
+										id:'vendor',
+										name: 'vendor',
+										fieldLabel : 'Vendor',
+										allowBlank : true
+									},						
+									{
+										xtype: "textfield",
+										id:'customer',
+										name: 'customer',
+										fieldLabel : 'Customer',
+										allowBlank : true
+									},						
+									{
+										xtype: "textfield",
+										id:'password',
+										name: 'password',
+										fieldLabel : 'Password',
+										allowBlank : false,
+										inputType: 'password',
+										blankText: 'This should not be blank!'
+									},						
+									{
+										xtype: "textfield",
+										id:'confirmPassword',
+										name: 'confirmPassword',
+										fieldLabel : 'Confirm Password',
+										allowBlank : false,
+										inputType: 'password',
+										blankText: 'This should not be blank!'
+									},						
+									{
+										xtype: "textfield",
+										id:'phoneNumber',
+										name: 'phoneNumber',
+										fieldLabel : 'Phone Number',
+										allowBlank : true
+									},						
+									{
+										xtype: "textfield",
+										id:'department',
+										name: 'department',
+										fieldLabel : 'Department',
+										allowBlank : true
+									},						
+									{
+										xtype: "combobox",
+										id:'position',
+										name: 'position',
+										fieldLabel : 'Position',
+										allowBlank : true,
+										store: position,
+										queryMode: 'local',
+										displayField: 'name',
+										valueField: 'val'
+									},						
+									{
+										xtype: "checkbox",
+										id:'active',
+										name: 'active',
+										fieldLabel : 'Active'
+									}
+
+								]
+					}
+				]
+		
     });
 
+	function submit(){//提交表單
+			//Value Check.
+
+
+			userForm.getForm().submit({
+				clientValidation:true,//進行客戶端驗證
+				url : 'loginServer.jsp',//請求的url地址
+				method:'GET',//請求方式
+				success:function(form,action){//加載成功的處理函數
+					Ext.Msg.alert('提示','系統登陸成功');
+				},
+				failure:function(form,action){//加載失敗的處理函數
+					Ext.Msg.alert('提示','系統登陸失敗，原因：'+action.failureType);
+				}
+			});
+	}
+	function reset(){//重置表單
+		userForm.form.reset();
+	}
 
 	var nextForm = new  Ext.form.FormPanel({
         id: 'nextForm',
@@ -208,7 +364,7 @@ Ext.onReady(function(){
 
 	/** HTML Layout **/
 	#functionTitle  {position:absolute; visibility:visible; z-index:1; top:5px; left:5px;}
-	#userForm  {position:absolute; visibility:visible; z-index:2; top:50px; left:5px; }
+	#userForm  {position:absolute; visibility:visible; z-index:2; top:25px; left:5px; }
 	
 
 </style>
