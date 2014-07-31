@@ -18,7 +18,7 @@ import com.cista.system.to.SysUserTo;
 import com.cista.system.util.BaseAction;
 import com.cista.system.util.CistaUtil;
 
-
+import net.sf.json.JSONArray;
 
 import org.apache.struts2.ServletActionContext;
 
@@ -57,101 +57,6 @@ public class UserManage extends BaseAction  {
 	private String chkRolesList;
 
 
-	//20110629
-	public String userLogin() throws Exception {
-		UserDao userDAO = new UserDao();
-		LDAPConfigService ldapConfigService = new LDAPConfigService();
-		// TODO Auto-generated method stub
-		userId =null!=userId?userId:"";
-		password =null!=password?password:"";
-		
-		logger.debug("userId " +userId );
-		SysUserTo curUser = userDAO.getActiveCurUser(userId);
-		if ( curUser != null ){
-			if (curUser.getCompany().equals("CHILIN")) 
-			{
-				if (password.equals(""))
-				{
-					addActionMessage(getText("System.login.message.login.fail.passworderror"));
-					return INPUT;
-				}
-				logger.debug("Internal User");
-				//1.0 Internal User User Check
-				if (ldapConfigService.checkOUUser(curUser.getUserId(), password)) {
-					if (curUser.getActive().equals(CistaUtil.USER_ACTIVE)) {
-						// 1.0 Get Current session
-						session = ServletActionContext.getRequest().getSession(
-								true);
-						// 1.1 Remove Session value.
-						session.removeAttribute(CistaUtil.CUR_USERINFO);
-						// 1.2 Set Current User Information to seeion
-						session.setAttribute(CistaUtil.CUR_USERINFO,
-								curUser);
-						// update last login time and IP
-						userDAO.saveLastLoginInfo(userId, ServletActionContext.getRequest().getRemoteAddr());
-						logger.debug(getText("System.login.message.login.success"));
-
-
-
-					} else {
-						addActionMessage(getText(
-								"System.login.message.login.fail.account.inactive"));
-						logger.debug(getText(
-								"System.login.message.login.fail.account.inactive"));
-						return INPUT;
-					}
-				} else {
-					addActionMessage(getText(
-							"System.login.message.login.fail.passworderror"));
-					logger.debug(getText(
-							"System.login.message.login.fail.passworderror"));
-					return INPUT;
-				}
-			}else{
-				logger.debug("Not internal user");
-				//1.1 Not internal user User Check
-				
-				if (userDAO.validate(userId, CistaUtil.encodePasswd(password))) {
-					if (curUser.getActive().equals(CistaUtil.USER_ACTIVE)){
-						// 1.0 Get Current session
-						session = ServletActionContext.getRequest().getSession(
-								true);
-						// 1.1 Remove Session value.
-						session.removeAttribute(CistaUtil.CUR_USERINFO);
-						// 1.2 Set Current User Information to seeion
-						session.setAttribute(CistaUtil.CUR_USERINFO,
-								curUser);
-						// update last login time and IP
-						userDAO.saveLastLoginInfo(userId, ServletActionContext.getRequest().getRemoteAddr());
-						
-						logger.debug(getText(
-								"System.login.message.login.success"));
-						
-
-					}else{
-						addActionMessage(getText("" +
-								"System.login.message.login.fail.account.inactive"));
-						logger.debug(getText(
-								"System.login.message.login.fail.account.inactive"));
-						logger.debug("Login Fail");
-						return INPUT;
-					}
-
-				} else {
-					addActionMessage(getText(
-							"System.login.message.login.fail.passworderror"));
-					logger.debug(getText(
-							"System.login.message.login.fail.passworderror"));
-					return INPUT;
-				}
-			}
-			return SUCCESS;
-		}else{
-			addActionMessage(getText("System.login.message.login.fail.noid"));
-			logger.debug(getText("System.login.message.login.fail.noid"));
-			return INPUT;
-		}		
-	}
 	//20110629
 	public String userSearchPre() throws Exception {
 		
@@ -230,14 +135,14 @@ public class UserManage extends BaseAction  {
 		return SUCCESS;
 	}
 	
-	public String userCreatePre() throws Exception {		
+	/**
+	 * UserCreatePre
+	 * @return 
+	 * @throws Exception
+	 */
+	
+	public String UserCreatePre() throws Exception {		
 		
-		DepartmentDao departmentDAO = new DepartmentDao();		
-		ArrayList department = new ArrayList();
-		department 	= (ArrayList) departmentDAO.searchDepartmentList("");
-		
-		request= ServletActionContext.getRequest();		
-		request.setAttribute("department", department);
 		
         return SUCCESS;		
 	}
@@ -296,70 +201,94 @@ public class UserManage extends BaseAction  {
 		}
 	}
 	
-	public String userSave() throws Exception {
-		
-		 // 1.0 Get Current User
-		SysUserTo curUser = (SysUserTo) request.getSession().getAttribute(CistaUtil.CUR_USERINFO);
-		SysUserTo newUser = new SysUserTo();
-		UserDao userDao = new UserDao();
-		UserRoleDao userRoleDao = new UserRoleDao();
-		
-		String userRole = this.userRole;
-		
-		//1.1 Set Himax & Subcon 相同共有的值
-		newUser.setUserId(this.userId);
-		newUser.setRealName(this.realName);
-		newUser.setCreateBy(curUser.getUserId());
-		newUser.setPhoneNum(this.phoneNum);
-		newUser.setDepartment(this.department);
-		newUser.setPosition(this.position);
-		newUser.setEmail(this.email);		
-		newUser.setActive("1");
-		newUser.setProcessId("");
-		
-		//1.2 user 已經存在判斷
-		SysUserTo oldUser = new SysUserTo();
-		oldUser = userDao.getActiveCurUser(this.userId);
-		if( oldUser != null){
-			addActionMessage(getText("IE.createUser.message.fail.userIdIsInDB"));
-			return INPUT;
-		}		
-		//1.3 Get Himax User Form Data
-		if ( userRole.equals(CistaUtil.CISTA_ROLE)){
-			logger.debug("Himax User");			
-			newUser.setCompany("Himax");
-			newUser.setPassword("N/A");			
-		}else{
-			logger.debug("Subcon User");
-			newUser.setCompany(this.company);
-			newUser.setPassword(CistaUtil.encodePasswd(password));
-		}
-		
-		// 新增 user
-		int result = userDao.insertUser(newUser);		
-		if (result != 1){
-			addActionMessage(getText("IE.createUser.message.fail.insertUserError"));
-			return INPUT;
-		}
-		
-//		// 新增 user role
-//		// 腳色 身分判斷 ???????????????????????????????????????????????
-//		int intRoleId = (userRole.equals(CistaUtil.HIMAX_ROLE)?2:3);
-//		// ??????????????????????????????????????????????
-//		result = userRoleDao.insertUserRole(this.userId, intRoleId);
-//		if (result != 1){
-//			addActionMessage(getText("IE.createUser.message.fail.insertUserRoleError"));
-//			// 新增失敗,刪除user
-//			userDao.deleteUser(this.userId);
-//			return INPUT;
-//		}
-		
-		// send mail to new user		
-		String mailSubject = CistaUtil.getMessage("IE.email.createUser.subject", this.realName);				
-		CistaUtil.sendInitialUserMail(request , response , mailSubject, newUser,curUser.getEmail());
+	/**
+	 * UserSave
+	 * @return
+	 * @throws Exception
+	 */
+	public String UserSave() throws Exception {
 
-		addActionMessage(getText("IE.createUser.message.success.insertUserInDB"));
-		return SUCCESS;
+		
+		try {
+
+			 // 1.0 Get Current User
+			SysUserTo curUser = (SysUserTo) request.getSession().getAttribute(CistaUtil.CUR_USERINFO);
+			
+			logger.debug("Cur User : " + curUser.getUserId());
+			
+			SysUserTo newUser = new SysUserTo();
+			UserDao userDao = new UserDao();
+			
+			String userRole = this.userRole;
+			userRole = null != userRole ? userRole : "";	
+			
+			//1.1 Set Himax & Subcon 相同共有的值
+			newUser.setUserId(this.userId);
+			newUser.setRealName(this.realName);
+			newUser.setCreateBy(curUser.getUserId());
+			newUser.setPhoneNum(this.phoneNum);
+			newUser.setDepartment(this.department);
+			newUser.setPosition(this.position);
+			newUser.setEmail(this.email);		
+			newUser.setActive("1");
+			newUser.setProcessId("");
+			
+			//1.2 user 已經存在判斷
+			SysUserTo oldUser = new SysUserTo();
+			oldUser = userDao.getActiveCurUser(this.userId);
+			if( oldUser != null){
+				addActionMessage(getText("IE.createUser.message.fail.userIdIsInDB"));
+				return NONE;
+			}		
+			//1.3 Get Himax User Form Data
+			if ( userRole.equals(CistaUtil.CISTA_ROLE)){
+				logger.debug("Himax User");			
+				newUser.setCompany("Himax");
+				newUser.setPassword("N/A");			
+			}else{
+				logger.debug("Subcon User");
+				newUser.setCompany(this.company);
+				newUser.setPassword(CistaUtil.encodePasswd(password));
+			}
+			
+			// 新增 user
+			int result = userDao.insertUser(newUser);		
+			if (result != 1){
+				addActionMessage(getText("IE.createUser.message.fail.insertUserError"));
+				return NONE;
+			}
+			
+			
+			// send mail to new user		
+			String mailSubject = CistaUtil.getMessage("IE.email.createUser.subject", this.realName);				
+			CistaUtil.sendInitialUserMail(request , response , mailSubject, newUser,curUser.getEmail());
+
+			addActionMessage(getText("IE.createUser.message.success.insertUserInDB"));
+		} catch (Exception e) {
+			this.addActionMessage("Save ERROR");
+			e.printStackTrace();
+			logger.error(e.toString());
+			addActionMessage(e.toString());
+          	//AJAX
+          	try{
+  		    	response.setContentType("text/html; charset=UTF-8");
+  				PrintWriter out = response.getWriter();
+  				String returnResult = "ERROR" ;
+
+  				logger.debug(returnResult);
+  				logger.debug("Error");
+  				out.print(returnResult);
+  				out.close();
+          	}catch(Exception ex){
+          		ex.printStackTrace();
+                logger.error(ex.toString());
+                return NONE;
+          	}
+
+		}
+		
+
+		return NONE;
 	}
 	
 	// for user profile	
