@@ -1,7 +1,9 @@
 package com.cista.system.util;
 
+import java.io.PrintWriter;
+
 import javax.servlet.http.HttpServletRequest;
-//import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponse;
 
 
 import org.apache.commons.logging.Log;
@@ -31,7 +33,7 @@ public class LoginInterceptor extends AbstractInterceptor {
 		ActionSupport actionSupport = (ActionSupport)invocation.getAction();
 		ActionContext actionContext = invocation.getInvocationContext();  
 		HttpServletRequest request= (HttpServletRequest) actionContext.get(StrutsStatics.HTTP_REQUEST);
-		//HttpServletResponse response= (HttpServletResponse) actionContext.get(StrutsStatics.HTTP_RESPONSE);
+		HttpServletResponse response= (HttpServletResponse) actionContext.get(StrutsStatics.HTTP_RESPONSE);
 
 		SysUserTo curUser = (SysUserTo)request.getSession().getAttribute(CistaUtil.CUR_USERINFO);
 		
@@ -39,9 +41,23 @@ public class LoginInterceptor extends AbstractInterceptor {
 	
 		
 		if ( curUser == null ){
-			logger.debug("LoginInterceptor curUser == null");
-			actionSupport.addActionMessage(CistaUtil.getMessage("System.error.access.nologin"));
-			return Action.ERROR;
+			
+            //ajax超時處理  
+            if (request.getHeader("x-requested-with") != null  
+                    && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")) {  
+                PrintWriter pw = response.getWriter();  
+  
+                pw.write("Session Timeout");  
+                response.flushBuffer();  
+                pw.close();  
+                return null;  
+            } else {  
+                //TODO http超時的處理  
+    			logger.debug("LoginInterceptor curUser == null");
+    			actionSupport.addActionMessage(CistaUtil.getMessage("System.error.access.nologin"));
+    			return Action.ERROR;
+            } 		
+
 		}else{
 			return invocation.invoke();
 		}
