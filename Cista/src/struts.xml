@@ -22,7 +22,7 @@
              <result name="input">/index.jsp</result>
          </action>
 
-		<!-- user -->		
+		<!-- User -->		
         <action name="UserCreatePre" class="com.cista.system.account.action.UserManage" method="UserCreatePre">
           	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
@@ -31,9 +31,8 @@
 
 	 	<action name="UserSave" class="com.cista.system.account.action.UserManage" method="UserSave">
          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
-			 <interceptor-ref name="fileUpload"></interceptor-ref>
-			 <interceptor-ref name="defaultStack" ></interceptor-ref>
-			 <result name="success" ></result>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success"></result>
          </action>
          
          <action name="ModifyUserPre" class="com.cista.system.account.action.UserManage" method="modifyUserPre">

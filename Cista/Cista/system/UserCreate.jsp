@@ -269,7 +269,7 @@ Ext.onReady(function(){
 	function submit(){//提交表單
 		Ext.Ajax.timeout = 120000; // 120 seconds
 		Ext.Ajax.request({  //ajax request test  
-                    url : 'http://localhost:80//UserSave.action',  
+                    url : '<%=contextPath%>/UserSave.action',  
                      /*  headers: { 
                            'userHeader': 'userMsg' 
                        },*/  
@@ -278,7 +278,6 @@ Ext.onReady(function(){
                     },*/   
                     method : 'POST',
 					scope:this,
-					sync:false,
                     success : function(response, options) {  
                         Ext.MessageBox.alert('Success', 'Message : '+ response.responseText);  
                     },  

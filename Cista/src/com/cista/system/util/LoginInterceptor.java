@@ -3,6 +3,7 @@ package com.cista.system.util;
 import javax.servlet.http.HttpServletRequest;
 //import javax.servlet.http.HttpServletResponse;
 
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.StrutsStatics;
@@ -21,7 +22,7 @@ public class LoginInterceptor extends AbstractInterceptor {
 	/**
 	 * 
 	 */
-	//private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	protected final Log logger = LogFactory.getLog(getClass());
 	
 	@Override
@@ -31,26 +32,11 @@ public class LoginInterceptor extends AbstractInterceptor {
 		ActionContext actionContext = invocation.getInvocationContext();  
 		HttpServletRequest request= (HttpServletRequest) actionContext.get(StrutsStatics.HTTP_REQUEST);
 		//HttpServletResponse response= (HttpServletResponse) actionContext.get(StrutsStatics.HTTP_RESPONSE);
-		
+
 		SysUserTo curUser = (SysUserTo)request.getSession().getAttribute(CistaUtil.CUR_USERINFO);
 		
 		logger.debug("LoginInterceptor ");
-		logger.debug("curUser " + curUser.getUserId());
-		String header = request.getHeader("X-Requested-With");
-		
-/*		if ( curUser == null ){
-			
-			if ("XMLHttpRequest".equalsIgnoreCase(header)) {// AJAX REQUEST PROCESS
-				return invocation.invoke();
-			}else{
-				logger.debug("LoginInterceptor curUser == null");
-				actionSupport.addActionMessage(CistaUtil.getMessage("System.error.access.nologin"));
-				return Action.ERROR;
-			}
-		}else{
-			return invocation.invoke();
-		}
-		*/
+	
 		
 		if ( curUser == null ){
 			logger.debug("LoginInterceptor curUser == null");
@@ -59,9 +45,10 @@ public class LoginInterceptor extends AbstractInterceptor {
 		}else{
 			return invocation.invoke();
 		}
-			
+		
+		
+		
 	}
-	
 
 
 }
