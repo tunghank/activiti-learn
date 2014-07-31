@@ -212,7 +212,8 @@ public class UserManage extends BaseAction  {
 		try {
 
 			 // 1.0 Get Current User
-			SysUserTo curUser = (SysUserTo) request.getSession().getAttribute(CistaUtil.CUR_USERINFO);
+			request= ServletActionContext.getRequest();
+			SysUserTo curUser = (SysUserTo)request.getSession().getAttribute(CistaUtil.CUR_USERINFO);
 			
 			logger.debug("Cur User : " + curUser.getUserId());
 			
@@ -288,7 +289,17 @@ public class UserManage extends BaseAction  {
 		}
 		
 
-		return NONE;
+		// 1.3 Set AJAX response
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+
+		PrintWriter out = response.getWriter();
+		
+		//logger.debug(menuString);
+		out.println("");
+		out.close();
+
+   		return NONE;
 	}
 	
 	// for user profile	

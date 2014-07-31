@@ -1,11 +1,12 @@
 package com.cista.system.util;
 
+
 import com.opensymphony.xwork2.ActionSupport;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.struts2.ServletActionContext;
+//import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 
@@ -19,12 +20,16 @@ import org.apache.commons.logging.LogFactory;
  */
 public class BaseAction extends ActionSupport implements ServletRequestAware, ServletResponseAware{
 	
-	//protected static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected HttpServletRequest request;
 	protected HttpServletResponse response;
 	protected HttpSession session;
     protected final Log logger = LogFactory.getLog(getClass());
-
+    
+    
     public BaseAction (){
 
     }
@@ -36,7 +41,6 @@ public class BaseAction extends ActionSupport implements ServletRequestAware, Se
 	public void setServletResponse(HttpServletResponse response) {
 		this.response = response;
 	}
-
 
 
 }
