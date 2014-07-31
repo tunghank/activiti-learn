@@ -9,12 +9,17 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 
 <%
-  String contextPath = (String)request.getContextPath();
-  List<SysDepartmentTo> allDepartments = (List<SysDepartmentTo>) request.getAttribute("department");
   
-  // current user
-  SysUserTo curUser = (SysUserTo) session.getAttribute(CistaUtil.CUR_USERINFO);
-  String curUserId = curUser.getUserId();  
+    String contextPath = (String)request.getContextPath();
+    String EXCEP_MSG_SESSION =CistaUtil.getMessage("System.error.access.nologin");
+
+  	// get current user info
+    SysUserTo curUserTo =
+            (SysUserTo) request.getSession().getAttribute(CistaUtil.CUR_USERINFO);
+    // check session
+    if (null == curUserTo) {
+        throw new Exception(EXCEP_MSG_SESSION);
+   }
 %>
 <html>
 <head>
@@ -262,63 +267,35 @@ Ext.onReady(function(){
     });
 
 	function submit(){//提交表單
-			//Value Check.
+		Ext.Ajax.timeout = 120000; // 120 seconds
+		Ext.Ajax.request({  //ajax request test  
+                    url : 'http://localhost:80//UserSave.action',  
+                     /*  headers: { 
+                           'userHeader': 'userMsg' 
+                       },*/  
+                    /*params : {  
+                        name : 'yangxuan'  
+                    },*/   
+                    method : 'POST',
+					scope:this,
+					sync:false,
+                    success : function(response, options) {  
+                        Ext.MessageBox.alert('Success', 'Message : '+ response.responseText);  
+                    },  
+                    failure : function(response, options) {  
+                        Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
+                    }  
+                });
 
 
-			userForm.getForm().submit({
-				clientValidation:true,//進行客戶端驗證
-				url : 'loginServer.jsp',//請求的url地址
-				method:'GET',//請求方式
-				success:function(form,action){//加載成功的處理函數
-					Ext.Msg.alert('提示','系統登陸成功');
-				},
-				failure:function(form,action){//加載失敗的處理函數
-					Ext.Msg.alert('提示','系統登陸失敗，原因：'+action.failureType);
-				}
-			});
 	}
 	function reset(){//重置表單
 		userForm.form.reset();
 	}
 
-	var nextForm = new  Ext.form.FormPanel({
-        id: 'nextForm',
-		hidden:true,
-		//style: 'padding: 0 0 0 0',
-		//style:'font-weight:bold;text-align:left;padding-right:0px;',
-        //bodyStyle: 'padding:5px',
-		//bodyStyle: 'padding-right:0px;padding-left:3px;padding-top:0px;padding-bottom:0px;',
-		headers: {'Content-Type':'multipart/form-data; charset=UTF-8'},
-		labelAlign: 'left',
-        items: [{
-            layout:'column',
-            items: [{
-				columnWidth: .05,
-				height:30,
-				items: [{
-					xtype : 'textfield',
-					name: 'inquiryNum',
-					readOnly:true,
-					style:"background:#EEEEEE;color:#0000B7;",
-					hidden: true
-				}]
-			},{
-				columnWidth: .05,
-				height:30,
-				items: [{
-					xtype : 'textfield',
-					name: 'paperVerUid',
-					readOnly:true,
-					style:"background:#EEEEEE;color:#0000B7;",
-					hidden: true
-				}]
-			}]
-        }]
-    });
 
-	function claerUserForm(){
-		userForm.form.reset();
-	}
+
+
 
 
 

@@ -1,13 +1,15 @@
 package com.cista.system.util;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+//import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.StrutsStatics;
 
 import com.cista.system.to.SysUserTo;
+
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.ActionSupport;
@@ -16,6 +18,10 @@ import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 
 public class LoginInterceptor extends AbstractInterceptor {
 
+	/**
+	 * 
+	 */
+	//private static final long serialVersionUID = 1L;
 	protected final Log logger = LogFactory.getLog(getClass());
 	
 	@Override
@@ -24,28 +30,38 @@ public class LoginInterceptor extends AbstractInterceptor {
 		ActionSupport actionSupport = (ActionSupport)invocation.getAction();
 		ActionContext actionContext = invocation.getInvocationContext();  
 		HttpServletRequest request= (HttpServletRequest) actionContext.get(StrutsStatics.HTTP_REQUEST);
-		HttpServletResponse response= (HttpServletResponse) actionContext.get(StrutsStatics.HTTP_RESPONSE);
+		//HttpServletResponse response= (HttpServletResponse) actionContext.get(StrutsStatics.HTTP_RESPONSE);
 		
 		SysUserTo curUser = (SysUserTo)request.getSession().getAttribute(CistaUtil.CUR_USERINFO);
+		
 		logger.debug("LoginInterceptor ");
-		String quoteHeaderUid = (String) request.getParameter("quoteHeaderUid");
-		quoteHeaderUid = null != quoteHeaderUid ? quoteHeaderUid : "" ;
-		//1.0 Check Request for mail
-		if (!quoteHeaderUid.equals("") && curUser == null ){
-			logger.debug("quoteHeaderUid " + quoteHeaderUid);
-			logger.debug("Mail Link Login");
-			request.setAttribute("quoteHeaderUid", quoteHeaderUid);
-			return "login";
+		logger.debug("curUser " + curUser.getUserId());
+		String header = request.getHeader("X-Requested-With");
+		
+/*		if ( curUser == null ){
+			
+			if ("XMLHttpRequest".equalsIgnoreCase(header)) {// AJAX REQUEST PROCESS
+				return invocation.invoke();
+			}else{
+				logger.debug("LoginInterceptor curUser == null");
+				actionSupport.addActionMessage(CistaUtil.getMessage("System.error.access.nologin"));
+				return Action.ERROR;
+			}
+		}else{
+			return invocation.invoke();
 		}
+		*/
 		
 		if ( curUser == null ){
 			logger.debug("LoginInterceptor curUser == null");
 			actionSupport.addActionMessage(CistaUtil.getMessage("System.error.access.nologin"));
-			return actionSupport.ERROR;
+			return Action.ERROR;
 		}else{
 			return invocation.invoke();
 		}
 			
 	}
+	
+
 
 }

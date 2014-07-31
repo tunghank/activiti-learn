@@ -17,24 +17,23 @@
 
 		 <!-- User Function -->
 		 <!-- 1.Login System -->
-         <action name="Login" class="com.cista.system.account.action.UserManage" method="userLogin">
+         <action name="Login" class="com.cista.system.account.action.LoginAction" method="UserLogin">
              <result name="success">/layout/welcome.jsp</result>
              <result name="input">/index.jsp</result>
          </action>
 
 		<!-- user -->		
-        <action name="UserCreatePre" class="com.cista.system.account.action.UserManage" method="userCreatePre">
+        <action name="UserCreatePre" class="com.cista.system.account.action.UserManage" method="UserCreatePre">
           	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
             	 <result name="success">/system/UserCreate.jsp</result>
          </action>
 
-	 	<action name="UserSave" class="com.cista.system.account.action.UserManage" method="userSave">
+	 	<action name="UserSave" class="com.cista.system.account.action.UserManage" method="UserSave">
          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
 			 <interceptor-ref name="fileUpload"></interceptor-ref>
 			 <interceptor-ref name="defaultStack" ></interceptor-ref>
-			 <result name="success" type ="chain">UserSearch</result>
-			 <result name="input" type ="chain">UserCreatePre</result>
+			 <result name="success" ></result>
          </action>
          
          <action name="ModifyUserPre" class="com.cista.system.account.action.UserManage" method="modifyUserPre">
