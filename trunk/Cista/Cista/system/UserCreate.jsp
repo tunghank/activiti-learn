@@ -84,10 +84,12 @@ Ext.onReady(function(){
 		},
 		buttons :[
 					{
+						id:'userFormSubmit',
 						text : 'Submit',
 						handler : submit
 					},
 					{
+						id:'userFormReset',
 						text : 'Reset',
 						handler : reset
 					}
@@ -292,6 +294,10 @@ Ext.onReady(function(){
 		}
 		
 	
+		//Submit & Reset Button Disable
+		//1.0 List Form Button
+		var userFormSubmit =Ext.getCmp('userFormSubmit'); 
+		userFormSubmit.disable();
 
 		Ext.Ajax.timeout = 120000; // 120 seconds
 		Ext.Ajax.request({  //ajax request test  
@@ -301,8 +307,20 @@ Ext.onReady(function(){
                     },
                     method : 'POST',
 					scope:this,
-                    success : function(response, options) {  
-                        Ext.MessageBox.alert('Success', 'Message : '+ response.responseText);  
+                    success : function(response, options) {
+						//parse Json data
+						var freeback = Ext.JSON.decode(response.responseText);
+						var message =  freeback.ajaxMessage;
+						var status  =  freeback.ajaxStatus;
+						userFormSubmit.enable();
+						if( status == '<%=CistaUtil.AJAX_RSEPONSE_ERROR%>' ){//ERROR
+							Ext.MessageBox.alert('Success', 'ERROR : '+ message );
+						}else{//FINISH
+							Ext.MessageBox.alert('Success', 'FINISH : '+ message );
+							userForm.form.reset();
+						}
+						
+
                     },  
                     failure : function(response, options) {  
                         Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  

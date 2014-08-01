@@ -218,7 +218,7 @@ public class UserManage extends BaseAction  {
 
 		
 		try {
-
+			String messageString = "Save Finish";
 			 // 1.0 Get Current User
 			request= ServletActionContext.getRequest();
 			SysUserTo curUser = (SysUserTo)request.getSession().getAttribute(CistaUtil.CUR_USERINFO);
@@ -267,7 +267,10 @@ public class UserManage extends BaseAction  {
 			//判斷 1.4.1 User 是否已經存在
 			SysUserTo oldUser = userDao.getActiveCurUser(userInfo.getUserId());
 			if( oldUser != null){
-				addActionMessage(getText("IE.createUser.message.fail.userIdIsInDB"));
+				
+				messageString = getText("System.createUser.message.fail.userIdIsInDB");
+				CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_ERROR);
+
 				return NONE;
 			}		
 
@@ -275,16 +278,22 @@ public class UserManage extends BaseAction  {
 			// 新增 1.4.2
 			int result = userDao.insertUser(userInfo);		
 			if (result != 1){
-				addActionMessage(getText("IE.createUser.message.fail.insertUserError"));
+				
+				messageString = getText("System.createUser.message.fail.insertUserError");
+				CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_ERROR);
+				
 				return NONE;
 			}
 			
+			// 1.5 Set AJAX response
+			messageString = "Save Finish";
+			CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_FINISH);
 			
 			// send mail to new user		
 			//String mailSubject = CistaUtil.getMessage("IE.email.createUser.subject", this.realName);				
 			//CistaUtil.sendInitialUserMail(request , response , mailSubject, newUser,curUser.getEmail());
 
-			addActionMessage(getText("IE.createUser.message.success.insertUserInDB"));
+			//addActionMessage(getText("IE.createUser.message.success.insertUserInDB"));
 		} catch (Exception e) {
 			this.addActionMessage("Save ERROR");
 			e.printStackTrace();
@@ -309,15 +318,7 @@ public class UserManage extends BaseAction  {
 		}
 		
 
-		// 1.5 Set AJAX response
-		HttpServletResponse response = ServletActionContext.getResponse();
-		response.setCharacterEncoding("UTF-8");
 
-		PrintWriter out = response.getWriter();
-		
-		//logger.debug(menuString);
-		out.println("");
-		out.close();
 
    		return NONE;
 	}
