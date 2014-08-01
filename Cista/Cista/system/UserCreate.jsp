@@ -63,7 +63,7 @@ Ext.onReady(function(){
 		labelAlign: 'left',
 		frame:true,
 		height:360,
-		width:450,
+		width:400,
 		renderTo: "userForm",
 		bodyPadding: 5,
 		autoScroll:true,
@@ -74,7 +74,7 @@ Ext.onReady(function(){
 		bodyStyle:'padding:5 5 5 5',//表單邊距
 		defaults:{//統一設置表單字段默認屬性
 			labelSeparator :'：',//分隔符
-			width : 400,//字段寬度
+			width : 380,//字段寬度
 			padding : 5,
 			allowBlank : false,//是否允許為空
 			labelAlign : 'left',//標籤對齊方式
@@ -96,7 +96,7 @@ Ext.onReady(function(){
 				],
 		items : [
 					{
-						layout : 'form',
+						layout : 'anchor',
 						border: false,
 						items : [
 									{
@@ -168,7 +168,8 @@ Ext.onReady(function(){
 										name: 'userId',
 										fieldLabel : 'User ID',
 										allowBlank : false,
-										blankText: 'This should not be blank!'
+										blankText: 'This should not be blank!',
+										anchor:'100%'
 									},						
 									{
 										xtype: "textfield",
@@ -180,7 +181,8 @@ Ext.onReady(function(){
 										//驗證電子郵件格式的正則表達式
 										regex : /^([\w]+)(.[\w]+)*@([\w-]+\.){1,5}([A-Za-z]){2,4}$/,
 										vtype: 'email',
-										regexText:'E-mail格式錯誤'//驗證錯誤之後的提示信息,
+										regexText:'E-mail格式錯誤',//驗證錯誤之後的提示信息,
+										anchor:'100%'
 									},						
 									{
 										xtype: "textfield",
@@ -188,7 +190,8 @@ Ext.onReady(function(){
 										name: 'realName',
 										fieldLabel : 'Real Name',
 										allowBlank : false,
-										blankText: 'This should not be blank!'
+										blankText: 'This should not be blank!',
+										anchor:'80%'
 									},						
 									{
 										xtype: "textfield",
@@ -238,7 +241,8 @@ Ext.onReady(function(){
 										store: position,
 										queryMode: 'local',
 										displayField: 'name',
-										valueField: 'val'
+										valueField: 'val',
+										anchor:'60%'
 									},						
 									{
 										xtype: "checkbox",
