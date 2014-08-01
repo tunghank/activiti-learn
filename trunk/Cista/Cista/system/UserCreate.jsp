@@ -35,10 +35,13 @@
 Ext.onReady(function(){
     Ext.QuickTips.init();
 
+    function formatDate(value){
+        return value ? value.dateFormat('Y/m/d') : '';
+    };
 
-	 /*
-     * POSITION
-     */
+	/*
+	* POSITION
+	*/
     var position = Ext.create('Ext.data.Store', {
     fields: ['name', 'val'],
     data : [
@@ -51,9 +54,7 @@ Ext.onReady(function(){
 	});
 
 	//User Information
-    function formatDate(value){
-        return value ? value.dateFormat('Y/m/d') : '';
-    };
+
 
 	//Form
 	var userForm = new  Ext.form.Panel({
@@ -114,14 +115,14 @@ Ext.onReady(function(){
 												inputValue: '<%=CistaUtil.CISTA_ROLE%>'
 											},
 											{
-												// 3
+												// 2
 												xtype: 'radiofield',
 												boxLabel: 'Customer',
 												name: 'role',
 												inputValue: '<%=CistaUtil.CUSTOMER_ROLE%>'
 											},
 											{
-												// 2
+												// 3
 												xtype: 'radiofield',
 												boxLabel: 'Vendor',
 												name: 'role',
@@ -132,39 +133,30 @@ Ext.onReady(function(){
 											change: function ( radio, newV, oldV, e ) {
 
 												if( newV['role'] == "1" ){
-													var customer = Ext.getCmp('customer');
-													customer.allowBlank = true;
-													customer.hide()
-													var vendor = Ext.getCmp('vendor');
-													vendor.allowBlank = true;
-													vendor.hide()
+													var company = Ext.getCmp('company');
+													company.allowBlank = true;
+													company.hide()
 
-												}else if (newV['role'] == "3"){
-													var customer = Ext.getCmp('customer');
-													customer.allowBlank = false;
-													customer.blankText = 'This should not be blank!'
-													customer.show()
-													var vendor = Ext.getCmp('vendor');
-													vendor.allowBlank = true;
-													vendor.hide()
+												}else if (newV['role'] == "2"){
+													var company = Ext.getCmp('company');
+													company.allowBlank = false;
+													company.blankText = 'This should not be blank!'
+													company.setFieldLabel("Customer");
+													company.show()
+
 												}
-												else if (newV['role'] == "2"){
-													var customer = Ext.getCmp('customer');
-													customer.allowBlank = true;
-													customer.hide()
-													var vendor = Ext.getCmp('vendor');
-													vendor.allowBlank = false;
-													vendor.blankText = 'This should not be blank!'
-													vendor.show()
+												else if (newV['role'] == "3"){
+													var company = Ext.getCmp('company');
+													company.allowBlank = false;
+													company.blankText = 'This should not be blank!'
+													company.setFieldLabel("Vendor");
+													company.show()
 												}
 											},
 											beforerender:function(me,eOpts){
-													var customer = Ext.getCmp('customer');
-													customer.allowBlank = true;
-													customer.hide()
-													var vendor = Ext.getCmp('vendor');
-													vendor.allowBlank = true;
-													vendor.hide()
+													var company = Ext.getCmp('company');
+													company.allowBlank = true;
+													company.hide()
 											}
 										}
 									},						
@@ -198,16 +190,9 @@ Ext.onReady(function(){
 									},						
 									{
 										xtype: "textfield",
-										id:'vendor',
-										name: 'vendor',
+										id:'company',
+										name: 'company',
 										fieldLabel : 'Vendor',
-										allowBlank : true
-									},						
-									{
-										xtype: "textfield",
-										id:'customer',
-										name: 'customer',
-										fieldLabel : 'Customer',
 										allowBlank : true
 									},						
 									{
@@ -230,8 +215,8 @@ Ext.onReady(function(){
 									},						
 									{
 										xtype: "textfield",
-										id:'phoneNumber',
-										name: 'phoneNumber',
+										id:'phoneNum',
+										name: 'phoneNum',
 										fieldLabel : 'Phone Number',
 										allowBlank : true
 									},						
@@ -267,15 +252,53 @@ Ext.onReady(function(){
     });
 
 	function submit(){//提交表單
+		//Check Form Data
+		//1.0 List Form Items
+		var userFormItems = userForm.items;
+		var i = 0;
+		//1.1 Check Must have value
+		for(i = 0; i < userFormItems.getAt(0).items.length; i++){
+
+
+			if( userFormItems.getAt(0).items.getAt(i).xtype == "textfield" &&
+				userFormItems.getAt(0).items.getAt(i).allowBlank == false && 
+				( typeof(userFormItems.getAt(0).items.getAt(i).value) == 'undefined' 
+					|| userFormItems.getAt(0).items.getAt(i).value == null
+				    || userFormItems.getAt(0).items.getAt(i).value == "" )
+			   ){
+
+				Ext.MessageBox.alert('Message', 'Message : '+ "'" + userFormItems.getAt(0).items.getAt(i).fieldLabel + "'" + " Can't be blank" );
+				return;
+				//alert(userFormItems.getAt(0).items.getAt(i).fieldLabel + " " + userFormItems.getAt(0).items.getAt(i).value  + " " + userFormItems.getAt(0).items.getAt(i).xtype);
+			}
+			
+		}
+		//1.2 CHECK MAIL FORMAT
+		var email = Ext.getCmp('email');
+		if( !verifyAddress(email) ){
+			Ext.MessageBox.alert('Message', 'Message : '+ "'" + email.fieldLabel + "'" + " Wrong e-mail format!" );
+			return;
+		}
+		//1.3 CHECK Password
+		var password = Ext.getCmp('password');
+		var confirmPassword = Ext.getCmp('confirmPassword');
+
+		if( password.value.length < 6 ){
+			Ext.MessageBox.alert('Message', 'Message : '+ "'" + password.fieldLabel + "' length must >= 6 " );
+			return;
+		}else if (password.value != confirmPassword.value){
+			Ext.MessageBox.alert('Message', 'Message : '+ "'" + password.fieldLabel + "' must be same '" + confirmPassword.fieldLabel + "'" );
+			return;
+		}
+		
+	
+
 		Ext.Ajax.timeout = 120000; // 120 seconds
 		Ext.Ajax.request({  //ajax request test  
                     url : '<%=contextPath%>/UserSave.action',  
-                     /*  headers: { 
-                           'userHeader': 'userMsg' 
-                       },*/  
-                    /*params : {  
-                        name : 'yangxuan'  
-                    },*/   
+                    params : {  
+                        data: Ext.encode(userForm.getValues())
+                    },
                     method : 'POST',
 					scope:this,
                     success : function(response, options) {  
@@ -286,14 +309,30 @@ Ext.onReady(function(){
                     }  
                 });
 
-
 	}
 	function reset(){//重置表單
 		userForm.form.reset();
 	}
 
+	//Verify Mail Address
+	function verifyAddress(obj){
+		// obtain form value into variable
+		var email = obj.value;
+		//alert ('email' + email);
+		// define regex
+		var pattern = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 
+		// test for pattern
+		flag = pattern.test(email);
 
+		if(flag){
+			//alert("Right e-mail format!");
+			return true;
+		}else{
+			//alert("Wrong e-mail format!");
+			return false;
+		}
+	}
 
 
 
