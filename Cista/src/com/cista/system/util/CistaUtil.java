@@ -14,6 +14,7 @@ import java.util.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
+import java.io.PrintWriter;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -31,14 +32,21 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.struts2.ServletActionContext;
 
 import com.cista.framework.security.Encryptor;
+import com.cista.system.to.AjaxResponeTo;
 import com.cista.system.to.SysUserTo;
 //Spring
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+
+//Google JSON
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 /**
  * <p>Title: LicenseEncryptor</p>
  * <p>Description: Encryptor of License</p>
@@ -111,6 +119,11 @@ public class CistaUtil {
     		{"cistadesign.com"			,"cistadesign.com(CISTA)"}										
 	};
 
+    /*
+     * AJAX Status
+     */
+    public static final String AJAX_RSEPONSE_FINISH = "1";
+    public static final String AJAX_RSEPONSE_ERROR = "0";
     
     /**
      * Send email.
@@ -814,4 +827,31 @@ public class CistaUtil {
 	  list.addAll(newList);
 	  //System.out.println("remove duplicate" + list);
 	}
+	
+	
+	/*
+	 * Ajax Response
+	 */
+	public static void ajaxResponse(HttpServletResponse response, String ajaxMessage, String ajaxStatus) {
+		try{
+			
+			AjaxResponeTo ajaxResponeTo = new AjaxResponeTo();
+			ajaxResponeTo.setAjaxMessage(ajaxMessage);
+			ajaxResponeTo.setAjaxStatus(ajaxStatus);
+			Gson gson = new Gson();
+			System.out.println( gson.toJson(ajaxResponeTo) );
+			
+			response.setCharacterEncoding("UTF-8");
+			PrintWriter out = response.getWriter();
+			
+			logger.debug(gson.toJson(ajaxResponeTo));
+			out.print(gson.toJson(ajaxResponeTo));
+			out.close();
+		}catch(Exception ex){
+      		ex.printStackTrace();
+            logger.error(ex.toString());
+      	}
+	}
+
+	
 }
