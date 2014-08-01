@@ -1,9 +1,11 @@
 package com.cista.system.account.action;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
 
 import com.cista.system.account.dao.DepartmentDao;
 import com.cista.system.account.dao.RoleDao;
@@ -18,7 +20,12 @@ import com.cista.system.to.SysUserTo;
 import com.cista.system.util.BaseAction;
 import com.cista.system.util.CistaUtil;
 
-import net.sf.json.JSONArray;
+//import net.sf.json.JSONArray;
+//import net.sf.json.JSONObject;
+//import com.cista.system.util.JsonUtil;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.apache.struts2.ServletActionContext;
 
@@ -56,7 +63,8 @@ public class UserManage extends BaseAction  {
 	private String selectUserId;
 	private String chkRolesList;
 
-
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+	
 	//20110629
 	public String userSearchPre() throws Exception {
 		
@@ -214,46 +222,58 @@ public class UserManage extends BaseAction  {
 			 // 1.0 Get Current User
 			request= ServletActionContext.getRequest();
 			SysUserTo curUser = (SysUserTo)request.getSession().getAttribute(CistaUtil.CUR_USERINFO);
-			
 			logger.debug("Cur User : " + curUser.getUserId());
 			
-			SysUserTo newUser = new SysUserTo();
 			UserDao userDao = new UserDao();
 			
-			String userRole = this.userRole;
-			userRole = null != userRole ? userRole : "";	
+			//1.2 GET AJAX Data
+			String data = request.getParameter("data");
+			data = null != data ? data : "";
+			logger.debug("data " + data);
 			
-			//1.1 Set Himax & Subcon 相同共有的值
-			newUser.setUserId(this.userId);
-			newUser.setRealName(this.realName);
-			newUser.setCreateBy(curUser.getUserId());
-			newUser.setPhoneNum(this.phoneNum);
-			newUser.setDepartment(this.department);
-			newUser.setPosition(this.position);
-			newUser.setEmail(this.email);		
-			newUser.setActive("1");
-			newUser.setProcessId("");
+			//final List<SysUserTo> addUserList= JsonUtil.getList4Json(data , SysUserTo.class);
+			Gson gson = new Gson();
+			SysUserTo userInfo = gson.fromJson(data, SysUserTo.class);
 			
-			//1.2 user 已經存在判斷
-			SysUserTo oldUser = new SysUserTo();
-			oldUser = userDao.getActiveCurUser(this.userId);
+			logger.debug(userInfo.toString());	
+			
+			//1.3 Prepare Save Data
+
+			String userRole = userInfo.getRole();
+			userRole = null != userRole ? userRole : "";
+			if(userRole.equals("1") ){
+				//Cista
+				userInfo.setCompany(CistaUtil.CISTA_SITE);
+			}else if(userRole.equals("2") ){
+				//Customer or Vendor
+				
+			}
+			//1.3.1 Password
+			userInfo.setPassword(CistaUtil.encodePasswd(userInfo.getPassword()));
+			
+			//1.3.2 Active
+			if(userInfo.getActive() == null){
+				//Not Active
+				userInfo.setActive(CistaUtil.USER_INACTIVE);
+			}else{
+				userInfo.setActive(CistaUtil.USER_ACTIVE);
+			}
+
+			userInfo.setCreateBy(curUser.getUserId());
+			Calendar cal = Calendar.getInstance();
+			userInfo.setCdt(cal.getTime());
+			//1.4 Insert DB
+			
+			//判斷 1.4.1 User 是否已經存在
+			SysUserTo oldUser = userDao.getActiveCurUser(userInfo.getUserId());
 			if( oldUser != null){
 				addActionMessage(getText("IE.createUser.message.fail.userIdIsInDB"));
 				return NONE;
 			}		
-			//1.3 Get Himax User Form Data
-			if ( userRole.equals(CistaUtil.CISTA_ROLE)){
-				logger.debug("Himax User");			
-				newUser.setCompany("Himax");
-				newUser.setPassword("N/A");			
-			}else{
-				logger.debug("Subcon User");
-				newUser.setCompany(this.company);
-				newUser.setPassword(CistaUtil.encodePasswd(password));
-			}
+
 			
-			// 新增 user
-			int result = userDao.insertUser(newUser);		
+			// 新增 1.4.2
+			int result = userDao.insertUser(userInfo);		
 			if (result != 1){
 				addActionMessage(getText("IE.createUser.message.fail.insertUserError"));
 				return NONE;
@@ -261,8 +281,8 @@ public class UserManage extends BaseAction  {
 			
 			
 			// send mail to new user		
-			String mailSubject = CistaUtil.getMessage("IE.email.createUser.subject", this.realName);				
-			CistaUtil.sendInitialUserMail(request , response , mailSubject, newUser,curUser.getEmail());
+			//String mailSubject = CistaUtil.getMessage("IE.email.createUser.subject", this.realName);				
+			//CistaUtil.sendInitialUserMail(request , response , mailSubject, newUser,curUser.getEmail());
 
 			addActionMessage(getText("IE.createUser.message.success.insertUserInDB"));
 		} catch (Exception e) {
@@ -289,7 +309,7 @@ public class UserManage extends BaseAction  {
 		}
 		
 
-		// 1.3 Set AJAX response
+		// 1.5 Set AJAX response
 		HttpServletResponse response = ServletActionContext.getResponse();
 		response.setCharacterEncoding("UTF-8");
 
@@ -327,7 +347,7 @@ public class UserManage extends BaseAction  {
 			this.phoneNum = this.phoneNum != null ? this.phoneNum :"";			
 			curUser.setPhoneNum(this.phoneNum);
 			curUser.setLastIp(this.lastIp);
-			curUser.setLastTime(this.lastTime);
+			//curUser.setLastTime(this.lastTime);
 			curUser.setUpdateBy(this.userId);
 			curUser.setPassword(CistaUtil.encodePasswd(password));
 			int result = userDAO.updateUser(curUser);

@@ -194,7 +194,7 @@
         String eMail 		= sysUser.getEmail()!=null?sysUser.getEmail():"";
         String phoneNum		= sysUser.getPhoneNum()!=null?sysUser.getPhoneNum():"";      
         String updateBy 	= sysUser.getUpdateBy()!=null?sysUser.getUpdateBy():"";     
-        String udt 			= sysUser.getUdt()!=null?sysUser.getUdt():"";
+        //String udt 			= sysUser.getUdt()!=null?sysUser.getUdt():"";
 		String disable 		= sysUser.getActive()!=null?sysUser.getActive():"";
 		//String roleName 	= sysUser.getRoleName()!=null?sysUser.getRoleName():"";
         String className = ((i++)%2==0 ? "portlet-title-bg1":"portlet-title-bg2");

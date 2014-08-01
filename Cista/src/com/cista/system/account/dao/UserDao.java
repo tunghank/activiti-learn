@@ -12,6 +12,7 @@ import com.cista.system.to.SysUserTo;
 import com.cista.system.util.BaseDao;
 import com.cista.system.util.CistaUtil;
 
+
 public class UserDao extends BaseDao{
 
 	public List showAllUsers() throws DataAccessException{
@@ -33,7 +34,7 @@ public class UserDao extends BaseDao{
 					+		" ,A.CREATE_BY " 
 					+		" ,A.UPDATE_BY " 
 					+		" ,A.UDT " 
-					+		" ,A.PROCESS_ID " 
+
 					+ " FROM SYS_USER A ";
 		
     	ParameterizedBeanPropertyRowMapper<SysUserTo> rowMapper = 
@@ -52,9 +53,13 @@ public class UserDao extends BaseDao{
 	public boolean validate(String username, String password)throws DataAccessException{
 		
 		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();
-		String sql 	= " SELECT A.* " 
-					+ " FROM SYS_USER A " 
-					+ " Where USER_ID=? and PASSWORD=? ";
+		String sql 	= " SELECT A.USER_ID, A.REAL_NAME, A.PASSWORD, A.COMPANY, " +
+				" A.COMPANY_SHORT_NAME, A.DEPARTMENT, A.POSITION, A.EMAIL, " +
+				" A.PHONE_NUM, A.ACTIVE, A.LAST_TIME, A.LAST_IP, A.CDT, " +
+				" A.CREATE_BY, A.UPDATE_BY, A.UDT " +
+				" FROM SYS_USER A " +
+				" Where USER_ID=? and PASSWORD=? ";
+		
 		
     	ParameterizedBeanPropertyRowMapper<SysUserTo> rowMapper = 
     		new ParameterizedBeanPropertyRowMapper<SysUserTo>();
@@ -72,7 +77,7 @@ public class UserDao extends BaseDao{
 		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();		
 		sql = " UPDATE SYS_USER "
 			+ "	SET LAST_IP 	= ? , "
-			+ "		LAST_TIME 	= TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS') "
+			+ "		LAST_TIME 	= SYSDATE "
 			+ "	WHERE  USER_ID 	= ? ";
 			
 		logger.debug(sql);
@@ -99,7 +104,7 @@ public class UserDao extends BaseDao{
 					+		" ,A.CREATE_BY " 
 					+		" ,A.UPDATE_BY " 
 					+		" ,A.UDT " 
-					+		" ,A.PROCESS_ID " 
+
 					+ " FROM SYS_USER A "
 					+ " Where USER_ID=? ";
 		
@@ -134,7 +139,7 @@ public class UserDao extends BaseDao{
 					+		" ,A.CREATE_BY " 
 					+		" ,A.UPDATE_BY " 
 					+		" ,A.UDT " 
-					+		" ,A.PROCESS_ID " 
+
 					+ " FROM SYS_USER A "
 					+ " Where 1=1 " 
 					+		" AND ACTIVE = '1' AND USER_ID=? ";
@@ -357,15 +362,14 @@ public class UserDao extends BaseDao{
 			+ " 	,PHONE_NUM "
 			+ " 	,ACTIVE "
 			+ " 	,CREATE_BY "
-			+ "		,PROCESS_ID "
-			+ " )VALUES (?,?,?,?,?,?,?,?,?,?,?) " ;			
+			+ " )VALUES (?,?,?,?,?,?,?,?,?,?) " ;			
 				
 		int result = sjt.update(sql, new Object[] { newUser.getUserId(),
 				newUser.getRealName(), newUser.getPassword(),
 				newUser.getCompany(), newUser.getDepartment(),
 				newUser.getPosition(), newUser.getEmail(),
 				newUser.getPhoneNum(), newUser.getActive(),
-				newUser.getCreateBy(), newUser.getProcessId() });
+				newUser.getCreateBy() });
 		
 		return result;	
 	}

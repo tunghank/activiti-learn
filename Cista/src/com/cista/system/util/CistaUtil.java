@@ -94,13 +94,14 @@ public class CistaUtil {
     // spilt char
     public static final String split = "%";
     
-    // account common setting
+    // Account common setting
     /*
      * Role
      */
     public static final String CISTA_ROLE = "1";
-    public static final String VENDOR_ROLE = "2";
-    public static final String CUSTOMER_ROLE = "3";
+    public static final String CUSTOMER_ROLE = "2";
+    public static final String VENDOR_ROLE = "3";
+    
 
     
     public static final String FUNCTION_FILE = "file";

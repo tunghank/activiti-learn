@@ -1,7 +1,6 @@
 package com.cista.system.to;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Date;
 
 /**
  * SysUser entity.
@@ -12,8 +11,13 @@ import java.util.Set;
 public class SysUserTo extends com.cista.system.util.BaseObject implements
 		java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	// Fields
-
+	private String role;
 	private String userId;
 	private String realName;
 	private String password;
@@ -23,16 +27,18 @@ public class SysUserTo extends com.cista.system.util.BaseObject implements
 	private String email;
 	private String phoneNum;
 	private String active;
-	private String lastTime;
+	
+	private Date lastTime;
 	private String lastIp;
-	private String cdt;
+	private Date cdt;
 	private String createBy;
 	private String updateBy;
-	private String udt;
-	private String processId;
+	private Date udt;
 
 	private String roleId;
 	private String roleName;
+	
+
 	// Constructors
 	// FOR projcet count
 	private String count;
@@ -114,13 +120,7 @@ public class SysUserTo extends com.cista.system.util.BaseObject implements
 		this.active = active;
 	}
 
-	public String getLastTime() {
-		return this.lastTime;
-	}
 
-	public void setLastTime(String lastTime) {
-		this.lastTime = lastTime;
-	}
 
 	public String getLastIp() {
 		return this.lastIp;
@@ -130,13 +130,7 @@ public class SysUserTo extends com.cista.system.util.BaseObject implements
 		this.lastIp = lastIp;
 	}
 
-	public String getCdt() {
-		return this.cdt;
-	}
 
-	public void setCdt(String cdt) {
-		this.cdt = cdt;
-	}
 
 	public String getCreateBy() {
 		return createBy;
@@ -154,20 +148,30 @@ public class SysUserTo extends com.cista.system.util.BaseObject implements
 		this.updateBy = updateBy;
 	}
 
-	public String getUdt() {
+
+
+	public Date getLastTime() {
+		return lastTime;
+	}
+
+	public void setLastTime(Date lastTime) {
+		this.lastTime = lastTime;
+	}
+
+	public Date getCdt() {
+		return cdt;
+	}
+
+	public void setCdt(Date cdt) {
+		this.cdt = cdt;
+	}
+
+	public Date getUdt() {
 		return udt;
 	}
 
-	public void setUdt(String udt) {
+	public void setUdt(Date udt) {
 		this.udt = udt;
-	}
-
-	public String getProcessId() {
-		return processId;
-	}
-
-	public void setProcessId(String processId) {
-		this.processId = processId;
 	}
 
 	/**
@@ -204,6 +208,14 @@ public class SysUserTo extends com.cista.system.util.BaseObject implements
 
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	
