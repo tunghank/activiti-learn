@@ -54,15 +54,13 @@ Ext.onReady(function(){
 	});
 
 	//User Information
-
-
 	//Form
 	var userForm = new  Ext.form.Panel({
         id: 'userForm',
 		title: 'User Information',
 		labelAlign: 'left',
 		frame:true,
-		height:360,
+		height:380,
 		width:400,
 		renderTo: "userForm",
 		bodyPadding: 5,
@@ -356,9 +354,153 @@ Ext.onReady(function(){
 		}
 	}
 
+	/***
+	*User Information Grid
+	***/
+	//checkbox選擇模型
+	var sm = Ext.create('Ext.selection.CheckboxModel');
+	// var sm:new Ext.grid.RowSelectionModel({singleSelection:true}) //選擇模型改為了行選擇模型
+	//var sm = new Ext.grid.CheckboxSelectionModel();
+	
+    sm.handleMouseDown = Ext.emptyFn;//不響應MouseDown事件
+    sm.on('rowselect',function(sm_,rowIndex,record){//行選中的時候
+       
+    }, this);
+	
+	sm.on('rowdeselect',function(sm_,rowIndex,record){//行未選中的時候
+       
+    }, this); 
 
+    var cm = new Ext.grid.ColumnModel([
+		new Ext.grid.RowNumberer(),
+		{
+           id:'catalog',
+           header: "分類",
+           dataIndex: 'catalog',
+           width: 70
+        },{
+           id:'paper',
+           header: "報價單",
+           dataIndex: 'paper',
+           width: 170
+        },{
+		   id:'paperVer',
+           header: "版本",
+           dataIndex: 'paperVer',
+           width: 45
+        },{
+           id:'paperVerApprove',
+           header: "生效",
+           dataIndex: 'paperVerApprove',
+           width: 45
+        },{
+           id:'verStartDt',
+           header: "有效日",
+           dataIndex: 'verStartDt',
+		   renderer: formatDate,
+           width: 60
+        },{
+           id:'verEndDt',
+           header: "失效日",
+           dataIndex: 'verEndDt',
+		   renderer: formatDate,
+           width: 60
+        },{
+           id:'udt',
+           header: "最後更新",
+           dataIndex: 'udt',
+           width: 65
+        },{
+           id:'catalogUid',
+           header: "Catalog ID",
+           dataIndex: 'catalogUid',
+           width: 60,
+		   hidden: true
+        },{
+           id:'paperUid',
+           header: "Quotation ID",
+           dataIndex: 'paperUid',
+           width: 60,
+		   hidden: true
+        },{
+           id:'paperVerUid',
+           header: "Version ID",
+           dataIndex: 'paperVerUid',
+           width: 60,
+		   hidden: true
+        }
+    ]);
 
+    // by default columns are sortable
+    cm.defaultSortable = true;
 
+    // this could be inline, but we want to define the Plant record
+    // type so we can add records dynamically
+	var data = {
+
+	};
+	// create the Data Store
+    var versionStore = new Ext.data.Store({
+		id:'paperVerListStrore',
+		proxy:new Ext.data.MemoryProxy(data),
+		reader:new Ext.data.JsonReader({}, [
+		   {name: 'catalog'},
+           {name: 'paper'},
+		   {name: 'paperVer'},
+		   {name: 'paperVerApprove'},
+           {name: 'verStartDt'},
+           {name: 'verEndDt'},
+		   {name: 'udt'},
+		   {name: 'catalogUid'},
+		   {name: 'paperUid'},
+		   {name: 'paperVerUid'}
+
+		]),
+		sortInfo:{ field: "paperVer", direction: "DESC" }
+	}) ;
+	// trigger the data store load
+
+	versionStore.load();
+
+	var paperToolbar = new Ext.Toolbar({
+	     items: [	
+			'-',{text:'New Version',
+				  style:"background-color:#FF9900;",
+			      pressed:true,
+			      handler: function(){
+
+					}
+				}
+			,'-',{text:'New Quotation',
+				style:"background-color:#FF9900;",
+			    pressed:true,
+			    handler: function(){
+					
+				}
+			},'-'
+	     ]  
+	 }); 
+
+	// create the readonly grid
+	var versionGrid = Ext.create('Ext.grid.Panel',{  
+    //var versionGrid = new Ext.grid.GridPanel({
+		id: 'versionGrid',
+        ds: versionStore,
+        cm: cm,
+		sm: new Ext.selection.CheckboxModel({
+	                singleSelect: true/*,
+	                listeners: {
+	                    rowselect: function(sm, row, rec) {
+
+	                    }
+	                }*/
+	            }),
+        renderTo: 'userGrid',
+        width:575,
+        //height:divHeight * 0.5,
+        title:'報價單各版本List'
+
+	}) ;
 
 });
 
@@ -402,7 +544,7 @@ Ext.onReady(function(){
 	/** HTML Layout **/
 	#functionTitle  {position:absolute; visibility:visible; z-index:1; top:5px; left:5px;}
 	#userForm  {position:absolute; visibility:visible; z-index:2; top:25px; left:5px; }
-	
+	#userGrid  {position:absolute; visibility:visible; z-index:3; top:500px; left:5px;}
 
 </style>
 
@@ -427,7 +569,7 @@ Ext.onReady(function(){
 </table>
 </div>
 <div id="userForm" ></div>
-
+<div id="userGrid" ></div>
 	
 </body>
 </html>
