@@ -317,9 +317,6 @@ public class UserManage extends BaseAction  {
 
 		}
 		
-
-
-
    		return NONE;
 	}
 	
