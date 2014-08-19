@@ -354,153 +354,320 @@ Ext.onReady(function(){
 		}
 	}
 
-	/***
+	/*************************
 	*User Information Grid
-	***/
-	//checkbox選擇模型
-	var sm = Ext.create('Ext.selection.CheckboxModel');
-	// var sm:new Ext.grid.RowSelectionModel({singleSelection:true}) //選擇模型改為了行選擇模型
-	//var sm = new Ext.grid.CheckboxSelectionModel();
-	
-    sm.handleMouseDown = Ext.emptyFn;//不響應MouseDown事件
-    sm.on('rowselect',function(sm_,rowIndex,record){//行選中的時候
-       
-    }, this);
-	
-	sm.on('rowdeselect',function(sm_,rowIndex,record){//行未選中的時候
-       
-    }, this); 
+	**************************/
 
-    var cm = new Ext.grid.ColumnModel([
-		new Ext.grid.RowNumberer(),
-		{
-           id:'catalog',
-           header: "分類",
-           dataIndex: 'catalog',
-           width: 70
-        },{
-           id:'paper',
-           header: "報價單",
-           dataIndex: 'paper',
-           width: 170
-        },{
-		   id:'paperVer',
-           header: "版本",
-           dataIndex: 'paperVer',
-           width: 45
-        },{
-           id:'paperVerApprove',
-           header: "生效",
-           dataIndex: 'paperVerApprove',
-           width: 45
-        },{
-           id:'verStartDt',
-           header: "有效日",
-           dataIndex: 'verStartDt',
-		   renderer: formatDate,
-           width: 60
-        },{
-           id:'verEndDt',
-           header: "失效日",
-           dataIndex: 'verEndDt',
-		   renderer: formatDate,
-           width: 60
-        },{
-           id:'udt',
-           header: "最後更新",
-           dataIndex: 'udt',
-           width: 65
-        },{
-           id:'catalogUid',
-           header: "Catalog ID",
-           dataIndex: 'catalogUid',
-           width: 60,
-		   hidden: true
-        },{
-           id:'paperUid',
-           header: "Quotation ID",
-           dataIndex: 'paperUid',
-           width: 60,
-		   hidden: true
-        },{
-           id:'paperVerUid',
-           header: "Version ID",
-           dataIndex: 'paperVerUid',
-           width: 60,
-		   hidden: true
-        }
-    ]);
+	var isEdit = false;   
+	//創建Model  
+	Ext.define(  
+			'User',  
+			{  
+				extend:'Ext.data.Model',  
+				fields:[  
+						{name:'userId',mapping:'userId'},  
+						{name:'realName',mapping:'realName'},  
+						{name:'company',mapping:'company'},  
+						{name:'position',mapping:'position'},
+						{name:'email',mapping:'email'},
+						{name:'phoneNum',mapping:'phoneNum'},
+						{name:'active',mapping:'active'},
+						{name:'createBy',mapping:'createBy'},
+						{name:'cdt',mapping:'cdt',type:'date',dataFormat:'Y-m-d'},
+						{name:'updateBy',mapping:'updateBy'},
+					    {name:'udt',mapping:'udt',type:'date',dataFormat:'Y-m-d'}
+				]  
+			}  
+	)
 
-    // by default columns are sortable
-    cm.defaultSortable = true;
+	//創建本地數據源  
+	var activeStore = Ext.create(  
+			'Ext.data.Store',  
+			{  
+				fields:['id','name'],  
+				data:[  
+					  {"id":"1","name":"Active"},  
+					  {"id":"0","name":"No Active"}  
+				]  
+			}  
+	);  
+	  
+	//創建數據源  
+	var store = Ext.create(  
+			'Ext.data.Store',  
+			{  
+				model:'User',  
+				//設置分頁大小  
+				pageSize:5,  
+				/*proxy: {  
+					type: 'ajax',  
+					url : 'user_get',  
+					reader: {  
+						//數據格式為json  
+						type: 'json',  
+						root: 'users',  
+						//獲取數據總數  
+						totalProperty: 'totalCount'  
+					}  
+				},*/
+				autoLoad:false  
+			}  
+	); 
 
-    // this could be inline, but we want to define the Plant record
-    // type so we can add records dynamically
-	var data = {
+	//創建多選框  
+	var checkBox = Ext.create('Ext.selection.CheckboxModel');   
+	var cellEditing = Ext.create('Ext.grid.plugin.CellEditing',  
+			{  
+				//表示「雙擊」才可以修改內容（取值只能為「1」或「2」）  
+				clicksToEdit:2  
+			}  
+	  
+	); 
 
-	};
-	// create the Data Store
-    var versionStore = new Ext.data.Store({
-		id:'paperVerListStrore',
-		proxy:new Ext.data.MemoryProxy(data),
-		reader:new Ext.data.JsonReader({}, [
-		   {name: 'catalog'},
-           {name: 'paper'},
-		   {name: 'paperVer'},
-		   {name: 'paperVerApprove'},
-           {name: 'verStartDt'},
-           {name: 'verEndDt'},
-		   {name: 'udt'},
-		   {name: 'catalogUid'},
-		   {name: 'paperUid'},
-		   {name: 'paperVerUid'}
+	//創建grid  
+	var grid = Ext.create('Ext.grid.Panel',{  
+		  
+			tbar:[  
+				{  
+					xtype:'button',  
+					text:'添加'/*,  
+					handler:'addUser'*/
+				},{  
+					xtype:'button',  
+					text:'修改'/*,  
+					handler:updateUser*/ 
+				},{  
+					xtype:'button',  
+					text:'刪除'/*,  
+					handler:deleteUser*/
+				}  
+			],  
+			  
+			store:store,  
+			//添加到grid  
+			selModel: { selType: 'checkboxmodel' },   //選擇框
+			//表示可以選擇行  
+			disableSelection: false,  
+			columnLines: true,   
+			loadMask: true,   
+			//添加修改功能  
+			plugins: [cellEditing] ,  
+			columns:[  
+					 {  
+						id:'gUserId',  
+						//表頭  
+						header:'User ID',  
+						width:60,  
+						//內容  
+						dataIndex:'userId',  
+						sortable:true,  
+						editor:{  
+							xtype:'textfield',  
+							allowBlank:false  
+						}  
+					   
+					 },{  
+						 id:'gRealName',  
+						 header:'Name',  
+						 width:100,  
+						 dataIndex:'realName',  
+						 sortable:false,  
+						 editor:{  
+								xtype:'textfield',  
+								allowBlank:false  
+						 }  
+					  
+						},{  
+						 id:'gCompany',  
+						 header:'Company',  
+						 width:100,  
+						 dataIndex:'company',  
+						 sortable:false,  
+						 editor:{  
+								xtype:'textfield',  
+								allowBlank:false  
+						 }  
+					  
+						},{  
+						 id:'gPosition',  
+						 header:'Position',  
+						 width:100,  
+						 dataIndex:'position',  
+						 sortable:false,  
+						 editor:{  
+								xtype:'textfield',  
+								allowBlank:false  
+						 }  
+					  
+						},{  
+						 id:'gEmail',  
+						 header:'Email',  
+						 width:200,  
+						 dataIndex:'email',  
+						 sortable:false,  
+						 editor:{  
+								xtype:'textfield',  
+								allowBlank:false  
+						 }  
+					  
+						},{  
+						 id:'gPhoneNum',  
+						 header:'Phone',  
+						 width:120,  
+						 dataIndex:'phoneNum',  
+						 sortable:false,  
+						 editor:{  
+								xtype:'textfield',  
+								allowBlank:false  
+						 }  
+					  
+						},{  
+							id:'gActive',  
+							header:'Active',  
+							width:40,  
+							dataIndex:'active',  
+							editor:{  
+								xtype:'combobox',  
+								store:activeStore,  
+								displayField:'name',  
+								valueField:'id',  
+								listeners:{       
+									select : function(combo, record,index){   
+										isEdit = true;   
+									}   
+								}   
+							}  
+						},{  
+						 id:'gCreateBy',  
+						 header:'Creator',  
+						 width:60,  
+						 dataIndex:'createBy',  
+						 sortable:false,  
+						 editor:{  
+								xtype:'textfield',  
+								allowBlank:false  
+						 }  
+					  
+						},{  
+							id:'gCdt',  
+							header:'Create Date',  
+							width:100,  
+							dataIndex:'cdt',  
+							//lazyRender: true,  
+														  
+							renderer: function(value){   
+										return value ? Ext.Date.dateFormat(value, 'Y-m-d') : '';   
+									},  
+							  
+							editor:{  
+								xtype:'datefield',  
+								format:'Y-m-d',  
+								//minValue: '01/01/06'   
+							}  
+							  
+							  
+						},{  
+						 id:'gUpdateBy',  
+						 header:'Update By',  
+						 width:60,  
+						 dataIndex:'updateBy',  
+						 sortable:false,  
+						 editor:{  
+								xtype:'textfield',  
+								allowBlank:false  
+						 }  
+					  
+						},{  
+							id:'gUdt',  
+							header:'Update Date',  
+							width:100,  
+							dataIndex:'udt',  
+							//lazyRender: true,  
+														  
+							renderer: function(value){   
+										return value ? Ext.Date.dateFormat(value, 'Y-m-d') : '';   
+									},  
+							  
+							editor:{  
+								xtype:'datefield',  
+								format:'Y-m-d',  
+								//minValue: '01/01/06'   
+							}  
+							  
+							  
+						}  
+			],  
+			height:200,   
+			width:700,   
+			title: 'User Information',   
+			renderTo: 'userGrid',   
+			 
+			dockedItems:[  
+						 //多選框控件  
+						 /*{  
+							 dock:'top',  
+							 xtype:'toolbar',  
+							 items:[  
+									{  
+										itemId:'Button',  
+										text:'顯示所選',  
+										//tooltip:'Add a new row',  
+										//iconCls:'add',  
+										handler:function(){  
+											//得到選中的行  
+											var record = grid.getSelectionModel().getSelection();   
+											if(record.length==0){  
+												 Ext.MessageBox.show({   
+													title:"提示",   
+													msg:"請先選擇您要操作的行!"   
+												 })  
+												return;  
+											}else{  
+												var ids = "";   
+												for(var i = 0; i < record.length; i++){   
+													ids += record[i].get("id")   
+													if(i<record.length-1){   
+														ids = ids + ",";   
+													}   
+												}  
+												Ext.MessageBox.show({   
+														title:"所選ID列表",   
+														msg:ids   
+													}  
+												)  
+											}  
+										}  
+									}  
+							 ]  
+						 },*/  
+						   
+						   
+						 //添加搜索控件  
+						 /*{  
+							 dock: 'top',   
+							 xtype: 'toolbar',   
+							 items: {   
+								 width: 200,   
+								 fieldLabel: '搜索姓名',   
+								 labelWidth: 70,   
+								 xtype: 'searchfield',   
+								 store: store   
+							}  
+						 },{   
+							 dock: 'bottom',   
+							 xtype: 'pagingtoolbar',   
+							 store: store,   
+							 displayInfo: true,   
+							 displayMsg: '顯示 {0} - {1} 條，共計 {2} 條',   
+							 emptyMsg: '沒有數據'   
+						}*/
+			]  
+			  
+		}  
+	)  
+	//store.loadPage(1);
 
-		]),
-		sortInfo:{ field: "paperVer", direction: "DESC" }
-	}) ;
-	// trigger the data store load
 
-	versionStore.load();
-
-	var paperToolbar = new Ext.Toolbar({
-	     items: [	
-			'-',{text:'New Version',
-				  style:"background-color:#FF9900;",
-			      pressed:true,
-			      handler: function(){
-
-					}
-				}
-			,'-',{text:'New Quotation',
-				style:"background-color:#FF9900;",
-			    pressed:true,
-			    handler: function(){
-					
-				}
-			},'-'
-	     ]  
-	 }); 
-
-	// create the readonly grid
-	var versionGrid = Ext.create('Ext.grid.Panel',{  
-    //var versionGrid = new Ext.grid.GridPanel({
-		id: 'versionGrid',
-        ds: versionStore,
-        cm: cm,
-		sm: new Ext.selection.CheckboxModel({
-	                singleSelect: true/*,
-	                listeners: {
-	                    rowselect: function(sm, row, rec) {
-
-	                    }
-	                }*/
-	            }),
-        renderTo: 'userGrid',
-        width:575,
-        //height:divHeight * 0.5,
-        title:'報價單各版本List'
-
-	}) ;
 
 });
 
@@ -544,7 +711,7 @@ Ext.onReady(function(){
 	/** HTML Layout **/
 	#functionTitle  {position:absolute; visibility:visible; z-index:1; top:5px; left:5px;}
 	#userForm  {position:absolute; visibility:visible; z-index:2; top:25px; left:5px; }
-	#userGrid  {position:absolute; visibility:visible; z-index:3; top:500px; left:5px;}
+	#userGrid  {position:absolute; visibility:visible; z-index:3; top:55px; left:420px;}
 
 </style>
 
