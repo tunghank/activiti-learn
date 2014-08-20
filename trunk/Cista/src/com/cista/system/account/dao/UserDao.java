@@ -15,7 +15,7 @@ import com.cista.system.util.CistaUtil;
 
 public class UserDao extends BaseDao{
 
-	public List showAllUsers() throws DataAccessException{
+	public List<SysUserTo> showAllUsers() throws DataAccessException{
 		
 		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();
 		String sql  = " SELECT " 

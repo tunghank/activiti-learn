@@ -35,6 +35,12 @@
              <result name="success"></result>
          </action>
          
+		 <action name="AjaxUserSearch" class="com.cista.system.account.action.UserManage" method="AjaxUserSearch">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success"></result>
+         </action>
+
          <action name="ModifyUserPre" class="com.cista.system.account.action.UserManage" method="modifyUserPre">
           	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
