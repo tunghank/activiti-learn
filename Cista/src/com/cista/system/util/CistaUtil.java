@@ -853,5 +853,18 @@ public class CistaUtil {
       	}
 	}
 
-	
+	public static void ajaxResponseData(HttpServletResponse response, String jsonData) {
+		try{
+					
+			response.setCharacterEncoding("UTF-8");
+			PrintWriter out = response.getWriter();
+			
+			logger.debug(jsonData);
+			out.print(jsonData);
+			out.close();
+		}catch(Exception ex){
+      		ex.printStackTrace();
+            logger.error(ex.toString());
+      	}
+	}
 }

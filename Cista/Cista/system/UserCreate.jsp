@@ -398,19 +398,21 @@ Ext.onReady(function(){
 			{  
 				model:'User',  
 				//設置分頁大小  
-				pageSize:5,  
-				/*proxy: {  
+				pageSize:10,  
+				proxy: {  
 					type: 'ajax',  
-					url : 'user_get',  
+					url : '<%=contextPath%>/AjaxUserSearch.action',  
 					reader: {  
 						//數據格式為json  
 						type: 'json',  
-						root: 'users',  
+						root: 'root',  
 						//獲取數據總數  
-						totalProperty: 'totalCount'  
+						totalProperty: 'total'  
 					}  
-				},*/
-				autoLoad:false  
+				},
+				sorters:[{property:"userId",direction:"ASC"}],//按qq倒序
+				autoLoad:{params:{start:0,limit:10}}//自動加載，每次加載一頁
+				//autoLoad:true  
 			}  
 	); 
 
@@ -597,7 +599,7 @@ Ext.onReady(function(){
 							  
 						}  
 			],  
-			height:200,   
+			height:350,   
 			width:700,   
 			title: 'User Information',   
 			renderTo: 'userGrid',   
@@ -653,19 +655,19 @@ Ext.onReady(function(){
 								 xtype: 'searchfield',   
 								 store: store   
 							}  
-						 },{   
+						 }*/,{   
 							 dock: 'bottom',   
 							 xtype: 'pagingtoolbar',   
 							 store: store,   
 							 displayInfo: true,   
 							 displayMsg: '顯示 {0} - {1} 條，共計 {2} 條',   
 							 emptyMsg: '沒有數據'   
-						}*/
+						}
 			]  
 			  
 		}  
 	)  
-	//store.loadPage(1);
+	store.loadPage(1);
 
 
 
@@ -711,7 +713,7 @@ Ext.onReady(function(){
 	/** HTML Layout **/
 	#functionTitle  {position:absolute; visibility:visible; z-index:1; top:5px; left:5px;}
 	#userForm  {position:absolute; visibility:visible; z-index:2; top:25px; left:5px; }
-	#userGrid  {position:absolute; visibility:visible; z-index:3; top:55px; left:420px;}
+	#userGrid  {position:absolute; visibility:visible; z-index:3; top:53px; left:420px;}
 
 </style>
 

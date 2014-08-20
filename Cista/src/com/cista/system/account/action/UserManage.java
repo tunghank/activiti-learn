@@ -14,6 +14,7 @@ import com.cista.system.account.dao.UserRoleDao;
 import com.cista.system.dao.SAPCustomerDao;
 import com.cista.system.dao.SAPVendorDao;
 import com.cista.system.ldap.service.LDAPConfigService;
+import com.cista.system.to.ExtJSGridTo;
 import com.cista.system.to.SysRoleTo;
 import com.cista.system.to.SysUserRoleTo;
 import com.cista.system.to.SysUserTo;
@@ -26,6 +27,8 @@ import com.cista.system.util.CistaUtil;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+
+import net.sf.json.JSONArray;
 
 import org.apache.struts2.ServletActionContext;
 
@@ -78,6 +81,91 @@ public class UserManage extends BaseAction  {
 		return SUCCESS;
 	}
 
+	public String AjaxUserSearch() throws Exception {
+		
+		try {
+			request= ServletActionContext.getRequest();
+			//for paging        
+	        int total;//分頁。。。數據總數       
+	        int iStart;//分頁。。。每頁開始數據
+	        int iLimit;//分頁。。。每一頁數據
+	        
+	        String start = request.getParameter("start");
+            String limit = request.getParameter("limit");
+            iStart = Integer.parseInt(start);
+            iLimit = Integer.parseInt(limit);
+            
+            logger.debug("start: " + Integer.parseInt(start));
+            logger.debug("limit: " + limit);
+			
+			String userId = request.getParameter("userId");
+			userId = null != userId ? userId : "";
+			logger.debug("userId " + userId);
+			
+	        UserDao userDAO = new UserDao();		
+	
+			List<SysUserTo> userList = new ArrayList<SysUserTo>();
+			
+			if(userId.equals("")){
+				userList = (ArrayList<SysUserTo>)userDAO.showAllUsers();
+			}else{
+				SysUserTo sysUserTo = userDAO.getUserDetail(userId);
+				if(sysUserTo != null){
+					userList.add(sysUserTo);
+				}
+			}
+			
+			//分頁
+			total=userList.size();
+			int end=iStart+iLimit;
+			if(end>total){//不能總數
+				end=total;
+			}		
+			
+			List<SysUserTo> resultList = new ArrayList<SysUserTo>();
+			for(int i=iStart;i<end;i++){//只加載當前頁面數據
+				resultList.add(userList.get(i));
+			}
+			
+			ExtJSGridTo extJSGridTo = new ExtJSGridTo();
+			extJSGridTo.setTotal(total);
+			extJSGridTo.setRoot(resultList);
+			
+			Gson gson = new Gson();
+			String jsonData = gson.toJson(extJSGridTo);
+			//logger.debug(jsonData);
+			
+			// 1.5 Set AJAX response
+			CistaUtil.ajaxResponseData(response, jsonData);
+			
+			
+
+		} catch (Exception e) {
+			this.addActionMessage("Save ERROR");
+			e.printStackTrace();
+			logger.error(e.toString());
+			addActionMessage(e.toString());
+          	//AJAX
+          	try{
+  		    	response.setContentType("text/html; charset=UTF-8");
+  				PrintWriter out = response.getWriter();
+  				String returnResult = "ERROR" ;
+
+  				logger.debug(returnResult);
+  				logger.debug("Error");
+  				out.print(returnResult);
+  				out.close();
+          	}catch(Exception ex){
+          		ex.printStackTrace();
+                logger.error(ex.toString());
+                return NONE;
+          	}
+
+		}
+		
+   		return NONE;
+	}
+	
 	public String userSearch() throws Exception {
 		
 		request= ServletActionContext.getRequest();
