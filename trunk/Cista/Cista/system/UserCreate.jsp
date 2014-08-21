@@ -32,6 +32,24 @@
 <meta http-equiv="expires" content="0">  
 
 <script type="text/javascript">
+
+//下面兩行代碼必須要，不然會報404錯誤  
+Ext.Loader.setConfig({enabled:true});  
+//我的searchGrid和ext4在同一目錄下，所以引用時要到根目錄去"../"  
+Ext.Loader.setPath('Ext.ux','<%=contextPath%>/js/extjs42/examples/ux');  
+//預加載  
+Ext.require(  
+        [  
+            'Ext.grid.*',  
+            'Ext.toolbar.Paging',  
+            'Ext.util.*',  
+            'Ext.data.*',  
+            //注意引用  
+            'Ext.ux.form.SearchField'  
+         ]  
+           
+);
+
 Ext.onReady(function(){
     Ext.QuickTips.init();
 
@@ -97,7 +115,7 @@ Ext.onReady(function(){
 						layout : 'anchor',
 						border: false,
 						items : [
-									{
+									/*{
 										xtype: 'radiogroup',
 										id:'userRole',
 										name: 'userRole',
@@ -159,7 +177,7 @@ Ext.onReady(function(){
 													company.hide()
 											}
 										}
-									},						
+									},*/						
 									{
 										xtype: "textfield",
 										id:'userId',
@@ -169,7 +187,7 @@ Ext.onReady(function(){
 										blankText: 'This should not be blank!',
 										anchor:'100%'
 									},						
-									{
+									/*{
 										xtype: "textfield",
 										id:'email',
 										name: 'email',
@@ -247,7 +265,7 @@ Ext.onReady(function(){
 										id:'active',
 										name: 'active',
 										fieldLabel : 'Active'
-									}
+									}*/
 
 								]
 					}
@@ -411,8 +429,8 @@ Ext.onReady(function(){
 					}  
 				},
 				sorters:[{property:"userId",direction:"ASC"}],//按qq倒序
-				autoLoad:{params:{start:0,limit:10}}//自動加載，每次加載一頁
-				//autoLoad:true  
+				//autoLoad:{params:{start:0,limit:10}}//自動加載，每次加載一頁
+				autoLoad:true  
 			}  
 	); 
 
@@ -436,8 +454,8 @@ Ext.onReady(function(){
 					handler:'addUser'*/
 				},{  
 					xtype:'button',  
-					text:'修改'/*,  
-					handler:updateUser*/ 
+					text:'修改',  
+					handler:updateUser
 				},{  
 					xtype:'button',  
 					text:'刪除'/*,  
@@ -447,7 +465,9 @@ Ext.onReady(function(){
 			  
 			store:store,  
 			//添加到grid  
-			selModel: { selType: 'checkboxmodel' },   //選擇框
+			selModel: { selType: 'checkboxmodel' ,
+						mode: "single",//multi,simple,single；默认为多选multi
+						},   //選擇框
 			//表示可以選擇行  
 			disableSelection: false,  
 			columnLines: true,   
@@ -599,7 +619,7 @@ Ext.onReady(function(){
 							  
 						}  
 			],  
-			height:350,   
+			height:380,   
 			width:700,   
 			title: 'User Information',   
 			renderTo: 'userGrid',   
@@ -641,21 +661,21 @@ Ext.onReady(function(){
 										}  
 									}  
 							 ]  
-						 },*/  
+						 },*/
 						   
 						   
 						 //添加搜索控件  
-						 /*{  
+						 {  
 							 dock: 'top',   
 							 xtype: 'toolbar',   
 							 items: {   
-								 width: 200,   
-								 fieldLabel: '搜索姓名',   
+								 width: 400,   
+								 fieldLabel: 'Search ID:',   
 								 labelWidth: 70,   
 								 xtype: 'searchfield',   
 								 store: store   
 							}  
-						 }*/,{   
+						 },{   
 							 dock: 'bottom',   
 							 xtype: 'pagingtoolbar',   
 							 store: store,   
@@ -669,6 +689,38 @@ Ext.onReady(function(){
 	)  
 	store.loadPage(1);
 
+	//Grid Function
+	function updateUser(){
+		//得到選中的行
+		var record = grid.getSelectionModel().getSelection();
+		
+		alert(Ext.decode(record));
+		userForm.loadRecord(record); 		
+
+		//userForm.loadRecord(record);
+
+
+		if(record.length==0){  
+			 Ext.MessageBox.show({   
+				title:"提示",   
+				msg:"請先選擇您要操作的行!"   
+			 })  
+			return;  
+		}else{  
+			var ids = "";   
+			for(var i = 0; i < record.length; i++){   
+				ids += record[i].get("userId")   
+				if(i<record.length-1){   
+					ids = ids + ",";   
+				}   
+			}  
+			Ext.MessageBox.show({   
+					title:"所選ID列表",   
+					msg:ids   
+				}  
+			)  
+		}  
+	}//End updateUser()
 
 
 });
