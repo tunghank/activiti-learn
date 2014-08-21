@@ -386,6 +386,7 @@ Ext.onReady(function(){
 						{name:'userId',mapping:'userId'},  
 						{name:'realName',mapping:'realName'},  
 						{name:'company',mapping:'company'},  
+					    {name:'companyType',mapping:'companyType'},  
 						{name:'position',mapping:'position'},
 						{name:'email',mapping:'email'},
 						{name:'phoneNum',mapping:'phoneNum'},
@@ -504,6 +505,17 @@ Ext.onReady(function(){
 						 header:'Company',  
 						 width:100,  
 						 dataIndex:'company',  
+						 sortable:false,  
+						 editor:{  
+								xtype:'textfield',  
+								allowBlank:false  
+						 }  
+					  
+						},{  
+						 id:'gCompanyType',  
+						 header:'Company Type',  
+						 width:100,  
+						 dataIndex:'companyType',  
 						 sortable:false,  
 						 editor:{  
 								xtype:'textfield',  
