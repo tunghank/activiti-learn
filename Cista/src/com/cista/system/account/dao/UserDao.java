@@ -50,6 +50,7 @@ public class UserDao extends BaseDao{
 		}	
 	}
 
+
 	public boolean validate(String username, String password)throws DataAccessException{
 		
 		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();
@@ -115,6 +116,40 @@ public class UserDao extends BaseDao{
     	List<SysUserTo> result = sjt.query(sql,rowMapper, new Object[] {userId} );		
 		if (result != null && result.size() > 0){
 			return result.get(0);
+		} else {
+			return null;
+		}
+	}
+
+	public List<SysUserTo> getUserDetailList(String userId)throws DataAccessException{
+		
+		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();
+		String sql = " SELECT "
+					+ 		" A.USER_ID " 
+					+		" ,A.REAL_NAME " 
+					+		" ,A.PASSWORD " 
+					+		" ,A.COMPANY " 
+					+		" ,A.DEPARTMENT " 
+					+		" ,A.POSITION " 
+					+		" ,A.EMAIL " 
+					+		" ,A.PHONE_NUM " 
+					+		" ,A.ACTIVE " 
+					+		" ,A.LAST_TIME " 
+					+		" ,A.LAST_IP " 
+					+		" ,A.CDT " 
+					+		" ,A.CREATE_BY " 
+					+		" ,A.UPDATE_BY " 
+					+		" ,A.UDT " 
+					+ " FROM SYS_USER A "
+					+ " Where USER_ID like '%" + userId +"%'";
+		
+    	ParameterizedBeanPropertyRowMapper<SysUserTo> rowMapper = 
+    		new ParameterizedBeanPropertyRowMapper<SysUserTo>();
+    	rowMapper.setMappedClass(SysUserTo.class);
+
+    	List<SysUserTo> result = sjt.query(sql,rowMapper, new Object[] {} );		
+		if (result != null && result.size() > 0){
+			return result;
 		} else {
 			return null;
 		}

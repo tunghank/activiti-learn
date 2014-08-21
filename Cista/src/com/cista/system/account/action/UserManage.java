@@ -98,7 +98,8 @@ public class UserManage extends BaseAction  {
             logger.debug("start: " + Integer.parseInt(start));
             logger.debug("limit: " + limit);
 			
-			String userId = request.getParameter("userId");
+            
+			String userId = request.getParameter("query"); 
 			userId = null != userId ? userId : "";
 			logger.debug("userId " + userId);
 			
@@ -109,10 +110,7 @@ public class UserManage extends BaseAction  {
 			if(userId.equals("")){
 				userList = (ArrayList<SysUserTo>)userDAO.showAllUsers();
 			}else{
-				SysUserTo sysUserTo = userDAO.getUserDetail(userId);
-				if(sysUserTo != null){
-					userList.add(sysUserTo);
-				}
+				userList = userDAO.getUserDetailList(userId);
 			}
 			
 			//分頁
