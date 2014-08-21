@@ -115,10 +115,10 @@ Ext.onReady(function(){
 						layout : 'anchor',
 						border: false,
 						items : [
-									/*{
+									{
 										xtype: 'radiogroup',
-										id:'userRole',
-										name: 'userRole',
+										id:'companyType',
+										name: 'companyType',
 										fieldLabel: 'Role',
 										//arrange Radio Buttons into 2 columns
 										columns: 3,
@@ -128,7 +128,7 @@ Ext.onReady(function(){
 												// 1
 												xtype: 'radiofield',
 												boxLabel: 'Cista',
-												name: 'role',
+												name: 'companyType',
 												checked: true,
 												inputValue: '<%=CistaUtil.CISTA_ROLE%>'
 											},
@@ -136,26 +136,26 @@ Ext.onReady(function(){
 												// 2
 												xtype: 'radiofield',
 												boxLabel: 'Customer',
-												name: 'role',
+												name: 'companyType',
 												inputValue: '<%=CistaUtil.CUSTOMER_ROLE%>'
 											},
 											{
 												// 3
 												xtype: 'radiofield',
 												boxLabel: 'Vendor',
-												name: 'role',
+												name: 'companyType',
 												inputValue: '<%=CistaUtil.VENDOR_ROLE%>'
 											}
 										],            
 										listeners: {
 											change: function ( radio, newV, oldV, e ) {
 
-												if( newV['role'] == "1" ){
+												if( newV['companyType'] == "1" ){
 													var company = Ext.getCmp('company');
 													company.allowBlank = true;
 													company.hide()
 
-												}else if (newV['role'] == "2"){
+												}else if (newV['companyType'] == "2"){
 													var company = Ext.getCmp('company');
 													company.allowBlank = false;
 													company.blankText = 'This should not be blank!'
@@ -163,7 +163,7 @@ Ext.onReady(function(){
 													company.show()
 
 												}
-												else if (newV['role'] == "3"){
+												else if (newV['companyType'] == "3"){
 													var company = Ext.getCmp('company');
 													company.allowBlank = false;
 													company.blankText = 'This should not be blank!'
@@ -177,7 +177,7 @@ Ext.onReady(function(){
 													company.hide()
 											}
 										}
-									},*/						
+									},						
 									{
 										xtype: "textfield",
 										id:'userId',
@@ -187,7 +187,7 @@ Ext.onReady(function(){
 										blankText: 'This should not be blank!',
 										anchor:'100%'
 									},						
-									/*{
+									{
 										xtype: "textfield",
 										id:'email',
 										name: 'email',
@@ -265,7 +265,7 @@ Ext.onReady(function(){
 										id:'active',
 										name: 'active',
 										fieldLabel : 'Active'
-									}*/
+									}
 
 								]
 					}
@@ -693,12 +693,7 @@ Ext.onReady(function(){
 	function updateUser(){
 		//得到選中的行
 		var record = grid.getSelectionModel().getSelection();
-		
-		alert(Ext.decode(record));
-		userForm.loadRecord(record); 		
-
-		//userForm.loadRecord(record);
-
+		userForm.loadRecord(record[0]); 		
 
 		if(record.length==0){  
 			 Ext.MessageBox.show({   

@@ -325,12 +325,12 @@ public class UserManage extends BaseAction  {
 			
 			//1.3 Prepare Save Data
 
-			String userRole = userInfo.getRole();
-			userRole = null != userRole ? userRole : "";
-			if(userRole.equals("1") ){
+			String companyType = userInfo.getCompanyType();
+			companyType = null != companyType ? companyType : "";
+			if(companyType.equals("1") ){
 				//Cista
 				userInfo.setCompany(CistaUtil.CISTA_SITE);
-			}else if(userRole.equals("2") ){
+			}else if(companyType.equals("2") ){
 				//Customer or Vendor
 				
 			}
