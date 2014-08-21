@@ -17,7 +17,7 @@ public class SysUserTo extends com.cista.system.util.BaseObject implements
 	private static final long serialVersionUID = 1L;
 	
 	// Fields
-	private String role;
+	private String companyType;
 	private String userId;
 	private String realName;
 	private String password;
@@ -210,13 +210,15 @@ public class SysUserTo extends com.cista.system.util.BaseObject implements
 		this.roleName = roleName;
 	}
 
-	public String getRole() {
-		return role;
+	public String getCompanyType() {
+		return companyType;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setCompanyType(String companyType) {
+		this.companyType = companyType;
 	}
+
+
 
 	
 }
