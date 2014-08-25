@@ -682,8 +682,8 @@ Ext.onReady(function(){
 							 xtype: 'toolbar',   
 							 items: {   
 								 width: 400,   
-								 fieldLabel: 'Search ID:',   
-								 labelWidth: 70,   
+								 fieldLabel: 'Search User ID:',   
+								 labelWidth: 80,   
 								 xtype: 'searchfield',   
 								 store: store   
 							}  
