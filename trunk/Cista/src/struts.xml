@@ -65,19 +65,20 @@
              <result name="success">/system/UserSearch.jsp</result>
          </action>
          
+		 <!--
          <action name="UserSearch" class="com.cista.system.account.action.UserManage" method="userSearch">
          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
              <result name="success">/system/UserSearchResult.jsp</result>
              <result name="input">/system/UserSearchResult.jsp</result>
          </action>
-         
+         -->
          <action name="DisableUser" class="com.cista.system.account.action.UserManage" method="disableUser">
          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
              <!-- <result name="success">/system/userSearchResult.jsp</result>-->
-             <result name="success" type ="chain">UserSearch</result>
-         </action>
+         <!--     <result name="success" type ="chain">UserSearch</result>
+         </action> -->
          
          <action name="UserProfilePre" class="com.cista.system.account.action.UserManage" method="userProfilePre">
           	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
