@@ -72,10 +72,10 @@
              <result name="success">/system/UserSearchResult.jsp</result>
              <result name="input">/system/UserSearchResult.jsp</result>
          </action>
-         -->
+         
          <action name="DisableUser" class="com.cista.system.account.action.UserManage" method="disableUser">
          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
-         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref> -->
              <!-- <result name="success">/system/userSearchResult.jsp</result>-->
          <!--     <result name="success" type ="chain">UserSearch</result>
          </action> -->
