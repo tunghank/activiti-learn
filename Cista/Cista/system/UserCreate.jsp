@@ -448,20 +448,16 @@ Ext.onReady(function(){
 	//創建grid  
 	var grid = Ext.create('Ext.grid.Panel',{  
 		  
-			tbar:[  
+			tbar:[
 				{  
 					xtype:'button',  
-					text:'添加'/*,  
-					handler:'addUser'*/
-				},{  
-					xtype:'button',  
-					text:'修改',  
+					text:'修改',
+					style: {
+					   borderColor: '#99CC00',
+					   borderStyle: 'solid'
+					},
 					handler:updateUser
-				},{  
-					xtype:'button',  
-					text:'刪除'/*,  
-					handler:deleteUser*/
-				}  
+				}
 			],  
 			  
 			store:store,  
