@@ -338,6 +338,37 @@ Ext.onReady(function(){
 						}else{//FINISH
 							Ext.MessageBox.alert('Success', 'FINISH : '+ message );
 							userForm.form.reset();
+
+							//Grid Reload data
+							Ext.Ajax.request({  //ajax request test  
+								url : '<%=contextPath%>/UserSave.action',  
+								params : {  
+									data: Ext.encode(userForm.getValues())
+								},
+								method : 'POST',
+								scope:this,
+								success : function(response, options) {
+									//parse Json data
+									var freeback = Ext.JSON.decode(response.responseText);
+									var message =  freeback.ajaxMessage;
+									var status  =  freeback.ajaxStatus;
+									userFormSubmit.enable();
+									if( status == '<%=CistaUtil.AJAX_RSEPONSE_ERROR%>' ){//ERROR
+										Ext.MessageBox.alert('Success', 'ERROR : '+ message );
+									}else{//FINISH
+										Ext.MessageBox.alert('Success', 'FINISH : '+ message );
+										userForm.form.reset();
+
+										//Grid Reload data
+
+									}
+									
+
+								},  
+								failure : function(response, options) {  
+									Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
+								}  
+							});
 						}
 						
 
@@ -431,7 +462,7 @@ Ext.onReady(function(){
 				},
 				sorters:[{property:"userId",direction:"ASC"}],//按qq倒序
 				//autoLoad:{params:{start:0,limit:10}}//自動加載，每次加載一頁
-				autoLoad:true  
+				autoLoad:false  
 			}  
 	); 
 
@@ -695,7 +726,7 @@ Ext.onReady(function(){
 			  
 		}  
 	)  
-	store.loadPage(1);
+	//store.loadPage(1);
 
 	//Grid Function
 	function updateUser(){
