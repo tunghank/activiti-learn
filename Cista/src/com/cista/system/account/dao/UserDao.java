@@ -399,17 +399,19 @@ public class UserDao extends BaseDao{
 			+ " 	,REAL_NAME "
 			+ " 	,PASSWORD "
 			+ " 	,COMPANY "
+			+ " 	,COMPANY_TYPE "
 			+ " 	,DEPARTMENT "
 			+ " 	,POSITION "
 			+ " 	,EMAIL "
 			+ " 	,PHONE_NUM "
 			+ " 	,ACTIVE "
 			+ " 	,CREATE_BY "
-			+ " )VALUES (?,?,?,?,?,?,?,?,?,?) " ;			
+			+ " )VALUES (?,?,?,?,?,?,?,?,?,?,?) " ;			
 				
 		int result = sjt.update(sql, new Object[] { newUser.getUserId(),
 				newUser.getRealName(), newUser.getPassword(),
-				newUser.getCompany(), newUser.getDepartment(),
+				newUser.getCompany(), newUser.getCompanyType(), 
+				newUser.getDepartment(),
 				newUser.getPosition(), newUser.getEmail(),
 				newUser.getPhoneNum(), newUser.getActive(),
 				newUser.getCreateBy() });
