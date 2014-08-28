@@ -117,8 +117,8 @@ Ext.onReady(function(){
 						items : [
 									{
 										xtype: 'radiogroup',
-										id:'companyType',
-										name: 'companyType',
+										id:'companyTypeGrp',
+										name: 'companyTypeGrp',
 										fieldLabel: 'Role',
 										//arrange Radio Buttons into 2 columns
 										columns: 3,
