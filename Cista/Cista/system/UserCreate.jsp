@@ -318,6 +318,7 @@ Ext.onReady(function(){
 		//1.0 List Form Button
 		var userFormSubmit =Ext.getCmp('userFormSubmit'); 
 		userFormSubmit.disable();
+		
 
 		Ext.Ajax.timeout = 120000; // 120 seconds
 		Ext.Ajax.request({  //ajax request test  
@@ -337,38 +338,35 @@ Ext.onReady(function(){
 							Ext.MessageBox.alert('Success', 'ERROR : '+ message );
 						}else{//FINISH
 							Ext.MessageBox.alert('Success', 'FINISH : '+ message );
+							
 							userForm.form.reset();
 
-							//Grid Reload data
+							//Grid load data Ajax
 							Ext.Ajax.request({  //ajax request test  
-								url : '<%=contextPath%>/UserSave.action',  
-								params : {  
-									data: Ext.encode(userForm.getValues())
-								},
-								method : 'POST',
-								scope:this,
-								success : function(response, options) {
-									//parse Json data
-									var freeback = Ext.JSON.decode(response.responseText);
-									var message =  freeback.ajaxMessage;
-									var status  =  freeback.ajaxStatus;
-									userFormSubmit.enable();
-									if( status == '<%=CistaUtil.AJAX_RSEPONSE_ERROR%>' ){//ERROR
-										Ext.MessageBox.alert('Success', 'ERROR : '+ message );
-									}else{//FINISH
-										Ext.MessageBox.alert('Success', 'FINISH : '+ message );
-										userForm.form.reset();
+									url : '<%=contextPath%>/AjaxUserSearch.action',  
+									params : {  
+										query: userForm.getForm().findField('userId').getValue(),
+										start:'0',
+										limit:'10'
+									},
+									method : 'POST',
+									scope:this,
+									success : function(response, options) {
+										//parse Json data
+										var freeback = Ext.JSON.decode(response.responseText);
+										
+										//Load Data in store
+										grid.getStore().removeAll();
+										grid.getStore().loadData(freeback['root']);
+						
 
-										//Grid Reload data
+									},  
+									failure : function(response, options) {  
+										Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
+									}  
+								});
+							
 
-									}
-									
-
-								},  
-								failure : function(response, options) {  
-									Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
-								}  
-							});
 						}
 						
 
@@ -478,7 +476,7 @@ Ext.onReady(function(){
 
 	//創建grid  
 	var grid = Ext.create('Ext.grid.Panel',{  
-		  
+			id:'gridUser',
 			tbar:[
 				{  
 					xtype:'button',  
@@ -704,7 +702,7 @@ Ext.onReady(function(){
 						   
 						   
 						 //添加搜索控件  
-						 {  
+						 /*{  
 							 dock: 'top',   
 							 xtype: 'toolbar',   
 							 items: {   
@@ -714,7 +712,7 @@ Ext.onReady(function(){
 								 xtype: 'searchfield',   
 								 store: store   
 							}  
-						 },{   
+						 },*/{   
 							 dock: 'bottom',   
 							 xtype: 'pagingtoolbar',   
 							 store: store,   

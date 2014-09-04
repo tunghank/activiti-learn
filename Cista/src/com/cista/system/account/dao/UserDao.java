@@ -147,8 +147,9 @@ public class UserDao extends BaseDao{
 					+		" ,A.UPDATE_BY " 
 					+		" ,A.UDT " 
 					+ " FROM SYS_USER A "
-					+ " Where USER_ID like '%" + userId +"%'";
+					+ " Where USER_ID = '" + userId +"'";
 		
+		logger.debug("sql " +sql );
     	ParameterizedBeanPropertyRowMapper<SysUserTo> rowMapper = 
     		new ParameterizedBeanPropertyRowMapper<SysUserTo>();
     	rowMapper.setMappedClass(SysUserTo.class);

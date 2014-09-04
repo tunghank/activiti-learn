@@ -81,6 +81,7 @@ public class UserManage extends BaseAction  {
 		return SUCCESS;
 	}
 
+	
 	public String AjaxUserSearch() throws Exception {
 		
 		try {
@@ -113,6 +114,7 @@ public class UserManage extends BaseAction  {
 				userList = userDAO.getUserDetailList(userId);
 			}
 			
+			//logger.debug("userList Size " + userList.size());
 			//分頁
 			total=userList.size();
 			int end=iStart+iLimit;
@@ -122,8 +124,10 @@ public class UserManage extends BaseAction  {
 			
 			List<SysUserTo> resultList = new ArrayList<SysUserTo>();
 			for(int i=iStart;i<end;i++){//只加載當前頁面數據
+				//logger.debug(userList.get(i).toString());
 				resultList.add(userList.get(i));
 			}
+			//logger.debug(resultList.toString());
 			
 			ExtJSGridTo extJSGridTo = new ExtJSGridTo();
 			extJSGridTo.setTotal(total);
@@ -134,12 +138,10 @@ public class UserManage extends BaseAction  {
 			//logger.debug(jsonData);
 			
 			// 1.5 Set AJAX response
-			CistaUtil.ajaxResponseData(response, jsonData);
-			
-			
+			CistaUtil.ajaxResponseData(response, jsonData);			
 
 		} catch (Exception e) {
-			this.addActionMessage("Save ERROR");
+			this.addActionMessage("ERROR");
 			e.printStackTrace();
 			logger.error(e.toString());
 			addActionMessage(e.toString());
