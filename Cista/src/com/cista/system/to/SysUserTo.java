@@ -38,7 +38,7 @@ public class SysUserTo extends com.cista.system.util.BaseObject implements
 	private String roleId;
 	private String roleName;
 	
-
+	private String editStatus;
 	// Constructors
 	// FOR projcet count
 	private String count;
@@ -216,6 +216,14 @@ public class SysUserTo extends com.cista.system.util.BaseObject implements
 
 	public void setCompanyType(String companyType) {
 		this.companyType = companyType;
+	}
+
+	public String getEditStatus() {
+		return editStatus;
+	}
+
+	public void setEditStatus(String editStatus) {
+		this.editStatus = editStatus;
 	}
 
 

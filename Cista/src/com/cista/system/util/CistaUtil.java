@@ -839,7 +839,7 @@ public class CistaUtil {
 			ajaxResponeTo.setAjaxMessage(ajaxMessage);
 			ajaxResponeTo.setAjaxStatus(ajaxStatus);
 			Gson gson = new Gson();
-			System.out.println( gson.toJson(ajaxResponeTo) );
+			//System.out.println( gson.toJson(ajaxResponeTo) );
 			
 			response.setCharacterEncoding("UTF-8");
 			PrintWriter out = response.getWriter();
