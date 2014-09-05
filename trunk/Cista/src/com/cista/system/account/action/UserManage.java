@@ -350,6 +350,11 @@ public class UserManage extends BaseAction  {
 			userInfo.setCreateBy(curUser.getUserId());
 			Calendar cal = Calendar.getInstance();
 			userInfo.setCdt(cal.getTime());
+			
+			String editStatus = userInfo.getEditStatus();
+			editStatus = null != editStatus ? editStatus : "";
+			
+			logger.debug("editStatus " + editStatus);
 			//1.4 Insert DB
 			
 			//判斷 1.4.1 User 是否已經存在

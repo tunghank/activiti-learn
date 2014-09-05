@@ -265,6 +265,14 @@ Ext.onReady(function(){
 										id:'active',
 										name: 'active',
 										fieldLabel : 'Active'
+									},						
+									{
+										xtype: "textfield",
+										id:'editStatus',
+										name: 'editStatus',
+										fieldLabel : 'editStatus',
+										allowBlank : true,
+										value :0
 									}
 
 								]
@@ -339,8 +347,7 @@ Ext.onReady(function(){
 						}else{//FINISH
 							Ext.MessageBox.alert('Success', 'FINISH : '+ message );
 							
-							userForm.form.reset();
-
+							//alert(userForm.getForm().findField('userId').getValue());
 							//Grid load data Ajax
 							Ext.Ajax.request({  //ajax request test  
 									url : '<%=contextPath%>/AjaxUserSearch.action',  
@@ -366,7 +373,7 @@ Ext.onReady(function(){
 									}  
 								});
 							
-
+							 userForm.form.reset();
 						}
 						
 
@@ -731,6 +738,8 @@ Ext.onReady(function(){
 		//得到選中的行
 		var record = grid.getSelectionModel().getSelection();
 		userForm.loadRecord(record[0]); 		
+		//Set Edit Status
+		userForm.getForm().findField('editStatus').setValue('1');
 
 		if(record.length==0){  
 			 Ext.MessageBox.show({   
