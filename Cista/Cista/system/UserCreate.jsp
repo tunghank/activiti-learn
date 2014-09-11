@@ -374,6 +374,11 @@ Ext.onReady(function(){
 								});
 							
 							 userForm.form.reset();
+							//Set Edit Status
+							//userForm.getForm().findField('editStatus').setValue('0');
+							//User ID 設定為唯讀
+							userForm.getForm().findField('userId').setReadOnly (false); 
+							userForm.getForm().findField('userId').fieldCls='x-form-field';
 						}
 						
 
@@ -740,7 +745,9 @@ Ext.onReady(function(){
 		userForm.loadRecord(record[0]); 		
 		//Set Edit Status
 		userForm.getForm().findField('editStatus').setValue('1');
-
+		//User ID 設定為唯讀
+		userForm.getForm().findField('userId').setReadOnly (true); 
+		userForm.getForm().findField('userId').setFieldStyle('color:#0000CC;background:#E1E1E1;');
 		if(record.length==0){  
 			 Ext.MessageBox.show({   
 				title:"提示",   
