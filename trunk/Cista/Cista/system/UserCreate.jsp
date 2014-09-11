@@ -378,7 +378,8 @@ Ext.onReady(function(){
 							//userForm.getForm().findField('editStatus').setValue('0');
 							//User ID 設定為唯讀
 							userForm.getForm().findField('userId').setReadOnly (false); 
-							userForm.getForm().findField('userId').fieldCls='x-form-field';
+							//userForm.getForm().findField('userId').setFieldStyle('color:#000000;background:#FFFFFF;');
+							userForm.getForm().findField('userId').removeCls('x-item-disabled');
 						}
 						
 
@@ -747,7 +748,9 @@ Ext.onReady(function(){
 		userForm.getForm().findField('editStatus').setValue('1');
 		//User ID 設定為唯讀
 		userForm.getForm().findField('userId').setReadOnly (true); 
-		userForm.getForm().findField('userId').setFieldStyle('color:#0000CC;background:#E1E1E1;');
+		//userForm.getForm().findField('userId').setFieldStyle('color:#0000CC;background:#E1E1E1;');
+		userForm.getForm().findField('userId').addCls('x-item-disabled');
+		x-item-disabled
 		if(record.length==0){  
 			 Ext.MessageBox.show({   
 				title:"提示",   
