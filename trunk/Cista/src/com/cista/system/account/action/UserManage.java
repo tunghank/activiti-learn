@@ -355,33 +355,39 @@ public class UserManage extends BaseAction  {
 			editStatus = null != editStatus ? editStatus : "";
 			
 			logger.debug("editStatus " + editStatus);
+			
 			//1.4 Insert DB
-			
-			//判斷 1.4.1 User 是否已經存在
-			SysUserTo oldUser = userDao.getActiveCurUser(userInfo.getUserId());
-			if( oldUser != null){
+			if(editStatus.equals("1")) {//Modify User
+				//1.4.0 Update User
 				
-				messageString = getText("System.createUser.message.fail.userIdIsInDB");
-				CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_ERROR);
+				messageString = "Update Finish";
+			}else{//Create New User
+				
+				//判斷 1.4.1 User 是否已經存在
+				SysUserTo oldUser = userDao.getActiveCurUser(userInfo.getUserId());
+				if( oldUser != null){
+					
+					messageString = getText("System.createUser.message.fail.userIdIsInDB");
+					CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_ERROR);
+	
+					return NONE;
+				}
+				
+				// 新增 1.4.2
+				int result = userDao.insertUser(userInfo);		
+				if (result != 1){
+					
+					messageString = getText("System.createUser.message.fail.insertUserError");
+					CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_ERROR);
+					
+					return NONE;
+				}
+				messageString = "Save Finish";
 
-				return NONE;
-			}		
-
-			
-			// 新增 1.4.2
-			int result = userDao.insertUser(userInfo);		
-			if (result != 1){
-				
-				messageString = getText("System.createUser.message.fail.insertUserError");
-				CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_ERROR);
-				
-				return NONE;
 			}
-			
 			// 1.5 Set AJAX response
-			messageString = "Save Finish";
 			CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_FINISH);
-			
+						
 			// send mail to new user		
 			//String mailSubject = CistaUtil.getMessage("IE.email.createUser.subject", this.realName);				
 			//CistaUtil.sendInitialUserMail(request , response , mailSubject, newUser,curUser.getEmail());
