@@ -359,7 +359,14 @@ public class UserManage extends BaseAction  {
 			//1.4 Insert DB
 			if(editStatus.equals("1")) {//Modify User
 				//1.4.0 Update User
-				
+				int result = userDao.updateUser(userInfo);		
+				if (result < 1){
+					
+					messageString = getText("System.createUser.message.fail.updateUserError");
+					CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_ERROR);
+					
+					return NONE;
+				}
 				messageString = "Update Finish";
 			}else{//Create New User
 				
@@ -375,7 +382,7 @@ public class UserManage extends BaseAction  {
 				
 				// 新增 1.4.2
 				int result = userDao.insertUser(userInfo);		
-				if (result != 1){
+				if (result < 1){
 					
 					messageString = getText("System.createUser.message.fail.insertUserError");
 					CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_ERROR);
