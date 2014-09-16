@@ -520,7 +520,7 @@ Ext.onReady(function(){
 						id:'gUserId',  
 						//表頭  
 						header:'User ID',  
-						width:60,  
+						width:100,  
 						//內容  
 						dataIndex:'userId',  
 						sortable:true
@@ -535,14 +535,14 @@ Ext.onReady(function(){
 						},{  
 						 id:'gCompany',  
 						 header:'Company',  
-						 width:100,  
+						 width:80,  
 						 dataIndex:'company',  
 						 sortable:false
 					  
 						},{
 						 id:'gDepartment',  
 						 header:'Department',  
-						 width:100,  
+						 width:80,  
 						 dataIndex:'department',  
 						 sortable:false
 					  
@@ -571,20 +571,21 @@ Ext.onReady(function(){
 						},{  
 						 id:'gPhoneNum',  
 						 header:'Phone',  
-						 width:120,  
+						 width:100,  
 						 dataIndex:'phoneNum',  
 						 sortable:false
 					  
 						},{  
 							id:'gActive',  
 							header:'Active',  
-							width:40,  
+							width:60,  
 							dataIndex:'active',  
 							editor:{  
 								xtype:'combobox',  
 								store:activeStore,  
 								displayField:'name',  
-								valueField:'id'/*,
+								valueField:'id',
+								readOnly :true/*,
 								listeners:{       
 									select : function(combo, record,index){   
 										isEdit = true;   
