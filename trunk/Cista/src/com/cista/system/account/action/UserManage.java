@@ -347,9 +347,13 @@ public class UserManage extends BaseAction  {
 				userInfo.setActive(CistaUtil.USER_ACTIVE);
 			}
 
+			//1.3.3 Set Creator , Create Date , Update By, Update Date
 			userInfo.setCreateBy(curUser.getUserId());
 			Calendar cal = Calendar.getInstance();
 			userInfo.setCdt(cal.getTime());
+			
+			userInfo.setUpdateBy(curUser.getUserId());
+			userInfo.setUdt(cal.getTime());
 			
 			String editStatus = userInfo.getEditStatus();
 			editStatus = null != editStatus ? editStatus : "";

@@ -366,10 +366,12 @@ public class UserDao extends BaseDao{
 			+ "		A.REAl_NAME 	= ? "			
 			+ "		,A.PASSWORD 	= ? "
 			+ "		,A.COMPANY 		= ? "
+			+ "		,A.COMPANY_TYPE = ? "
 			+ "     ,A.DEPARTMENT 	= ? "
 			+ "     ,A.POSITION 	= ? "
 			+ "     ,A.EMAIL 		= ? "
 			+ "		,A.PHONE_NUM 	= ? "
+			+ "		,A.ACTIVE 	= ? "
 			+ "     ,A.UPDATE_BY 	= ? "	
 			+ "     ,A.UDT = SYSDATE "
 			+ "	WHERE  A.USER_ID 	= ? ";		
@@ -379,10 +381,12 @@ public class UserDao extends BaseDao{
 						user.getRealName()
 						,user.getPassword()
 						,user.getCompany()
+						,user.getCompanyType()
 						,user.getDepartment()
 						,user.getPosition()
 						,user.getEmail()
 						,user.getPhoneNum()
+						,user.getActive()
 						,user.getUpdateBy()					
 						,user.getUserId()
 				}

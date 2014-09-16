@@ -272,7 +272,8 @@ Ext.onReady(function(){
 										name: 'editStatus',
 										fieldLabel : 'editStatus',
 										allowBlank : true,
-										value :0
+										value :0,
+										hidden:true
 									}
 
 								]
@@ -427,7 +428,8 @@ Ext.onReady(function(){
 				fields:[  
 						{name:'userId',mapping:'userId'},  
 						{name:'realName',mapping:'realName'},  
-						{name:'company',mapping:'company'},  
+						{name:'company',mapping:'company'},
+					    {name:'department',mapping:'department'},
 					    {name:'companyType',mapping:'companyType'},  
 						{name:'position',mapping:'position'},
 						{name:'email',mapping:'email'},
@@ -521,77 +523,57 @@ Ext.onReady(function(){
 						width:60,  
 						//內容  
 						dataIndex:'userId',  
-						sortable:true,  
-						editor:{  
-							xtype:'textfield',  
-							allowBlank:false  
-						}  
+						sortable:true
 					   
 					 },{  
 						 id:'gRealName',  
 						 header:'Name',  
 						 width:100,  
 						 dataIndex:'realName',  
-						 sortable:false,  
-						 editor:{  
-								xtype:'textfield',  
-								allowBlank:false  
-						 }  
+						 sortable:false
 					  
 						},{  
 						 id:'gCompany',  
 						 header:'Company',  
 						 width:100,  
 						 dataIndex:'company',  
-						 sortable:false,  
-						 editor:{  
-								xtype:'textfield',  
-								allowBlank:false  
-						 }  
+						 sortable:false
+					  
+						},{
+						 id:'gDepartment',  
+						 header:'Department',  
+						 width:100,  
+						 dataIndex:'department',  
+						 sortable:false
 					  
 						},{  
 						 id:'gCompanyType',  
 						 header:'Company Type',  
 						 width:100,  
 						 dataIndex:'companyType',  
-						 sortable:false,  
-						 editor:{  
-								xtype:'textfield',  
-								allowBlank:false  
-						 }  
+						 sortable:false,
+					     hidden:true
 					  
 						},{  
 						 id:'gPosition',  
 						 header:'Position',  
 						 width:100,  
 						 dataIndex:'position',  
-						 sortable:false,  
-						 editor:{  
-								xtype:'textfield',  
-								allowBlank:false  
-						 }  
+						 sortable:false
 					  
 						},{  
 						 id:'gEmail',  
 						 header:'Email',  
 						 width:200,  
 						 dataIndex:'email',  
-						 sortable:false,  
-						 editor:{  
-								xtype:'textfield',  
-								allowBlank:false  
-						 }  
+						 sortable:false
 					  
 						},{  
 						 id:'gPhoneNum',  
 						 header:'Phone',  
 						 width:120,  
 						 dataIndex:'phoneNum',  
-						 sortable:false,  
-						 editor:{  
-								xtype:'textfield',  
-								allowBlank:false  
-						 }  
+						 sortable:false
 					  
 						},{  
 							id:'gActive',  
@@ -602,71 +584,56 @@ Ext.onReady(function(){
 								xtype:'combobox',  
 								store:activeStore,  
 								displayField:'name',  
-								valueField:'id',  
+								valueField:'id'/*,
 								listeners:{       
 									select : function(combo, record,index){   
 										isEdit = true;   
 									}   
-								}   
-							}  
+								}*/
+							},
+							renderer: function(value) {
+								var rec = activeStore.getById(value);
+								
+								if (rec)
+								{
+									return rec.get('name');
+								}
+								
+								return '&mdash;';
+							}
 						},{  
 						 id:'gCreateBy',  
 						 header:'Creator',  
 						 width:60,  
 						 dataIndex:'createBy',  
-						 sortable:false,  
-						 editor:{  
-								xtype:'textfield',  
-								allowBlank:false  
-						 }  
+						 sortable:false
 					  
 						},{  
 							id:'gCdt',  
 							header:'Create Date',  
-							width:100,  
+							width:120,  
 							dataIndex:'cdt',  
-							//lazyRender: true,  
-														  
+							//lazyRender: true,					  
 							renderer: function(value){   
-										return value ? Ext.Date.dateFormat(value, 'Y-m-d') : '';   
-									},  
-							  
-							editor:{  
-								xtype:'datefield',  
-								format:'Y-m-d',  
-								//minValue: '01/01/06'   
-							}  
-							  
-							  
+										return value ? Ext.Date.dateFormat(value, 'Y-m-d H:m:s') : '';   
+									}
 						},{  
 						 id:'gUpdateBy',  
 						 header:'Update By',  
 						 width:60,  
 						 dataIndex:'updateBy',  
-						 sortable:false,  
-						 editor:{  
-								xtype:'textfield',  
-								allowBlank:false  
-						 }  
+						 sortable:false
 					  
 						},{  
 							id:'gUdt',  
 							header:'Update Date',  
-							width:100,  
+							width:120,  
 							dataIndex:'udt',  
 							//lazyRender: true,  
 														  
 							renderer: function(value){   
-										return value ? Ext.Date.dateFormat(value, 'Y-m-d') : '';   
-									},  
-							  
-							editor:{  
-								xtype:'datefield',  
-								format:'Y-m-d',  
-								//minValue: '01/01/06'   
-							}  
-							  
-							  
+										return value ? Ext.Date.dateFormat(value, 'Y-m-d H:m:s') : '';   
+									}
 						}  
 			],  
 			height:380,   
