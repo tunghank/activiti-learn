@@ -347,7 +347,104 @@ public class UserManage extends BaseAction  {
    		return NONE;
 	}
 	
+	public String AjaxUserDisable() throws Exception {
+		
+		try {
+			request= ServletActionContext.getRequest();
+			//for paging        
+	        int total;//分頁。。。數據總數       
+	        int iStart;//分頁。。。每頁開始數據
+	        int iLimit;//分頁。。。每一頁數據
+	        
+	        String start = request.getParameter("start");
+            String limit = request.getParameter("limit");
+            iStart = Integer.parseInt(start);
+            iLimit = Integer.parseInt(limit);
+            
+            logger.debug("start: " + Integer.parseInt(start));
+            logger.debug("limit: " + limit);
+			
+            
+			String userId = request.getParameter("query"); 
+			userId = null != userId ? userId : "";
+			logger.debug("userId " + userId);
+			
+	        UserDao userDAO = new UserDao();		
+	
+			List<SysUserTo> userList = new ArrayList<SysUserTo>();
+			String messageString="";
+			
+			if(userId.equals("")){
+				messageString = getText("System.createUser.message.fail.disableUserInDB" + " " + "No User ID");
+				CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_ERROR);
+				
+				return NONE;
+			}else{
+				SysUserTo curUser = (SysUserTo)request.getSession().getAttribute(CistaUtil.CUR_USERINFO);
+				logger.debug("Cur User : " + curUser.getUserId());
+				int i  = userDAO.disableUser(userId, curUser.getUserId());
+				if (i <= 0){
+					messageString = getText("System.createUser.message.fail.disableUserInDB");
+					CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_ERROR);
+					
+					return NONE;
+				}else{
+					userList = (ArrayList<SysUserTo>)userDAO.showAllUsers();
+				}
+			}
+			
+			//logger.debug("userList Size " + userList.size());
+			//分頁
+			total=userList.size();
+			int end=iStart+iLimit;
+			if(end>total){//不能總數
+				end=total;
+			}		
+			
+			List<SysUserTo> resultList = new ArrayList<SysUserTo>();
+			for(int i=iStart;i<end;i++){//只加載當前頁面數據
+				//logger.debug(userList.get(i).toString());
+				resultList.add(userList.get(i));
+			}
+			//logger.debug(resultList.toString());
+			
+			ExtJSGridTo extJSGridTo = new ExtJSGridTo();
+			extJSGridTo.setTotal(total);
+			extJSGridTo.setRoot(resultList);
+			
+			Gson gson = new Gson();
+			String jsonData = gson.toJson(extJSGridTo);
+			//logger.debug(jsonData);
+			
+			// 1.5 Set AJAX response
+			CistaUtil.ajaxResponseData(response, jsonData);
 
+		} catch (Exception e) {
+			this.addActionMessage("ERROR");
+			e.printStackTrace();
+			logger.error(e.toString());
+			addActionMessage(e.toString());
+          	//AJAX
+          	try{
+  		    	response.setContentType("text/html; charset=UTF-8");
+  				PrintWriter out = response.getWriter();
+  				String returnResult = "ERROR" ;
+
+  				logger.debug(returnResult);
+  				logger.debug("Error");
+  				out.print(returnResult);
+  				out.close();
+          	}catch(Exception ex){
+          		ex.printStackTrace();
+                logger.error(ex.toString());
+                return NONE;
+          	}
+
+		}
+		
+   		return NONE;
+	}
+	
 	
 	public String disableUser() throws Exception{
 		

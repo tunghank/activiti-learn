@@ -801,6 +801,50 @@ Ext.onReady(function(){
 	}// End deleteUser()
 
 	function disableUser(){
+
+				//得到選中的行
+		var record = grid.getSelectionModel().getSelection();
+		if(record.length==0){  
+			 Ext.MessageBox.show({   
+				title:"提示",   
+				msg:"請先選擇您要'刪除'的行!"   
+			 })  
+			return;  
+		}else{  
+			var ids = "";   
+			for(var i = 0; i < record.length; i++){   
+				ids += record[i].get("userId")   
+				if(i<record.length-1){   
+					ids = ids + ",";   
+				}   
+			}  
+			//AJAX Call Delete Function
+			//Grid load data Ajax
+			Ext.Ajax.timeout = 120000; // 120 seconds
+			Ext.Ajax.request({  //ajax request test  
+					url : '<%=contextPath%>/AjaxUserDisable.action',  
+					params : {  
+						query: ids,
+						start:'0',
+						limit:'10'
+					},
+					method : 'POST',
+					scope:this,
+					success : function(response, options) {
+						//parse Json data
+						var freeback = Ext.JSON.decode(response.responseText);
+						
+						//Load Data in store
+						grid.getStore().removeAll();
+						grid.getStore().reload(freeback['root']);
+						grid.getView().refresh();
+
+					},  
+					failure : function(response, options) {  
+						Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
+					}  
+			});
+		}
 	}// End deleteUser()
 });
 
