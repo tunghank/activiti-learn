@@ -27,6 +27,7 @@ import com.cista.system.util.CistaUtil;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.sun.java_cup.internal.internal_error;
 
 import net.sf.json.JSONArray;
 
@@ -69,7 +70,7 @@ public class UserManage extends BaseAction  {
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 	
 	//20110629
-	public String userSearchPre() throws Exception {
+	public String UserSearchPre() throws Exception {
 		
 		UserDao userDAO = new UserDao();
 		request= ServletActionContext.getRequest();
@@ -81,6 +82,89 @@ public class UserManage extends BaseAction  {
 		return SUCCESS;
 	}
 
+	public String AjaxUserSearchLike() throws Exception {
+		
+		try {
+			request= ServletActionContext.getRequest();
+			//for paging        
+	        int total;//分頁。。。數據總數       
+	        int iStart;//分頁。。。每頁開始數據
+	        int iLimit;//分頁。。。每一頁數據
+	        
+	        String start = request.getParameter("start");
+            String limit = request.getParameter("limit");
+            iStart = Integer.parseInt(start);
+            iLimit = Integer.parseInt(limit);
+            
+            logger.debug("start: " + Integer.parseInt(start));
+            logger.debug("limit: " + limit);
+			
+            
+			String userId = request.getParameter("query"); 
+			userId = null != userId ? userId : "";
+			logger.debug("userId " + userId);
+			
+	        UserDao userDAO = new UserDao();		
+	
+			List<SysUserTo> userList = new ArrayList<SysUserTo>();
+			
+			if(userId.equals("")){
+				userList = (ArrayList<SysUserTo>)userDAO.showAllUsers();
+			}else{
+				userList = userDAO.getUsersDetailList(userId);
+			}
+			
+			//logger.debug("userList Size " + userList.size());
+			//分頁
+			total=userList.size();
+			int end=iStart+iLimit;
+			if(end>total){//不能總數
+				end=total;
+			}		
+			
+			List<SysUserTo> resultList = new ArrayList<SysUserTo>();
+			for(int i=iStart;i<end;i++){//只加載當前頁面數據
+				//logger.debug(userList.get(i).toString());
+				resultList.add(userList.get(i));
+			}
+			//logger.debug(resultList.toString());
+			
+			ExtJSGridTo extJSGridTo = new ExtJSGridTo();
+			extJSGridTo.setTotal(total);
+			extJSGridTo.setRoot(resultList);
+			
+			Gson gson = new Gson();
+			String jsonData = gson.toJson(extJSGridTo);
+			//logger.debug(jsonData);
+			
+			// 1.5 Set AJAX response
+			CistaUtil.ajaxResponseData(response, jsonData);			
+
+		} catch (Exception e) {
+			this.addActionMessage("ERROR");
+			e.printStackTrace();
+			logger.error(e.toString());
+			addActionMessage(e.toString());
+          	//AJAX
+          	try{
+  		    	response.setContentType("text/html; charset=UTF-8");
+  				PrintWriter out = response.getWriter();
+  				String returnResult = "ERROR" ;
+
+  				logger.debug(returnResult);
+  				logger.debug("Error");
+  				out.print(returnResult);
+  				out.close();
+          	}catch(Exception ex){
+          		ex.printStackTrace();
+                logger.error(ex.toString());
+                return NONE;
+          	}
+
+		}
+		
+   		return NONE;
+	}
 	
 	public String AjaxUserSearch() throws Exception {
 		
@@ -165,43 +249,105 @@ public class UserManage extends BaseAction  {
 		
    		return NONE;
 	}
+
 	
-	public String userSearch() throws Exception {
+	public String AjaxUserDelete() throws Exception {
 		
-		request= ServletActionContext.getRequest();
-        UserDao userDAO = new UserDao();		
-		List result = new ArrayList();
-		List userList = new ArrayList();
-		
-		this.userId = null != this.userId ? this.userId : "";
-		this.roleId = null != this.roleId ? roleId : "";
-		this.pageNo = 0 == this.pageNo ? 1: this.pageNo;		
+		try {
+			request= ServletActionContext.getRequest();
+			//for paging        
+	        int total;//分頁。。。數據總數       
+	        int iStart;//分頁。。。每頁開始數據
+	        int iLimit;//分頁。。。每一頁數據
+	        
+	        String start = request.getParameter("start");
+            String limit = request.getParameter("limit");
+            iStart = Integer.parseInt(start);
+            iLimit = Integer.parseInt(limit);
+            
+            logger.debug("start: " + Integer.parseInt(start));
+            logger.debug("limit: " + limit);
+			
+            
+			String userId = request.getParameter("query"); 
+			userId = null != userId ? userId : "";
+			logger.debug("userId " + userId);
+			
+	        UserDao userDAO = new UserDao();		
+	
+			List<SysUserTo> userList = new ArrayList<SysUserTo>();
+			String messageString="";
+			
+			if(userId.equals("")){
+				messageString = getText("System.createUser.message.fail.deleteUserInDB" + " " + "No User ID");
+				CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_ERROR);
+				
+				return NONE;
+			}else{
+				int i  = userDAO.deleteUser(userId);
+				if (i <= 0){
+					messageString = getText("System.createUser.message.fail.deleteUserInDB");
+					CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_ERROR);
+					
+					return NONE;
+				}else{
+					userList = (ArrayList<SysUserTo>)userDAO.showAllUsers();
+				}
+			}
+			
+			//logger.debug("userList Size " + userList.size());
+			//分頁
+			total=userList.size();
+			int end=iStart+iLimit;
+			if(end>total){//不能總數
+				end=total;
+			}		
+			
+			List<SysUserTo> resultList = new ArrayList<SysUserTo>();
+			for(int i=iStart;i<end;i++){//只加載當前頁面數據
+				//logger.debug(userList.get(i).toString());
+				resultList.add(userList.get(i));
+			}
+			//logger.debug(resultList.toString());
+			
+			ExtJSGridTo extJSGridTo = new ExtJSGridTo();
+			extJSGridTo.setTotal(total);
+			extJSGridTo.setRoot(resultList);
+			
+			Gson gson = new Gson();
+			String jsonData = gson.toJson(extJSGridTo);
+			//logger.debug(jsonData);
+			
+			// 1.5 Set AJAX response
+			CistaUtil.ajaxResponseData(response, jsonData);
 
-		//for paging
-		int pageSize = CistaUtil.REPORT_PAGE_SIZE;
-        int resultSize = -1;
-        int pages = -1;
+		} catch (Exception e) {
+			this.addActionMessage("ERROR");
+			e.printStackTrace();
+			logger.error(e.toString());
+			addActionMessage(e.toString());
+          	//AJAX
+          	try{
+  		    	response.setContentType("text/html; charset=UTF-8");
+  				PrintWriter out = response.getWriter();
+  				String returnResult = "ERROR" ;
 
-		userList = (ArrayList)userDAO.getUserList(this.userId, this.roleId);
-		resultSize = null == userList? 0 : userList.size();
-		pages = CistaUtil.calcPages(resultSize, pageSize);
-		result = CistaUtil.cutResult(userList, this.pageNo, pageSize);
-		
-		if( result == null ) {
-			addActionMessage("No data found.");
-			return INPUT;
+  				logger.debug(returnResult);
+  				logger.debug("Error");
+  				out.print(returnResult);
+  				out.close();
+          	}catch(Exception ex){
+          		ex.printStackTrace();
+                logger.error(ex.toString());
+                return NONE;
+          	}
+
 		}
 		
-		request.setAttribute(CistaUtil.PAGE_SIZE, "" + pageSize);
-        request.setAttribute(CistaUtil.RESULT_SIZE, "" + resultSize);
-        request.setAttribute(CistaUtil.PAGES, "" + pages);
-        request.setAttribute(CistaUtil.PAGENO, "" + this.pageNo);        
-        request.setAttribute("userId", this.userId);
-        request.setAttribute("roleId", this.roleId);       
-		request.setAttribute("result", result);
-		
-		return SUCCESS;
+   		return NONE;
 	}
+	
+
 	
 	public String disableUser() throws Exception{
 		

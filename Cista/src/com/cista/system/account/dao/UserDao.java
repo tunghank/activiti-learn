@@ -162,6 +162,43 @@ public class UserDao extends BaseDao{
 		}
 	}
 	
+	public List<SysUserTo> getUsersDetailList(String userId)throws DataAccessException{
+		
+		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();
+		String sql = " SELECT " 
+					+ 		" A.USER_ID " 
+					+		" ,A.REAL_NAME " 
+					+		" ,A.PASSWORD " 
+					+		" ,A.COMPANY " 
+					+		" ,A.COMPANY_SHORT_NAME " 
+					+		" ,A.COMPANY_TYPE " 
+					+		" ,A.DEPARTMENT " 
+					+		" ,A.POSITION " 
+					+		" ,A.EMAIL " 
+					+		" ,A.PHONE_NUM " 
+					+		" ,A.ACTIVE " 
+					+		" ,A.LAST_TIME " 
+					+		" ,A.LAST_IP " 
+					+		" ,A.CDT " 
+					+		" ,A.CREATE_BY " 
+					+		" ,A.UPDATE_BY " 
+					+		" ,A.UDT " 
+					+ " FROM SYS_USER A "
+					+ " Where USER_ID like '%" + userId +"%'";
+		
+		logger.debug("sql " +sql );
+    	ParameterizedBeanPropertyRowMapper<SysUserTo> rowMapper = 
+    		new ParameterizedBeanPropertyRowMapper<SysUserTo>();
+    	rowMapper.setMappedClass(SysUserTo.class);
+
+    	List<SysUserTo> result = sjt.query(sql,rowMapper, new Object[] {} );		
+		if (result != null && result.size() > 0){
+			return result;
+		} else {
+			return null;
+		}
+	}
+	
 	public SysUserTo getActiveCurUser(String userId)throws DataAccessException{
 		
 		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();

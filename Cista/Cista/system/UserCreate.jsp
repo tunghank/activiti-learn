@@ -711,22 +711,14 @@ Ext.onReady(function(){
 	function updateUser(){
 		//得到選中的行
 		var record = grid.getSelectionModel().getSelection();
-		userForm.loadRecord(record[0]); 		
-		//Set Edit Status
-		userForm.getForm().findField('editStatus').setValue('1');
-		//User ID 設定為唯讀
-		userForm.getForm().findField('userId').setReadOnly (true); 
-		//userForm.getForm().findField('userId').setFieldStyle('color:#0000CC;background:#E1E1E1;');
-		userForm.getForm().findField('userId').addCls('x-item-disabled');
-		x-item-disabled
 		if(record.length==0){  
 			 Ext.MessageBox.show({   
 				title:"提示",   
-				msg:"請先選擇您要操作的行!"   
+				msg:"請先選擇您要的行!"   
 			 })  
 			return;  
 		}else{  
-			var ids = "";   
+			/*var ids = "";   
 			for(var i = 0; i < record.length; i++){   
 				ids += record[i].get("userId")   
 				if(i<record.length-1){   
@@ -737,8 +729,16 @@ Ext.onReady(function(){
 					title:"所選ID列表",   
 					msg:ids   
 				}  
-			)  
+			)*/ 
 		}  
+		userForm.loadRecord(record[0]); 		
+		//Set Edit Status
+		userForm.getForm().findField('editStatus').setValue('1');
+		//User ID 設定為唯讀
+		userForm.getForm().findField('userId').setReadOnly (true); 
+		//userForm.getForm().findField('userId').setFieldStyle('color:#0000CC;background:#E1E1E1;');
+		userForm.getForm().findField('userId').addCls('x-item-disabled');
+
 	}//End updateUser()
 
 
