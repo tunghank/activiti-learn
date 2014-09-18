@@ -71,10 +71,8 @@ public class LoginAction extends BaseAction  {
 							return INPUT;
 						}
 					} else {
-						addActionMessage(getText(
-								"System.login.message.login.fail.passworderror"));
-						logger.debug(getText(
-								"System.login.message.login.fail.passworderror"));
+						addActionMessage(getText("System.login.message.login.fail.passworderror"));
+						logger.debug(getText("System.login.message.login.fail.passworderror"));
 						return INPUT;
 					}
 				}else{

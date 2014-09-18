@@ -34,13 +34,25 @@
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
              <result name="success"></result>
          </action>
-         
+
+		 <action name="AjaxUserSearchLike" class="com.cista.system.account.action.UserManage" method="AjaxUserSearchLike">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success"></result>
+         </action>
+                  
 		 <action name="AjaxUserSearch" class="com.cista.system.account.action.UserManage" method="AjaxUserSearch">
          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
              <result name="success"></result>
          </action>
 
+		 <action name="AjaxUserDelete" class="com.cista.system.account.action.UserManage" method="AjaxUserDelete">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success"></result>
+         </action>
+         
          <action name="ModifyUserPre" class="com.cista.system.account.action.UserManage" method="modifyUserPre">
           	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
@@ -59,7 +71,7 @@
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>            	 
          </action>
          
-         <action name="UserSearchPre" class="com.cista.system.account.action.UserManage" method="userSearchPre">
+         <action name="UserSearchPre" class="com.cista.system.account.action.UserManage" method="UserSearchPre">
          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
              <result name="success">/system/UserSearch.jsp</result>

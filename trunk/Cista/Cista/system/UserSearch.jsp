@@ -117,8 +117,8 @@ Ext.onReady(function(){
 						items : [
 									{
 										xtype: 'radiogroup',
-										id:'companyType',
-										name: 'companyType',
+										id:'companyTypeGrp',
+										name: 'companyTypeGrp',
 										fieldLabel: 'Role',
 										//arrange Radio Buttons into 2 columns
 										columns: 3,
@@ -265,6 +265,15 @@ Ext.onReady(function(){
 										id:'active',
 										name: 'active',
 										fieldLabel : 'Active'
+									},						
+									{
+										xtype: "textfield",
+										id:'editStatus',
+										name: 'editStatus',
+										fieldLabel : 'editStatus',
+										allowBlank : true,
+										value :0,
+										hidden:true
 									}
 
 								]
@@ -318,6 +327,7 @@ Ext.onReady(function(){
 		//1.0 List Form Button
 		var userFormSubmit =Ext.getCmp('userFormSubmit'); 
 		userFormSubmit.disable();
+		
 
 		Ext.Ajax.timeout = 120000; // 120 seconds
 		Ext.Ajax.request({  //ajax request test  
@@ -337,7 +347,40 @@ Ext.onReady(function(){
 							Ext.MessageBox.alert('Success', 'ERROR : '+ message );
 						}else{//FINISH
 							Ext.MessageBox.alert('Success', 'FINISH : '+ message );
-							userForm.form.reset();
+							
+							//alert(userForm.getForm().findField('userId').getValue());
+							//Grid load data Ajax
+							Ext.Ajax.request({  //ajax request test  
+									url : '<%=contextPath%>/AjaxUserSearch.action',  
+									params : {  
+										query: userForm.getForm().findField('userId').getValue(),
+										start:'0',
+										limit:'10'
+									},
+									method : 'POST',
+									scope:this,
+									success : function(response, options) {
+										//parse Json data
+										var freeback = Ext.JSON.decode(response.responseText);
+										
+										//Load Data in store
+										grid.getStore().removeAll();
+										grid.getStore().loadData(freeback['root']);
+						
+
+									},  
+									failure : function(response, options) {  
+										Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
+									}  
+								});
+							
+							 userForm.form.reset();
+							//Set Edit Status
+							//userForm.getForm().findField('editStatus').setValue('0');
+							//User ID 設定為唯讀
+							userForm.getForm().findField('userId').setReadOnly (false); 
+							//userForm.getForm().findField('userId').setFieldStyle('color:#000000;background:#FFFFFF;');
+							userForm.getForm().findField('userId').removeCls('x-item-disabled');
 						}
 						
 
@@ -420,7 +463,7 @@ Ext.onReady(function(){
 				pageSize:10,  
 				proxy: {  
 					type: 'ajax',  
-					url : '<%=contextPath%>/AjaxUserSearch.action',  
+					url : '<%=contextPath%>/AjaxUserSearchLike.action',  
 					reader: {  
 						//數據格式為json  
 						type: 'json',  
@@ -449,19 +492,23 @@ Ext.onReady(function(){
 	var grid = Ext.create('Ext.grid.Panel',{  
 		  
 			tbar:[  
-				{  
+				/*{  
 					xtype:'button',  
-					text:'添加'/*,  
-					handler:'addUser'*/
-				},{  
+					text:'添加',  
+					handler:'addUser'
+				},*/{  
 					xtype:'button',  
 					text:'修改',  
 					handler:updateUser
 				},{  
 					xtype:'button',  
-					text:'刪除'/*,  
-					handler:deleteUser*/
-				}  
+					text:'刪除',  
+					handler:deleteUser
+				},{  
+					xtype:'button',  
+					text:'Disable',  
+					handler:disableUser
+				}
 			],  
 			  
 			store:store,  
@@ -671,8 +718,6 @@ Ext.onReady(function(){
 	function updateUser(){
 		//得到選中的行
 		var record = grid.getSelectionModel().getSelection();
-		userForm.loadRecord(record[0]); 		
-
 		if(record.length==0){  
 			 Ext.MessageBox.show({   
 				title:"提示",   
@@ -680,7 +725,7 @@ Ext.onReady(function(){
 			 })  
 			return;  
 		}else{  
-			var ids = "";   
+			/*var ids = "";   
 			for(var i = 0; i < record.length; i++){   
 				ids += record[i].get("userId")   
 				if(i<record.length-1){   
@@ -691,11 +736,72 @@ Ext.onReady(function(){
 					title:"所選ID列表",   
 					msg:ids   
 				}  
-			)  
-		}  
+			)*/
+		} 
+
+
+
+		userForm.loadRecord(record[0]); 		
+		//Set Edit Status
+		userForm.getForm().findField('editStatus').setValue('1');
+		//User ID 設定為唯讀
+		userForm.getForm().findField('userId').setReadOnly (true); 
+		//userForm.getForm().findField('userId').setFieldStyle('color:#0000CC;background:#E1E1E1;');
+		userForm.getForm().findField('userId').addCls('x-item-disabled');
+ 
 	}//End updateUser()
 
 
+	function deleteUser(){
+
+		//得到選中的行
+		var record = grid.getSelectionModel().getSelection();
+		if(record.length==0){  
+			 Ext.MessageBox.show({   
+				title:"提示",   
+				msg:"請先選擇您要'刪除'的行!"   
+			 })  
+			return;  
+		}else{  
+			var ids = "";   
+			for(var i = 0; i < record.length; i++){   
+				ids += record[i].get("userId")   
+				if(i<record.length-1){   
+					ids = ids + ",";   
+				}   
+			}  
+			//AJAX Call Delete Function
+			//Grid load data Ajax
+			Ext.Ajax.timeout = 120000; // 120 seconds
+			Ext.Ajax.request({  //ajax request test  
+					url : '<%=contextPath%>/AjaxUserDelete.action',  
+					params : {  
+						query: ids,
+						start:'0',
+						limit:'10'
+					},
+					method : 'POST',
+					scope:this,
+					success : function(response, options) {
+						//parse Json data
+						var freeback = Ext.JSON.decode(response.responseText);
+						
+						//Load Data in store
+						grid.getStore().removeAll();
+						grid.getStore().reload(freeback['root']);
+						grid.getView().refresh();
+
+					},  
+					failure : function(response, options) {  
+						Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
+					}  
+			});
+		}
+		
+	}// End deleteUser()
+
+	function disableUser(){
+	}// End deleteUser()
 });
 
 
