@@ -637,7 +637,7 @@ Ext.onReady(function(){
 									}
 						}  
 			],  
-			height:380,   
+			height:200,   
 			width:700,   
 			title: 'User Information',   
 			renderTo: 'userGrid',   
@@ -693,14 +693,14 @@ Ext.onReady(function(){
 								 xtype: 'searchfield',   
 								 store: store   
 							}  
-						 },*/{   
+						 },{   
 							 dock: 'bottom',   
 							 xtype: 'pagingtoolbar',   
 							 store: store,   
 							 displayInfo: true,   
 							 displayMsg: '顯示 {0} - {1} 條，共計 {2} 條',   
 							 emptyMsg: '沒有數據'   
-						}
+						}*/
 			]  
 			  
 		}  
