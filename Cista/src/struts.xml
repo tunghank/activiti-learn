@@ -132,11 +132,11 @@
             	 <result name="input" type ="chain">SearchRoleFunction</result>              	 
          </action>
          
-         <action name="SearchUserRolePre" class="com.cista.system.account.action.UserRoleManage" method="searchUserRolePre">
+         <action name="SearchUserRolePre" class="com.cista.system.account.action.UserRoleManage" method="SearchUserRolePre">
           	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>            	
-            	 <result name="success">/system/assignUserRole.jsp</result>  
-            	 <result name="input">/system/assignUserRole.jsp</result>              	 
+            	 <result name="success">/system/AssignUserRole.jsp</result>  
+            	 <result name="input">/system/AssignUserRole.jsp</result>              	 
          </action>
          
          <action name="SearchUserRole" class="com.cista.system.account.action.UserRoleManage" method="searchUserRole">
