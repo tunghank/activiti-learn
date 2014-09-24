@@ -44,6 +44,9 @@
 				url: '<%=contextPath%>/ShowTree.action'
 			},
 			sorters: [{
+				property: 'id',
+				direction: 'ASC'
+			},{
 				property: 'leaf',
 				direction: 'ASC'
 			}, {
