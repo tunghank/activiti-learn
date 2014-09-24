@@ -1,17 +1,11 @@
-/**
- * 
- */
+
 package com.cista.system.tree.action;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
-
 import net.sf.json.JSONArray;
-
-import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
 
 import com.cista.system.to.MenuTo;
@@ -25,6 +19,8 @@ import com.cista.system.util.CistaUtil;
  *
  */
 public class TreeAction extends BaseAction {
+
+	private static final long serialVersionUID = 1L;
 	private String menuString;
 	private List<MenuTo> trees;
 	
@@ -46,7 +42,7 @@ public class TreeAction extends BaseAction {
 			trees = new ArrayList<MenuTo>();
 			//1.2 從1開始找
 			getTreeNode(treeRootList, curUser.getUserId());
-	
+			logger.debug(trees.toString());
 	        JSONArray jsonObject = JSONArray.fromObject(trees);
 	        try {
 	            menuString = jsonObject.toString();
@@ -61,7 +57,7 @@ public class TreeAction extends BaseAction {
 
 		PrintWriter out = response.getWriter();
 		
-		//logger.debug(menuString);
+		logger.debug(menuString);
 		out.println(menuString);
 		out.close();
 

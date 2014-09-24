@@ -57,7 +57,7 @@ public class RoleDao extends BaseDao{
 		return answer ;
 	}	
 	
-	public List searchRoleList(String roleName) throws DataAccessException{
+	public List<SysRoleTo> searchRoleList(String roleName) throws DataAccessException{
 	
 		String sql = "";
 		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();		

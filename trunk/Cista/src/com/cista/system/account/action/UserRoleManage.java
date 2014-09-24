@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.cista.system.account.dao.RoleDao;
 import com.cista.system.account.dao.UserDao;
 import com.cista.system.account.dao.UserRoleDao;
+import com.cista.system.to.SysRoleTo;
 import com.cista.system.to.SysUserRoleTo;
 import com.cista.system.util.BaseAction;
 
@@ -13,15 +14,17 @@ import org.apache.struts2.ServletActionContext;
 
 public class UserRoleManage extends BaseAction{
 	
+
+	private static final long serialVersionUID = 1L;
 	private String roleId;
 	private String[] chkModifyList;
 	
-	public String searchUserRolePre() throws Exception {
+	public String AearchUserRolePre() throws Exception {
 		
 		request= ServletActionContext.getRequest();
 		RoleDao roleDAO = new RoleDao();	
-		List  data = new ArrayList();		
-		data = (ArrayList)roleDAO.searchRoleList("");
+		List<SysRoleTo>  data = new ArrayList<SysRoleTo>();		
+		data = roleDAO.searchRoleList("");
 		request.setAttribute("roleList", data);		
 		
 		return SUCCESS;
@@ -37,6 +40,8 @@ public class UserRoleManage extends BaseAction{
 		List  userData = new ArrayList();	
 		userData = (ArrayList) userDao.getUserList("","");	
 		request.setAttribute("userData", userData );
+		
+		this.roleId = null != this.roleId ? this.roleId : "";
 		
 		// user role List		
 		List  userRoledata = new ArrayList();		
