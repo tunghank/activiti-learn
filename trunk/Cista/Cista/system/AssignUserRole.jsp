@@ -24,7 +24,7 @@
 <html>
 <head>
 
-<TITLE>System User Create Function</TITLE>
+<TITLE>System Assign User Role Function</TITLE>
 <jsp:include page="/common/normalcheck.jsp" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="pragma" content="no-cache">
