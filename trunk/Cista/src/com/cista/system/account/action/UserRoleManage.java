@@ -19,7 +19,7 @@ public class UserRoleManage extends BaseAction{
 	private String roleId;
 	private String[] chkModifyList;
 	
-	public String AearchUserRolePre() throws Exception {
+	public String SearchUserRolePre() throws Exception {
 		
 		request= ServletActionContext.getRequest();
 		RoleDao roleDAO = new RoleDao();	
