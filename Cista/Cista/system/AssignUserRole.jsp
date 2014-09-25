@@ -45,10 +45,14 @@ Ext.require(
             'Ext.util.*',  
             'Ext.data.*',  
             //注意引用  
-            'Ext.ux.form.SearchField'  
+            'Ext.ux.form.SearchField',
+			'Ext.form.Panel',
+			'Ext.ux.form.MultiSelect',
+			'Ext.ux.form.ItemSelector'
          ]  
            
 );
+
 
 Ext.onReady(function(){
     Ext.QuickTips.init();
@@ -57,363 +61,6 @@ Ext.onReady(function(){
         return value ? value.dateFormat('Y/m/d') : '';
     };
 
-	/*
-	* POSITION
-	*/
-    var position = Ext.create('Ext.data.Store', {
-    fields: ['name', 'val'],
-    data : [
-        {"name":"Engineer", "val":"Engineer"},
-        {"name":"Leader", "val":"Leader"},
-        {"name":"Manager", "val":"Manager"},
-		{"name":"VP", "val":"VP"}
-
-		]
-	});
-
-	//User Information
-	//Form
-	var userForm = new  Ext.form.Panel({
-        id: 'userForm',
-		title: 'User Information',
-		labelAlign: 'left',
-		frame:true,
-		height:380,
-		width:400,
-		renderTo: "userForm",
-		bodyPadding: 5,
-		autoScroll:true,
-		layout : {
-			type : 'table',
-			columns : 2
-		},
-		bodyStyle:'padding:5 5 5 5',//表單邊距
-		defaults:{//統一設置表單字段默認屬性
-			labelSeparator :'：',//分隔符
-			width : 380,//字段寬度
-			padding : 5,
-			allowBlank : false,//是否允許為空
-			labelAlign : 'left',//標籤對齊方式
-			msgTarget :'side',   //在字段的右邊顯示一個提示信息
-			frame:true,
-			border: false
-		},
-		buttons :[
-					{
-						id:'userFormSubmit',
-						text : 'Submit',
-						handler : submit
-					},
-					{
-						id:'userFormReset',
-						text : 'Reset',
-						handler : reset
-					}
-				],
-		items : [
-					{
-						layout : 'anchor',
-						border: false,
-						items : [
-									{
-										xtype: 'radiogroup',
-										id:'companyTypeGrp',
-										name: 'companyTypeGrp',
-										fieldLabel: 'Role',
-										//arrange Radio Buttons into 2 columns
-										columns: 3,
-										itemId: 'userRole',
-										items: [
-											{
-												// 1
-												xtype: 'radiofield',
-												boxLabel: 'Cista',
-												name: 'companyType',
-												checked: true,
-												inputValue: '<%=CistaUtil.CISTA_ROLE%>'
-											},
-											{
-												// 2
-												xtype: 'radiofield',
-												boxLabel: 'Customer',
-												name: 'companyType',
-												inputValue: '<%=CistaUtil.CUSTOMER_ROLE%>'
-											},
-											{
-												// 3
-												xtype: 'radiofield',
-												boxLabel: 'Vendor',
-												name: 'companyType',
-												inputValue: '<%=CistaUtil.VENDOR_ROLE%>'
-											}
-										],            
-										listeners: {
-											change: function ( radio, newV, oldV, e ) {
-
-												if( newV['companyType'] == "1" ){
-													var company = Ext.getCmp('company');
-													company.allowBlank = true;
-													company.hide()
-
-												}else if (newV['companyType'] == "2"){
-													var company = Ext.getCmp('company');
-													company.allowBlank = false;
-													company.blankText = 'This should not be blank!'
-													company.setFieldLabel("Customer");
-													company.show()
-
-												}
-												else if (newV['companyType'] == "3"){
-													var company = Ext.getCmp('company');
-													company.allowBlank = false;
-													company.blankText = 'This should not be blank!'
-													company.setFieldLabel("Vendor");
-													company.show()
-												}
-											},
-											beforerender:function(me,eOpts){
-													var company = Ext.getCmp('company');
-													company.allowBlank = true;
-													company.hide()
-											}
-										}
-									},						
-									{
-										xtype: "textfield",
-										id:'userId',
-										name: 'userId',
-										fieldLabel : 'User ID',
-										allowBlank : false,
-										blankText: 'This should not be blank!',
-										anchor:'100%'
-									},						
-									{
-										xtype: "textfield",
-										id:'email',
-										name: 'email',
-										fieldLabel : 'E-mail',
-										allowBlank : false,
-										blankText: 'This should not be blank!',
-										//驗證電子郵件格式的正則表達式
-										regex : /^([\w]+)(.[\w]+)*@([\w-]+\.){1,5}([A-Za-z]){2,4}$/,
-										vtype: 'email',
-										regexText:'E-mail格式錯誤',//驗證錯誤之後的提示信息,
-										anchor:'100%'
-									},						
-									{
-										xtype: "textfield",
-										id:'realName',
-										name: 'realName',
-										fieldLabel : 'Real Name',
-										allowBlank : false,
-										blankText: 'This should not be blank!',
-										anchor:'80%'
-									},						
-									{
-										xtype: "textfield",
-										id:'company',
-										name: 'company',
-										fieldLabel : 'Vendor',
-										allowBlank : true
-									},						
-									{
-										xtype: "textfield",
-										id:'password',
-										name: 'password',
-										fieldLabel : 'Password',
-										allowBlank : false,
-										inputType: 'password',
-										blankText: 'This should not be blank!'
-									},						
-									{
-										xtype: "textfield",
-										id:'confirmPassword',
-										name: 'confirmPassword',
-										fieldLabel : 'Confirm Password',
-										allowBlank : false,
-										inputType: 'password',
-										blankText: 'This should not be blank!'
-									},						
-									{
-										xtype: "textfield",
-										id:'phoneNum',
-										name: 'phoneNum',
-										fieldLabel : 'Phone Number',
-										allowBlank : true
-									},						
-									{
-										xtype: "textfield",
-										id:'department',
-										name: 'department',
-										fieldLabel : 'Department',
-										allowBlank : true
-									},						
-									{
-										xtype: "combobox",
-										id:'position',
-										name: 'position',
-										fieldLabel : 'Position',
-										allowBlank : true,
-										store: position,
-										queryMode: 'local',
-										displayField: 'name',
-										valueField: 'val',
-										anchor:'60%'
-									},						
-									{
-										xtype: "checkbox",
-										id:'active',
-										name: 'active',
-										fieldLabel : 'Active'
-									},						
-									{
-										xtype: "textfield",
-										id:'editStatus',
-										name: 'editStatus',
-										fieldLabel : 'editStatus',
-										allowBlank : true,
-										value :0,
-										hidden:true
-									}
-
-								]
-					}
-				]
-		
-    });
-
-	function submit(){//提交表單
-		//Check Form Data
-		//1.0 List Form Items
-		var userFormItems = userForm.items;
-		var i = 0;
-		//1.1 Check Must have value
-		for(i = 0; i < userFormItems.getAt(0).items.length; i++){
-
-
-			if( userFormItems.getAt(0).items.getAt(i).xtype == "textfield" &&
-				userFormItems.getAt(0).items.getAt(i).allowBlank == false && 
-				( typeof(userFormItems.getAt(0).items.getAt(i).value) == 'undefined' 
-					|| userFormItems.getAt(0).items.getAt(i).value == null
-				    || userFormItems.getAt(0).items.getAt(i).value == "" )
-			   ){
-
-				Ext.MessageBox.alert('Message', 'Message : '+ "'" + userFormItems.getAt(0).items.getAt(i).fieldLabel + "'" + " Can't be blank" );
-				return;
-				//alert(userFormItems.getAt(0).items.getAt(i).fieldLabel + " " + userFormItems.getAt(0).items.getAt(i).value  + " " + userFormItems.getAt(0).items.getAt(i).xtype);
-			}
-			
-		}
-		//1.2 CHECK MAIL FORMAT
-		var email = Ext.getCmp('email');
-		if( !verifyAddress(email) ){
-			Ext.MessageBox.alert('Message', 'Message : '+ "'" + email.fieldLabel + "'" + " Wrong e-mail format!" );
-			return;
-		}
-		//1.3 CHECK Password
-		var password = Ext.getCmp('password');
-		var confirmPassword = Ext.getCmp('confirmPassword');
-
-		if( password.value.length < 6 ){
-			Ext.MessageBox.alert('Message', 'Message : '+ "'" + password.fieldLabel + "' length must >= 6 " );
-			return;
-		}else if (password.value != confirmPassword.value){
-			Ext.MessageBox.alert('Message', 'Message : '+ "'" + password.fieldLabel + "' must be same '" + confirmPassword.fieldLabel + "'" );
-			return;
-		}
-		
-	
-		//Submit & Reset Button Disable
-		//1.0 List Form Button
-		var userFormSubmit =Ext.getCmp('userFormSubmit'); 
-		userFormSubmit.disable();
-		
-
-		Ext.Ajax.timeout = 120000; // 120 seconds
-		Ext.Ajax.request({  //ajax request test  
-                    url : '<%=contextPath%>/UserSave.action',  
-                    params : {  
-                        data: Ext.encode(userForm.getValues())
-                    },
-                    method : 'POST',
-					scope:this,
-                    success : function(response, options) {
-						//parse Json data
-						var freeback = Ext.JSON.decode(response.responseText);
-						var message =  freeback.ajaxMessage;
-						var status  =  freeback.ajaxStatus;
-						userFormSubmit.enable();
-						if( status == '<%=CistaUtil.AJAX_RSEPONSE_ERROR%>' ){//ERROR
-							Ext.MessageBox.alert('Success', 'ERROR : '+ message );
-						}else{//FINISH
-							Ext.MessageBox.alert('Success', 'FINISH : '+ message );
-							
-							//alert(userForm.getForm().findField('userId').getValue());
-							//Grid load data Ajax
-							Ext.Ajax.request({  //ajax request test  
-									url : '<%=contextPath%>/AjaxUserSearch.action',  
-									params : {  
-										query: userForm.getForm().findField('userId').getValue(),
-										start:'0',
-										limit:'10'
-									},
-									method : 'POST',
-									scope:this,
-									success : function(response, options) {
-										//parse Json data
-										var freeback = Ext.JSON.decode(response.responseText);
-										
-										//Load Data in store
-										grid.getStore().removeAll();
-										grid.getStore().loadData(freeback['root']);
-						
-
-									},  
-									failure : function(response, options) {  
-										Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
-									}  
-								});
-							
-							 userForm.form.reset();
-							//Set Edit Status
-							//userForm.getForm().findField('editStatus').setValue('0');
-							//User ID 設定為唯讀
-							userForm.getForm().findField('userId').setReadOnly (false); 
-							//userForm.getForm().findField('userId').setFieldStyle('color:#000000;background:#FFFFFF;');
-							userForm.getForm().findField('userId').removeCls('x-item-disabled');
-						}
-						
-
-                    },  
-                    failure : function(response, options) {  
-                        Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
-                    }  
-                });
-
-	}
-	function reset(){//重置表單
-		userForm.form.reset();
-	}
-
-	//Verify Mail Address
-	function verifyAddress(obj){
-		// obtain form value into variable
-		var email = obj.value;
-		//alert ('email' + email);
-		// define regex
-		var pattern = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-
-		// test for pattern
-		flag = pattern.test(email);
-
-		if(flag){
-			//alert("Right e-mail format!");
-			return true;
-		}else{
-			//alert("Wrong e-mail format!");
-			return false;
-		}
-	}
 
 	/*************************
 	*User Information Grid
@@ -490,32 +137,12 @@ Ext.onReady(function(){
 
 	//創建grid  
 	var grid = Ext.create('Ext.grid.Panel',{  
-		  
-			tbar:[  
-				/*{  
-					xtype:'button',  
-					text:'添加',  
-					handler:'addUser'
-				},*/{  
-					xtype:'button',  
-					text:'修改',  
-					handler:updateUser
-				},{  
-					xtype:'button',  
-					text:'刪除',  
-					handler:deleteUser
-				},{  
-					xtype:'button',  
-					text:'Disable',  
-					handler:disableUser
-				}
-			],  
-			  
+		  		  
 			store:store,  
 			//添加到grid  
-			selModel: { selType: 'checkboxmodel' ,
+			/*selModel: { selType: 'checkboxmodel' ,
 						mode: "single",//multi,simple,single；默认为多选multi
-						},   //選擇框
+						},   //選擇框*/
 			//表示可以選擇行  
 			disableSelection: false,  
 			columnLines: true,   
@@ -644,50 +271,11 @@ Ext.onReady(function(){
 									}
 						}  
 			],  
-			height:380,   
-			width:700,   
-			title: 'User Information',   
-			renderTo: 'userGrid',   
-			 
-			dockedItems:[  
-						 //多選框控件  
-						 /*{  
-							 dock:'top',  
-							 xtype:'toolbar',  
-							 items:[  
-									{  
-										itemId:'Button',  
-										text:'顯示所選',  
-										//tooltip:'Add a new row',  
-										//iconCls:'add',  
-										handler:function(){  
-											//得到選中的行  
-											var record = grid.getSelectionModel().getSelection();   
-											if(record.length==0){  
-												 Ext.MessageBox.show({   
-													title:"提示",   
-													msg:"請先選擇您要操作的行!"   
-												 })  
-												return;  
-											}else{  
-												var ids = "";   
-												for(var i = 0; i < record.length; i++){   
-													ids += record[i].get("id")   
-													if(i<record.length-1){   
-														ids = ids + ",";   
-													}   
-												}  
-												Ext.MessageBox.show({   
-														title:"所選ID列表",   
-														msg:ids   
-													}  
-												)  
-											}  
-										}  
-									}  
-							 ]  
-						 },*/
-						   
+			height:335,   
+			width:900,   
+			title: 'User List',   
+			renderTo: 'userGrid',
+			dockedItems:[  					   
 						   
 						 //添加搜索控件  
 						 {  
@@ -708,144 +296,122 @@ Ext.onReady(function(){
 							 displayMsg: '顯示 {0} - {1} 條，共計 {2} 條',   
 							 emptyMsg: '沒有數據'   
 						}
-			]  
+			],
+			listeners: {
+				itemclick: function(dv, record, item, index, e) {
+					showRole(record.get('userId'));      
+				}
+			}
 			  
 		}  
 	)  
 	store.loadPage(1);
 
-	//Grid Function
-	function updateUser(){
-		//得到選中的行
-		var record = grid.getSelectionModel().getSelection();
-		if(record.length==0){  
-			 Ext.MessageBox.show({   
-				title:"提示",   
-				msg:"請先選擇您要操作的行!"   
-			 })  
-			return;  
-		}else{  
-			/*var ids = "";   
-			for(var i = 0; i < record.length; i++){   
-				ids += record[i].get("userId")   
-				if(i<record.length-1){   
-					ids = ids + ",";   
-				}   
-			}  
-			Ext.MessageBox.show({   
-					title:"所選ID列表",   
-					msg:ids   
-				}  
-			)*/
-		} 
+    /*
+     * Ext.ux.form.ItemSelector Example Code
+     */
+
+	var ds = Ext.create('Ext.data.ArrayStore', {
+        data: [[123,'One Hundred Twenty Three'],
+            ['1', 'One'], ['2', 'Two'], ['3', 'Three'], ['4', 'Four'], ['5', 'Five'],
+            ['6', 'Six'], ['7', 'Seven'], ['8', 'Eight'], ['9', 'Nine']],
+        fields: ['value','text'],
+        sortInfo: {
+            field: 'value',
+            direction: 'ASC'
+        }
+    });
+
+
+    var isForm = Ext.widget('form', {
+        title: 'ItemSelector Test',
+        width: 700,
+        bodyPadding: 10,
+        renderTo: 'itemselector',
+
+        tbar:[{
+            text: 'Options',
+            menu: [{
+                text: 'Set value (2,3)',
+                handler: function(){
+                    isForm.getForm().findField('itemselector').setValue(['2', '3']);
+                }
+            },{
+                text: 'Toggle enabled',
+                handler: function(){
+                    var m = isForm.getForm().findField('itemselector');
+                    if (!m.disabled) {
+                        m.disable();
+                    } else {
+                        m.enable();
+                    }
+                }
+            },{
+                text: 'Toggle delimiter',
+                handler: function() {
+                    var m = isForm.getForm().findField('itemselector');
+                    if (m.delimiter) {
+                        m.delimiter = null;
+                        Ext.Msg.alert('Delimiter Changed', 'The delimiter is now set to <b>null</b>. Click Save to ' +
+                                      'see that values are now submitted as separate parameters.');
+                    } else {
+                        m.delimiter = ',';
+                        Ext.Msg.alert('Delimiter Changed', 'The delimiter is now set to <b>","</b>. Click Save to ' +
+                                      'see that values are now submitted as a single parameter separated by the delimiter.');
+                    }
+                }
+            }]
+        }],
+
+        items:[{
+            xtype: 'itemselector',
+            name: 'itemselector',
+            anchor: '100%',
+            fieldLabel: 'ItemSelector',
+            imagePath: '../js/extjs42/examples/ux/css/images/',
+
+            store: ds,
+            displayField: 'text',
+            valueField: 'value',
+            value: ['3', '4', '6'],
+
+            allowBlank: false,
+            // minSelections: 2,
+            // maxSelections: 3,
+            msgTarget: 'side'
+        }],
+
+        buttons: [{
+            text: 'Clear',
+            handler: function(){
+                var field = isForm.getForm().findField('itemselector');
+                if (!field.readOnly && !field.disabled) {
+                    field.clearValue();
+                }
+            }
+        }, {
+            text: 'Reset',
+            handler: function() {
+                isForm.getForm().reset();
+            }
+        }, {
+            text: 'Save',
+            handler: function(){
+                if(isForm.getForm().isValid()){
+                    Ext.Msg.alert('Submitted Values', 'The following will be sent to the server: <br />'+
+                        isForm.getForm().getValues(true));
+                }
+            }
+        }]
+    });
 
 
 
-		userForm.loadRecord(record[0]); 		
-		//Set Edit Status
-		userForm.getForm().findField('editStatus').setValue('1');
-		//User ID 設定為唯讀
-		userForm.getForm().findField('userId').setReadOnly (true); 
-		//userForm.getForm().findField('userId').setFieldStyle('color:#0000CC;background:#E1E1E1;');
-		userForm.getForm().findField('userId').addCls('x-item-disabled');
- 
-	}//End updateUser()
+	function showRole(userId){
 
-
-	function deleteUser(){
-
-		//得到選中的行
-		var record = grid.getSelectionModel().getSelection();
-		if(record.length==0){  
-			 Ext.MessageBox.show({   
-				title:"提示",   
-				msg:"請先選擇您要'刪除'的行!"   
-			 })  
-			return;  
-		}else{  
-			var ids = "";   
-			for(var i = 0; i < record.length; i++){   
-				ids += record[i].get("userId")   
-				if(i<record.length-1){   
-					ids = ids + ",";   
-				}   
-			}  
-			//AJAX Call Delete Function
-			//Grid load data Ajax
-			Ext.Ajax.timeout = 120000; // 120 seconds
-			Ext.Ajax.request({  //ajax request test  
-					url : '<%=contextPath%>/AjaxUserDelete.action',  
-					params : {  
-						query: ids,
-						start:'0',
-						limit:'10'
-					},
-					method : 'POST',
-					scope:this,
-					success : function(response, options) {
-						//parse Json data
-						var freeback = Ext.JSON.decode(response.responseText);
-						
-						//Load Data in store
-						grid.getStore().removeAll();
-						grid.getStore().reload(freeback['root']);
-						grid.getView().refresh();
-
-					},  
-					failure : function(response, options) {  
-						Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
-					}  
-			});
-		}
+			alert(userId);
 		
-	}// End deleteUser()
-
-	function disableUser(){
-
-				//得到選中的行
-		var record = grid.getSelectionModel().getSelection();
-		if(record.length==0){  
-			 Ext.MessageBox.show({   
-				title:"提示",   
-				msg:"請先選擇您要'刪除'的行!"   
-			 })  
-			return;  
-		}else{  
-			var ids = "";   
-			for(var i = 0; i < record.length; i++){   
-				ids += record[i].get("userId")   
-				if(i<record.length-1){   
-					ids = ids + ",";   
-				}   
-			}  
-			//AJAX Call Delete Function
-			//Grid load data Ajax
-			Ext.Ajax.timeout = 120000; // 120 seconds
-			Ext.Ajax.request({  //ajax request test  
-					url : '<%=contextPath%>/AjaxUserDisable.action',  
-					params : {  
-						query: ids,
-						start:'0',
-						limit:'10'
-					},
-					method : 'POST',
-					scope:this,
-					success : function(response, options) {
-						//parse Json data
-						var freeback = Ext.JSON.decode(response.responseText);
-						
-						//Load Data in store
-						grid.getStore().removeAll();
-						grid.getStore().reload(freeback['root']);
-						grid.getView().refresh();
-
-					},  
-					failure : function(response, options) {  
-						Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
-					}  
-			});
-		}
-	}// End deleteUser()
+	}// End showRole()
 });
 
 
@@ -887,11 +453,10 @@ Ext.onReady(function(){
 
 	/** HTML Layout **/
 	#functionTitle  {position:absolute; visibility:visible; z-index:1; top:5px; left:5px;}
-	#userForm  {position:absolute; visibility:visible; z-index:2; top:25px; left:5px; }
-	#userGrid  {position:absolute; visibility:visible; z-index:3; top:53px; left:420px;}
-
+	#userGrid  {position:absolute; visibility:visible; z-index:3; top:53px; left:5px;}
+	#itemselector  {position:absolute; visibility:visible; z-index:2; top:400px; left:5px;}
 </style>
-
+<link rel="stylesheet" type="text/css" href="../js/extjs42/examples/ux/css/ItemSelector.css" />
 </head>
 
 
@@ -904,7 +469,7 @@ Ext.onReady(function(){
 		<div align="left">
 			<table width="100%" border="0" cellspacing="0" cellpadding="0" align="left" class="OrangeLine">
 				<tr>
-					<td class="Title">System User Create Function</td>
+					<td class="Title">System Assign User Role Function</td>
 				</tr>
 			</table>
 		</div>
@@ -912,8 +477,7 @@ Ext.onReady(function(){
 	</tr>
 </table>
 </div>
-<div id="userForm" ></div>
 <div id="userGrid" ></div>
-	
+<div id="itemselector" ></div>	
 </body>
 </html>
