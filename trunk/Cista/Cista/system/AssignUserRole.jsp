@@ -343,7 +343,7 @@ Ext.onReady(function(){
 
     var isForm = Ext.widget('form', {
         title: 'Role List',
-        width: 700,
+        width: 400,
         bodyPadding: 10,
         renderTo: 'roleList',
 
@@ -425,7 +425,23 @@ Ext.onReady(function(){
 	function showRole(userId){
 
 		alert(userId);
-
+		Ext.Ajax.request({  //ajax request test  
+				url : '<%=contextPath%>/AjaxUserRoleList.action',  
+				params : {  
+					query: userId,
+				},
+				method : 'POST',
+				scope:this,
+				success : function(response, options) {
+					//parse Json data
+					var freeback = Ext.JSON.decode(response.responseText);
+					
+					alert(freeback);
+				},  
+				failure : function(response, options) {  
+					Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
+				}  
+		});
 	}// End showRole()
 });
 

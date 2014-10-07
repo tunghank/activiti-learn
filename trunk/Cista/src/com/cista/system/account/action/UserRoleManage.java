@@ -65,6 +65,52 @@ public class UserRoleManage extends BaseAction{
    		return NONE;
 	}
 	
+	public String AjaxUserRoleList() throws Exception {
+		
+		try {
+			request= ServletActionContext.getRequest();
+
+			UserRoleDao userRoleDao = new UserRoleDao();		
+	
+			String userId = request.getParameter("query"); 
+			userId = null != userId ? userId : "";
+			logger.debug("userId " + userId);
+			
+			List<SysUserRoleTo> userRoleList = userRoleDao.getUserRoleList(userId);
+			logger.debug("userRoleList " + userRoleList.toString());
+			
+			Gson gson = new Gson();
+			String jsonData = gson.toJson(userRoleList);
+			logger.debug(jsonData);
+			
+			// 1.5 Set AJAX response
+			CistaUtil.ajaxResponseData(response, jsonData);			
+
+		} catch (Exception e) {
+			this.addActionMessage("ERROR");
+			e.printStackTrace();
+			logger.error(e.toString());
+			addActionMessage(e.toString());
+          	//AJAX
+          	try{
+  		    	response.setContentType("text/html; charset=UTF-8");
+  				PrintWriter out = response.getWriter();
+  				String returnResult = "ERROR" ;
+
+  				logger.debug(returnResult);
+  				logger.debug("Error");
+  				out.print(returnResult);
+  				out.close();
+          	}catch(Exception ex){
+          		ex.printStackTrace();
+                logger.error(ex.toString());
+                return NONE;
+          	}
+
+		}
+		
+   		return NONE;
+	}
 	
 	public String SearchUserRolePre() throws Exception {
 		

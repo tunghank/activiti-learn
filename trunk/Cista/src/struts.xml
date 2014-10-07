@@ -145,7 +145,12 @@
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
              <result name="success"></result>
          </action>
-         
+
+         <action name="AjaxUserRoleList" class="com.cista.system.account.action.UserRoleManage" method="AjaxUserRoleList">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success"></result>
+         </action>         
          
          <action name="SearchUserRole" class="com.cista.system.account.action.UserRoleManage" method="searchUserRole">
           	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>

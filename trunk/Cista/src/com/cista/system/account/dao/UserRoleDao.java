@@ -11,6 +11,27 @@ import com.cista.system.util.BaseDao;
 
 public class UserRoleDao extends BaseDao{	
 	
+	public List<SysUserRoleTo>  getUserRoleList(String userId) throws DataAccessException{
+		
+		String sql = "";
+		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();		
+		ParameterizedBeanPropertyRowMapper<SysUserRoleTo> rowMapper = 
+    		new ParameterizedBeanPropertyRowMapper<SysUserRoleTo>();
+    	rowMapper.setMappedClass(SysUserRoleTo.class);
+		
+		sql = " SELECT A.USER_ID , B.ROLE_ID, B.ROLE_NAME "
+			+	" FROM SYS_USER_ROLE A , SYS_ROLE B "
+			+ 	" WHERE A.ROLD_ID = B.ROLE_ID "
+			+ "   AND   A.USER_ID = ? " ;
+		
+		List<SysUserRoleTo> result = sjt.query( sql, rowMapper, new Object[] {userId} );		
+		if (result != null && result.size() > 0){
+			return result;
+		} else {
+			return null;
+		}
+	}
+	
 	
 	public List searchUserRoleList(String roleId , String userId) throws DataAccessException {
 
