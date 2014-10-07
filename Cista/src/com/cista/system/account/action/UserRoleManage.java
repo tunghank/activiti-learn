@@ -1,14 +1,18 @@
 package com.cista.system.account.action;
 
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.ArrayList;
 
 import com.cista.system.account.dao.RoleDao;
 import com.cista.system.account.dao.UserDao;
 import com.cista.system.account.dao.UserRoleDao;
+
 import com.cista.system.to.SysRoleTo;
 import com.cista.system.to.SysUserRoleTo;
 import com.cista.system.util.BaseAction;
+import com.cista.system.util.CistaUtil;
+import com.google.gson.Gson;
 
 import org.apache.struts2.ServletActionContext;
 
@@ -18,6 +22,49 @@ public class UserRoleManage extends BaseAction{
 	private static final long serialVersionUID = 1L;
 	private String roleId;
 	private String[] chkModifyList;
+	
+	public String AjaxRoleList() throws Exception {
+		
+		try {
+			request= ServletActionContext.getRequest();
+
+			RoleDao roleDao = new RoleDao();		
+	
+			List<SysRoleTo> roleList = roleDao.getRoleList();
+						
+			Gson gson = new Gson();
+			String jsonData = gson.toJson(roleList);
+			logger.debug(jsonData);
+			
+			// 1.5 Set AJAX response
+			CistaUtil.ajaxResponseData(response, jsonData);			
+
+		} catch (Exception e) {
+			this.addActionMessage("ERROR");
+			e.printStackTrace();
+			logger.error(e.toString());
+			addActionMessage(e.toString());
+          	//AJAX
+          	try{
+  		    	response.setContentType("text/html; charset=UTF-8");
+  				PrintWriter out = response.getWriter();
+  				String returnResult = "ERROR" ;
+
+  				logger.debug(returnResult);
+  				logger.debug("Error");
+  				out.print(returnResult);
+  				out.close();
+          	}catch(Exception ex){
+          		ex.printStackTrace();
+                logger.error(ex.toString());
+                return NONE;
+          	}
+
+		}
+		
+   		return NONE;
+	}
+	
 	
 	public String SearchUserRolePre() throws Exception {
 		
