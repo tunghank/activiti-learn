@@ -311,35 +311,53 @@ Ext.onReady(function(){
      * Ext.ux.form.ItemSelector Example Code
      */
 
-	var ds = Ext.create('Ext.data.ArrayStore', {
-        data: [[123,'One Hundred Twenty Three'],
-            ['1', 'One'], ['2', 'Two'], ['3', 'Three'], ['4', 'Four'], ['5', 'Five'],
-            ['6', 'Six'], ['7', 'Seven'], ['8', 'Eight'], ['9', 'Nine']],
-        fields: ['value','text'],
-        sortInfo: {
-            field: 'value',
-            direction: 'ASC'
-        }
-    });
+	//創建Model  
+	Ext.define(  
+			'Role',  
+			{  
+				extend:'Ext.data.Model',  
+				fields:[  
+						{name:'roleId',mapping:'roleId'},  
+						{name:'roleName',mapping:'roleName'}
+				]  
+			}  
+	)
 
+	//創建數據源  
+	var roleDs = Ext.create(  
+			'Ext.data.Store',  
+			{  
+				model:'Role',  
+				proxy: {  
+					type: 'ajax',  
+					url : '<%=contextPath%>/AjaxRoleList.action',  
+					reader: {  
+						//數據格式為json  
+						type: 'json' 
+					}  
+				},
+				sorters:[{property:"roleId",direction:"ASC"}],
+				autoLoad:true  
+			}  
+	); 
 
     var isForm = Ext.widget('form', {
-        title: 'ItemSelector Test',
+        title: 'Role List',
         width: 700,
         bodyPadding: 10,
-        renderTo: 'itemselector',
+        renderTo: 'roleList',
 
         tbar:[{
             text: 'Options',
             menu: [{
                 text: 'Set value (2,3)',
                 handler: function(){
-                    isForm.getForm().findField('itemselector').setValue(['2', '3']);
+                    isForm.getForm().findField('roleSelector').setValue(['2', '3']);
                 }
             },{
                 text: 'Toggle enabled',
                 handler: function(){
-                    var m = isForm.getForm().findField('itemselector');
+                    var m = isForm.getForm().findField('roleSelector');
                     if (!m.disabled) {
                         m.disable();
                     } else {
@@ -349,7 +367,7 @@ Ext.onReady(function(){
             },{
                 text: 'Toggle delimiter',
                 handler: function() {
-                    var m = isForm.getForm().findField('itemselector');
+                    var m = isForm.getForm().findField('roleSelector');
                     if (m.delimiter) {
                         m.delimiter = null;
                         Ext.Msg.alert('Delimiter Changed', 'The delimiter is now set to <b>null</b>. Click Save to ' +
@@ -365,26 +383,23 @@ Ext.onReady(function(){
 
         items:[{
             xtype: 'itemselector',
-            name: 'itemselector',
+            name: 'roleSelector',
             anchor: '100%',
-            fieldLabel: 'ItemSelector',
+            fieldLabel: 'Role',
             imagePath: '../js/extjs42/examples/ux/css/images/',
 
-            store: ds,
-            displayField: 'text',
-            valueField: 'value',
-            value: ['3', '4', '6'],
-
+            store: roleDs,
+            displayField: 'roleName',
+            valueField: 'roleId',
+            value: ['-1'],
             allowBlank: false,
-            // minSelections: 2,
-            // maxSelections: 3,
             msgTarget: 'side'
         }],
 
         buttons: [{
             text: 'Clear',
             handler: function(){
-                var field = isForm.getForm().findField('itemselector');
+                var field = isForm.getForm().findField('roleSelector');
                 if (!field.readOnly && !field.disabled) {
                     field.clearValue();
                 }
@@ -409,8 +424,8 @@ Ext.onReady(function(){
 
 	function showRole(userId){
 
-			alert(userId);
-		
+		alert(userId);
+
 	}// End showRole()
 });
 
@@ -453,8 +468,8 @@ Ext.onReady(function(){
 
 	/** HTML Layout **/
 	#functionTitle  {position:absolute; visibility:visible; z-index:1; top:5px; left:5px;}
-	#userGrid  {position:absolute; visibility:visible; z-index:3; top:53px; left:5px;}
-	#itemselector  {position:absolute; visibility:visible; z-index:2; top:400px; left:5px;}
+	#userGrid  {position:absolute; visibility:visible; z-index:3; top:45px; left:5px;}
+	#roleList  {position:absolute; visibility:visible; z-index:2; top:385px; left:5px;}
 </style>
 <link rel="stylesheet" type="text/css" href="../js/extjs42/examples/ux/css/ItemSelector.css" />
 </head>
@@ -478,6 +493,6 @@ Ext.onReady(function(){
 </table>
 </div>
 <div id="userGrid" ></div>
-<div id="itemselector" ></div>	
+<div id="roleList" ></div>	
 </body>
 </html>

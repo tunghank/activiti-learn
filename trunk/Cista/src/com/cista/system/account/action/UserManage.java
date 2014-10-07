@@ -21,15 +21,7 @@ import com.cista.system.to.SysUserTo;
 import com.cista.system.util.BaseAction;
 import com.cista.system.util.CistaUtil;
 
-//import net.sf.json.JSONArray;
-//import net.sf.json.JSONObject;
-//import com.cista.system.util.JsonUtil;
-
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.sun.java_cup.internal.internal_error;
-
-import net.sf.json.JSONArray;
 
 import org.apache.struts2.ServletActionContext;
 
