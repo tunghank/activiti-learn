@@ -14,6 +14,7 @@ public class SysUserRoleTo extends com.cista.system.util.BaseObject implements
 	private Long id;
 	private String userId;
 	private Long roldId;
+	private String roldName;
 	private String cdt;
 
 	// Constructors
@@ -58,4 +59,17 @@ public class SysUserRoleTo extends com.cista.system.util.BaseObject implements
 		this.cdt = cdt;
 	}
 
+
+
+	public String getRoldName() {
+		return roldName;
+	}
+
+
+
+	public void setRoldName(String roldName) {
+		this.roldName = roldName;
+	}
+
+	
 }
