@@ -8,11 +8,13 @@ import com.cista.system.account.dao.RoleDao;
 import com.cista.system.account.dao.UserDao;
 import com.cista.system.account.dao.UserRoleDao;
 
+import com.cista.system.to.ExtJSGridTo;
 import com.cista.system.to.SysRoleTo;
 import com.cista.system.to.SysUserRoleTo;
 import com.cista.system.util.BaseAction;
 import com.cista.system.util.CistaUtil;
 import com.google.gson.Gson;
+import com.sun.java_cup.internal.internal_error;
 
 import org.apache.struts2.ServletActionContext;
 
@@ -77,14 +79,19 @@ public class UserRoleManage extends BaseAction{
 			logger.debug("userId " + userId);
 			
 			List<SysUserRoleTo> userRoleList = userRoleDao.getUserRoleList(userId);
+			
 			logger.debug("userRoleList " + userRoleList.toString());
-			
-			Gson gson = new Gson();
-			String jsonData = gson.toJson(userRoleList);
-			logger.debug(jsonData);
-			
-			// 1.5 Set AJAX response
-			CistaUtil.ajaxResponseData(response, jsonData);			
+			if( userRoleList != null ){
+				ExtJSGridTo extJSGridTo = new ExtJSGridTo();
+				extJSGridTo.setRoot(userRoleList);
+				extJSGridTo.setTotal(userRoleList.size());
+				Gson gson = new Gson();
+				String jsonData = gson.toJson(extJSGridTo);
+				logger.debug(jsonData);
+				
+				// 1.5 Set AJAX response
+				CistaUtil.ajaxResponseData(response, jsonData);	
+			}
 
 		} catch (Exception e) {
 			this.addActionMessage("ERROR");

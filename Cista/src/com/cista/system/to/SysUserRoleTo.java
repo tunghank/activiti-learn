@@ -9,12 +9,16 @@ package com.cista.system.to;
 public class SysUserRoleTo extends com.cista.system.util.BaseObject implements
 		java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	// Fields
 
 	private Long id;
 	private String userId;
-	private Long roldId;
-	private String roldName;
+	private Long roleId;
+	private String roleName;
 	private String cdt;
 
 	// Constructors
@@ -22,7 +26,6 @@ public class SysUserRoleTo extends com.cista.system.util.BaseObject implements
 	/** default constructor */
 	public SysUserRoleTo() {
 	}
-
 
 
 	// Property accessors
@@ -43,14 +46,6 @@ public class SysUserRoleTo extends com.cista.system.util.BaseObject implements
 		this.userId = userId;
 	}
 
-	public Long getRoldId() {
-		return this.roldId;
-	}
-
-	public void setRoldId(Long roldId) {
-		this.roldId = roldId;
-	}
-
 	public String getCdt() {
 		return this.cdt;
 	}
@@ -60,16 +55,24 @@ public class SysUserRoleTo extends com.cista.system.util.BaseObject implements
 	}
 
 
+	public Long getRoleId() {
+		return roleId;
+	}
 
-	public String getRoldName() {
-		return roldName;
+
+	public void setRoleId(Long roleId) {
+		this.roleId = roleId;
+	}
+
+
+	public String getRoleName() {
+		return roleName;
 	}
 
 
 
-	public void setRoldName(String roldName) {
-		this.roldName = roldName;
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
-
 	
 }
