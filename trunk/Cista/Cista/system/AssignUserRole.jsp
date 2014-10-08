@@ -347,7 +347,7 @@ Ext.onReady(function(){
         bodyPadding: 10,
         renderTo: 'roleList',
 
-        tbar:[{
+        /*tbar:[{
             text: 'Options',
             menu: [{
                 text: 'Set value (2,3)',
@@ -379,7 +379,7 @@ Ext.onReady(function(){
                     }
                 }
             }]
-        }],
+        }],*/
 
         items:[{
             xtype: 'itemselector',
@@ -391,7 +391,6 @@ Ext.onReady(function(){
             store: roleDs,
             displayField: 'roleName',
             valueField: 'roleId',
-            value: ['-1'],
             allowBlank: false,
             msgTarget: 'side'
         }],
@@ -424,7 +423,14 @@ Ext.onReady(function(){
 
 	function showRole(userId){
 
-		alert(userId);
+		var roleSelector = isForm.getForm().findField('roleSelector');
+		if (!roleSelector.readOnly && !roleSelector.disabled) {
+			roleSelector.clearValue();
+		}
+
+		//alert(userId);
+		//Change Title
+		isForm.setTitle( "  " + userId + "  Role List" );
 		Ext.Ajax.request({  //ajax request test  
 				url : '<%=contextPath%>/AjaxUserRoleList.action',  
 				params : {  
@@ -435,13 +441,20 @@ Ext.onReady(function(){
 				success : function(response, options) {
 					//parse Json data
 					var freeback = Ext.JSON.decode(response.responseText);
-					
-					alert(freeback);
+					var toatl = freeback.total;
+					var roles = []; // 空陣列
+					for( var i=0; i < toatl; i++ ){
+						//alert(freeback['root'][i].roleId);
+						roles[i]=freeback['root'][i].roleId;
+					}
+					isForm.getForm().findField('roleSelector').setValue(roles);
 				},  
 				failure : function(response, options) {  
 					Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
 				}  
 		});
+		//var role2s = ['-1','-2'];
+		//isForm.getForm().findField('roleSelector').setValue(role2s);
 	}// End showRole()
 });
 
