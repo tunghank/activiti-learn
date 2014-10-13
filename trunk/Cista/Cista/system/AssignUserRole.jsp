@@ -412,8 +412,36 @@ Ext.onReady(function(){
             text: 'Save',
             handler: function(){
                 if(isForm.getForm().isValid()){
+					/*alert(Ext.encode(isForm.getForm().getValues()));
                     Ext.Msg.alert('Submitted Values', 'The following will be sent to the server: <br />'+
-                        isForm.getForm().getValues(true));
+                        isForm.getForm().getValues());*/
+					Ext.Ajax.timeout = 120000; // 120 seconds
+					Ext.Ajax.request({  //ajax request test  
+								url : '<%=contextPath%>/AjaxSaveUserRoleList.action',  
+								params : {  
+									data: Ext.encode(isForm.getForm().getValues())
+								},
+								method : 'POST',
+								scope:this,
+								success : function(response, options) {
+									//parse Json data
+									var freeback = Ext.JSON.decode(response.responseText);
+									var message =  freeback.ajaxMessage;
+									var status  =  freeback.ajaxStatus;
+									
+									if( status == '<%=CistaUtil.AJAX_RSEPONSE_ERROR%>' ){//ERROR
+										Ext.MessageBox.alert('Success', 'ERROR : '+ message );
+									}else{//FINISH
+										Ext.MessageBox.alert('Success', 'FINISH : '+ message );
+										
+
+									}
+									
+								},  
+								failure : function(response, options) {  
+									Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
+								}  
+							});//End Ext.Ajax.request
                 }
             }
         }]
