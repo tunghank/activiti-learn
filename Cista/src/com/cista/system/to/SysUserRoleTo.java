@@ -1,5 +1,8 @@
 package com.cista.system.to;
 
+import java.util.Date;
+
+
 /**
  * SysUserRole entity.
  * 
@@ -15,11 +18,11 @@ public class SysUserRoleTo extends com.cista.system.util.BaseObject implements
 	private static final long serialVersionUID = 1L;
 	// Fields
 
-	private Long id;
+	private String id;
 	private String userId;
 	private Long roleId;
 	private String roleName;
-	private String cdt;
+	private Date cdt;
 
 	// Constructors
 
@@ -30,27 +33,35 @@ public class SysUserRoleTo extends com.cista.system.util.BaseObject implements
 
 	// Property accessors
 
-	public Long getId() {
-		return this.id;
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getUserId() {
 		return this.userId;
 	}
 
+	public String getId() {
+		return id;
+	}
+
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	public String getCdt() {
-		return this.cdt;
+
+
+
+	public Date getCdt() {
+		return cdt;
 	}
 
-	public void setCdt(String cdt) {
+
+	public void setCdt(Date cdt) {
 		this.cdt = cdt;
 	}
 

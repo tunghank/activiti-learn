@@ -1,8 +1,11 @@
 package com.cista.system.account.action;
 
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.UUID;
 
 import com.cista.system.account.dao.RoleDao;
 import com.cista.system.account.dao.UserDao;
@@ -11,9 +14,11 @@ import com.cista.system.account.dao.UserRoleDao;
 import com.cista.system.to.ExtJSGridTo;
 import com.cista.system.to.SysRoleTo;
 import com.cista.system.to.SysUserRoleTo;
+import com.cista.system.to.SysUserTo;
 import com.cista.system.util.BaseAction;
 import com.cista.system.util.CistaUtil;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sun.java_cup.internal.internal_error;
 
 import org.apache.struts2.ServletActionContext;
@@ -79,9 +84,10 @@ public class UserRoleManage extends BaseAction{
 			logger.debug("userId " + userId);
 			
 			List<SysUserRoleTo> userRoleList = userRoleDao.getUserRoleList(userId);
-			
-			logger.debug("userRoleList " + userRoleList.toString());
+						
 			if( userRoleList != null ){
+				logger.debug("userRoleList " + userRoleList.toString());
+				
 				ExtJSGridTo extJSGridTo = new ExtJSGridTo();
 				extJSGridTo.setRoot(userRoleList);
 				extJSGridTo.setTotal(userRoleList.size());
@@ -92,6 +98,60 @@ public class UserRoleManage extends BaseAction{
 				// 1.5 Set AJAX response
 				CistaUtil.ajaxResponseData(response, jsonData);	
 			}
+
+		} catch (Exception e) {
+			this.addActionMessage("ERROR");
+			e.printStackTrace();
+			logger.error(e.toString());
+			addActionMessage(e.toString());
+          	//AJAX
+          	try{
+  		    	response.setContentType("text/html; charset=UTF-8");
+  				PrintWriter out = response.getWriter();
+  				String returnResult = "ERROR" ;
+
+  				logger.debug(returnResult);
+  				logger.debug("Error");
+  				out.print(returnResult);
+  				out.close();
+          	}catch(Exception ex){
+          		ex.printStackTrace();
+                logger.error(ex.toString());
+                return NONE;
+          	}
+
+		}
+		
+   		return NONE;
+	}
+
+	public String AjaxSaveUserRoleList() throws Exception {
+		
+		try {
+			request= ServletActionContext.getRequest();
+
+			UserRoleDao userRoleDao = new UserRoleDao();		
+	
+			String data = request.getParameter("data"); 
+			data = null != data ? data : "";
+			logger.debug("data " + data);
+			Gson gson = new Gson();
+			//String str = gson.fromJson(data, String.class);
+			Map<String,String> map=new HashMap<String,String>();
+			map=(Map<String,String>) gson.fromJson(data, map.getClass());
+			UUID uuid = UUID.randomUUID();
+			
+			//Map<String, Object> map = new Gson().fromJson(data, new TypeToken<Map<String, Object>>() {
+			//}.getType());
+
+			logger.debug("roleSelector " + map.get("roleSelector").toString());
+			logger.debug("uuid " + uuid.toString().toUpperCase());
+			logger.debug("uuid " + uuid.toString().toUpperCase().length());
+			
+			String[] dataArray = map.get("roleSelector").split(",");
+			for (String s : dataArray) {
+	            logger.debug(s);
+	        }
 
 		} catch (Exception e) {
 			this.addActionMessage("ERROR");
