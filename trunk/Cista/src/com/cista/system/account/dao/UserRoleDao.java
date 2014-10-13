@@ -1,5 +1,6 @@
 package com.cista.system.account.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.dao.DataAccessException;
@@ -10,6 +11,42 @@ import com.cista.system.to.SysUserRoleTo;
 import com.cista.system.util.BaseDao;
 
 public class UserRoleDao extends BaseDao{	
+	
+	public int deleteUserRole(String userId) throws DataAccessException{
+		
+		String sql = "";
+		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();
+    	sql = " DELETE FROM SYS_USER_ROLE A " +
+			" WHERE A.USER_ID ='" + userId + "'";
+    	logger.debug(sql);	
+		int result = sjt.update(sql	, new Object[]{});		
+		return result;		
+		
+	}
+	
+	public int[] batchInsertUserRole(List<SysUserRoleTo> roleList) throws DataAccessException {
+		// TODO Auto-generated method stub
+		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();
+
+		String sql =  " Insert into SYS_USER_ROLE ( ID, USER_ID, ROLD_ID, CDT ) " +
+		" Values ( ?, ?, ?, ? )";
+		
+		List<Object[]> batch = new ArrayList<Object[]>();
+		for (SysUserRoleTo userRoleTo : roleList) {
+		    Object[] values = new Object[] {
+		    		userRoleTo.getId(),
+		    		userRoleTo.getUserId(),
+		    		userRoleTo.getRoleId(),
+		    		userRoleTo.getCdt()
+					};
+		    batch.add(values);
+		}
+	
+		logger.debug(sql);
+		
+		int result [] = sjt.batchUpdate(sql, batch);
+		return result;
+	}
 	
 	public List<SysUserRoleTo>  getUserRoleList(String userId) throws DataAccessException{
 		
