@@ -1,6 +1,7 @@
 package com.cista.system.account.action;
 
 import java.io.PrintWriter;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
@@ -129,29 +130,53 @@ public class UserRoleManage extends BaseAction{
 		
 		try {
 			request= ServletActionContext.getRequest();
-
-			UserRoleDao userRoleDao = new UserRoleDao();		
-	
+			//1.0 Get Data
 			String data = request.getParameter("data"); 
 			data = null != data ? data : "";
 			logger.debug("data " + data);
+			
+			String userId = request.getParameter("userId"); 
+			userId = null != userId ? userId : "";
+			logger.debug("userId " + userId);
+			
+			//1.1 Parser JSON Data
 			Gson gson = new Gson();
 			//String str = gson.fromJson(data, String.class);
 			Map<String,String> map=new HashMap<String,String>();
 			map=(Map<String,String>) gson.fromJson(data, map.getClass());
-			UUID uuid = UUID.randomUUID();
+			
 			
 			//Map<String, Object> map = new Gson().fromJson(data, new TypeToken<Map<String, Object>>() {
 			//}.getType());
-
-			logger.debug("roleSelector " + map.get("roleSelector").toString());
-			logger.debug("uuid " + uuid.toString().toUpperCase());
-			logger.debug("uuid " + uuid.toString().toUpperCase().length());
 			
-			String[] dataArray = map.get("roleSelector").split(",");
-			for (String s : dataArray) {
-	            logger.debug(s);
-	        }
+			//1.2 Prepare Insert DB Data
+			String[] roleArray = map.get("roleSelector").split(",");
+			
+			List<SysUserRoleTo> roleList = new ArrayList<SysUserRoleTo>();
+			Calendar nowTime = Calendar.getInstance();
+			UUID uuid;
+			for(int i=0; i < roleArray.length; i ++ ){
+				uuid = UUID.randomUUID();
+				SysUserRoleTo sysUserRoleTo = new SysUserRoleTo();
+				sysUserRoleTo.setId(uuid.toString().toUpperCase());
+				sysUserRoleTo.setUserId(userId);
+				sysUserRoleTo.setRoleId( Long.parseLong(roleArray[i]) );
+				sysUserRoleTo.setCdt(nowTime.getTime());
+				roleList.add(sysUserRoleTo);
+			}
+			
+			//Insert DB
+			UserRoleDao userRoleDao = new UserRoleDao();	
+			userRoleDao.deleteUserRole(userId);
+			int result []  = userRoleDao.batchInsertUserRole(roleList);
+			
+			logger.debug("roleSelector " + map.get("roleSelector").toString());
+			logger.debug("roleSelector " + map.get("roleSelector").length());
+			//logger.debug("uuid " + uuid.toString().toUpperCase());
+			//logger.debug("uuid " + uuid.toString().toUpperCase().length());
+			logger.debug("roleList.size " + roleList.size() );
+			logger.debug("result [] " + result.toString());
+
 
 		} catch (Exception e) {
 			this.addActionMessage("ERROR");
