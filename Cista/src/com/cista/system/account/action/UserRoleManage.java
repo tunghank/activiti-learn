@@ -175,9 +175,20 @@ public class UserRoleManage extends BaseAction{
 			//logger.debug("uuid " + uuid.toString().toUpperCase());
 			//logger.debug("uuid " + uuid.toString().toUpperCase().length());
 			logger.debug("roleList.size " + roleList.size() );
-			logger.debug("result [] " + result.toString());
+			logger.debug("result [] " + result.length);
 
-
+			String messageString = "Save Finish";
+			if (result.length < 1){
+				
+				messageString = getText("System.createUser.message.fail.insertUserError");
+				CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_ERROR);
+				
+				return NONE;
+			}
+			messageString = "Save Finish";
+			// 1.5 Set AJAX response
+			CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_FINISH);
+			
 		} catch (Exception e) {
 			this.addActionMessage("ERROR");
 			e.printStackTrace();
