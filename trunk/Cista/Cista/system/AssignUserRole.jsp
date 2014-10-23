@@ -415,11 +415,18 @@ Ext.onReady(function(){
 					/*alert(Ext.encode(isForm.getForm().getValues()));
                     Ext.Msg.alert('Submitted Values', 'The following will be sent to the server: <br />'+
                         isForm.getForm().getValues());*/
+
+					//得到選中的行
+					var record = grid.getSelectionModel().getSelection();
+					var userId = record[0].get('userId');
+					alert(userId);
+
 					Ext.Ajax.timeout = 120000; // 120 seconds
 					Ext.Ajax.request({  //ajax request test  
 								url : '<%=contextPath%>/AjaxSaveUserRoleList.action',  
 								params : {  
-									data: Ext.encode(isForm.getForm().getValues())
+									data: Ext.encode(isForm.getForm().getValues()),
+									userId: userId
 								},
 								method : 'POST',
 								scope:this,
