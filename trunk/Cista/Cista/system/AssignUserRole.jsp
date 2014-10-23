@@ -419,7 +419,7 @@ Ext.onReady(function(){
 					//得到選中的行
 					var record = grid.getSelectionModel().getSelection();
 					var userId = record[0].get('userId');
-					alert(userId);
+					//alert(userId);
 
 					Ext.Ajax.timeout = 120000; // 120 seconds
 					Ext.Ajax.request({  //ajax request test  
@@ -437,9 +437,9 @@ Ext.onReady(function(){
 									var status  =  freeback.ajaxStatus;
 									
 									if( status == '<%=CistaUtil.AJAX_RSEPONSE_ERROR%>' ){//ERROR
-										Ext.MessageBox.alert('Success', 'ERROR : '+ message );
+										Ext.MessageBox.alert('Success', 'ERROR : '+  message );
 									}else{//FINISH
-										Ext.MessageBox.alert('Success', 'FINISH : '+ message );
+										Ext.MessageBox.alert('Success', 'FINISH : '+ userId + "'s Role " + message );
 										
 
 									}
