@@ -1,5 +1,6 @@
 package com.cista.system.account.action;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,9 +9,15 @@ import org.apache.struts2.ServletActionContext;
 import com.cista.system.account.dao.FunctionDao;
 import com.cista.system.account.dao.RoleDao;
 import com.cista.system.account.dao.RoleFunctionDao;
+import com.cista.system.account.dao.UserDao;
+import com.cista.system.to.ExtJSGridTo;
 import com.cista.system.to.SysFunctionTo;
 import com.cista.system.to.SysRoleFunctionTo;
+import com.cista.system.to.SysRoleTo;
+import com.cista.system.to.SysUserTo;
 import com.cista.system.util.BaseAction;
+import com.cista.system.util.CistaUtil;
+import com.google.gson.Gson;
 
 public class RoleFunctionManager extends BaseAction{
 	
@@ -23,12 +30,97 @@ public class RoleFunctionManager extends BaseAction{
 	private String[] chkModifyList;
 	private String functionId;
 	
-	public String searchRoleFunctionPre() throws Exception{
+	public String SearchRoleFunctionPre() throws Exception{
 	
 		request= ServletActionContext.getRequest();
 		
 		return SUCCESS;
 	}
+	
+	public String AjaxRoleSearchLike() throws Exception {
+		
+		try {
+			request= ServletActionContext.getRequest();
+			//for paging        
+	        int total;//分頁。。。數據總數       
+	        int iStart;//分頁。。。每頁開始數據
+	        int iLimit;//分頁。。。每一頁數據
+	        
+	        String start = request.getParameter("start");
+            String limit = request.getParameter("limit");
+            iStart = Integer.parseInt(start);
+            iLimit = Integer.parseInt(limit);
+            
+            logger.debug("start: " + Integer.parseInt(start));
+            logger.debug("limit: " + limit);
+			
+            
+			String roleName = request.getParameter("query"); 
+			roleName = null != roleName ? roleName : "";
+			logger.debug("roleName " + roleName);
+			
+			RoleDao roleDao = new RoleDao();		
+	
+			List<SysRoleTo> roleList = new ArrayList<SysRoleTo>();
+			
+			if(roleName.equals("")){
+				roleList = (ArrayList<SysRoleTo>)roleDao.getRoleList();
+			}else{
+				roleList = roleDao.searchRoleList(roleName);
+			}
+			
+			//logger.debug("userList Size " + userList.size());
+			//分頁
+			total=roleList.size();
+			int end=iStart+iLimit;
+			if(end>total){//不能總數
+				end=total;
+			}		
+			
+			List<SysRoleTo> resultList = new ArrayList<SysRoleTo>();
+			for(int i=iStart;i<end;i++){//只加載當前頁面數據
+				//logger.debug(userList.get(i).toString());
+				resultList.add(roleList.get(i));
+			}
+			//logger.debug(resultList.toString());
+			
+			ExtJSGridTo extJSGridTo = new ExtJSGridTo();
+			extJSGridTo.setTotal(total);
+			extJSGridTo.setRoot(resultList);
+			
+			Gson gson = new Gson();
+			String jsonData = gson.toJson(extJSGridTo);
+			//logger.debug(jsonData);
+			
+			// 1.5 Set AJAX response
+			CistaUtil.ajaxResponseData(response, jsonData);			
+
+		} catch (Exception e) {
+			this.addActionMessage("ERROR");
+			e.printStackTrace();
+			logger.error(e.toString());
+			addActionMessage(e.toString());
+          	//AJAX
+          	try{
+  		    	response.setContentType("text/html; charset=UTF-8");
+  				PrintWriter out = response.getWriter();
+  				String returnResult = "ERROR" ;
+
+  				logger.debug(returnResult);
+  				logger.debug("Error");
+  				out.print(returnResult);
+  				out.close();
+          	}catch(Exception ex){
+          		ex.printStackTrace();
+                logger.error(ex.toString());
+                return NONE;
+          	}
+
+		}
+		
+   		return NONE;
+	}
+	
 	
 	public String searchRoleFunction() throws Exception{
 		

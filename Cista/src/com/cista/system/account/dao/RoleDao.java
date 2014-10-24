@@ -34,6 +34,28 @@ public class RoleDao extends BaseDao{
 		}
 	}
 	
+	public List<SysRoleTo> searchRoleList(String roleName ) throws DataAccessException{
+		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();		
+		ParameterizedBeanPropertyRowMapper<SysRoleTo> rowMapper = 
+    		new ParameterizedBeanPropertyRowMapper<SysRoleTo>();
+    	rowMapper.setMappedClass(SysRoleTo.class);
+		
+		String sql ;
+		sql = " SELECT A.ROLE_ID ,A.ROLE_NAME ,A.CDT "
+			+ " FROM SYS_ROLE A "
+			+ " WHERE A.ROLE_NAME Like '%" + roleName + "%'" ;
+
+		List<SysRoleTo> result = sjt.query(sql,rowMapper, new Object[] {});
+			
+		if (result != null && result.size() > 0) {
+			return result;
+		} 
+		else {
+			return null;
+		}
+	}
+	
+	
 	public SysRoleTo getRoleDetail(String roleName , String roleId) throws DataAccessException{
 		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();		
 		ParameterizedBeanPropertyRowMapper<SysRoleTo> rowMapper = 
@@ -80,41 +102,7 @@ public class RoleDao extends BaseDao{
 		return answer ;
 	}	
 	
-	public List<SysRoleTo> searchRoleList(String roleName) throws DataAccessException{
-	
-		String sql = "";
-		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();		
-		ParameterizedBeanPropertyRowMapper<SysRoleTo> rowMapper = 
-    		new ParameterizedBeanPropertyRowMapper<SysRoleTo>();
-    	rowMapper.setMappedClass(SysRoleTo.class);	
-		
-		sql = " SELECT "
-		   	+ "	   A.ROLE_ID "
-		   	+ "    ,A.ROLE_NAME "
-		   	+ "    ,A.CDT "
-		   	+ " FROM SYS_ROLE A "
-		   	+ " WHERE "
-		   	+ "    1 = 1 ";
-		
-			if (roleName.equals("")){ roleName = "1";	sql += " And 1 = ?"; }
-			else 
-			{	
-				roleName = roleName.replace('*', '%');
-			
-				if (roleName.contains("%"))	sql += " And A.ROLE_NAME like ? ";
-				else 							sql += " And A.ROLE_NAME = ? ";
-			}
-			
-		sql+= " ORDER BY A.ROLE_ID";		
-		
-		List<SysRoleTo> result = sjt.query(sql,rowMapper, new Object[] {roleName} );
-		
-		if (result != null && result.size() > 0) {	
-			return result;
-		}else {	
-			return null;
-		}		
-	}
+
 	
 	public int deleteRole(String roleId) throws DataAccessException	{
 		String sql = "";

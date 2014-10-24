@@ -72,33 +72,12 @@ Ext.onReady(function(){
 			{  
 				extend:'Ext.data.Model',  
 				fields:[  
-						{name:'userId',mapping:'userId'},  
-						{name:'realName',mapping:'realName'},  
-						{name:'company',mapping:'company'},  
-					    {name:'companyType',mapping:'companyType'},  
-						{name:'position',mapping:'position'},
-						{name:'email',mapping:'email'},
-						{name:'phoneNum',mapping:'phoneNum'},
-						{name:'active',mapping:'active'},
-						{name:'createBy',mapping:'createBy'},
-						{name:'cdt',mapping:'cdt',type:'date',dataFormat:'Y-m-d'},
-						{name:'updateBy',mapping:'updateBy'},
-					    {name:'udt',mapping:'udt',type:'date',dataFormat:'Y-m-d'}
+						{name:'roleId',mapping:'roleId'},  
+						{name:'roleName',mapping:'roleName'},  
+						{name:'cdt',mapping:'cdt',type:'date',dataFormat:'Y-m-d'}
 				]  
 			}  
 	)
-
-	//創建本地數據源  
-	var activeStore = Ext.create(  
-			'Ext.data.Store',  
-			{  
-				fields:['id','name'],  
-				data:[  
-					  {"id":"1","name":"Active"},  
-					  {"id":"0","name":"No Active"}  
-				]  
-			}  
-	);  
 	  
 	//創建數據源  
 	var store = Ext.create(  
@@ -109,7 +88,7 @@ Ext.onReady(function(){
 				pageSize:10,  
 				proxy: {  
 					type: 'ajax',  
-					url : '<%=contextPath%>/AjaxUserSearchLike.action',  
+					url : '<%=contextPath%>/AjaxRoleSearchLike.action',  
 					reader: {  
 						//數據格式為json  
 						type: 'json',  
@@ -150,96 +129,19 @@ Ext.onReady(function(){
 			plugins: [cellEditing] ,  
 			columns:[  
 					 {  
-						id:'gUserId',  
+						id:'gRoleId',  
 						//表頭  
-						header:'User ID',  
+						header:'Role ID',  
 						width:100,  
 						//內容  
-						dataIndex:'userId',  
+						dataIndex:'roleId',  
 						sortable:true
 					   
 					 },{  
-						 id:'gRealName',  
-						 header:'Name',  
+						 id:'gRoleName',  
+						 header:'Role Name',  
 						 width:100,  
-						 dataIndex:'realName',  
-						 sortable:false
-					  
-						},{  
-						 id:'gCompany',  
-						 header:'Company',  
-						 width:80,  
-						 dataIndex:'company',  
-						 sortable:false
-					  
-						},{
-						 id:'gDepartment',  
-						 header:'Department',  
-						 width:80,  
-						 dataIndex:'department',  
-						 sortable:false
-					  
-						},{  
-						 id:'gCompanyType',  
-						 header:'Company Type',  
-						 width:100,  
-						 dataIndex:'companyType',  
-						 sortable:false,
-					     hidden:true
-					  
-						},{  
-						 id:'gPosition',  
-						 header:'Position',  
-						 width:100,  
-						 dataIndex:'position',  
-						 sortable:false
-					  
-						},{  
-						 id:'gEmail',  
-						 header:'Email',  
-						 width:200,  
-						 dataIndex:'email',  
-						 sortable:false
-					  
-						},{  
-						 id:'gPhoneNum',  
-						 header:'Phone',  
-						 width:100,  
-						 dataIndex:'phoneNum',  
-						 sortable:false
-					  
-						},{  
-							id:'gActive',  
-							header:'Active',  
-							width:60,  
-							dataIndex:'active',  
-							editor:{  
-								xtype:'combobox',  
-								store:activeStore,  
-								displayField:'name',  
-								valueField:'id',
-								readOnly :true/*,
-								listeners:{       
-									select : function(combo, record,index){   
-										isEdit = true;   
-									}   
-								}*/
-							},
-							renderer: function(value) {
-								var rec = activeStore.getById(value);
-								
-								if (rec)
-								{
-									return rec.get('name');
-								}
-								
-								return '&mdash;';
-							}
-						},{  
-						 id:'gCreateBy',  
-						 header:'Creator',  
-						 width:60,  
-						 dataIndex:'createBy',  
+						 dataIndex:'roleName',  
 						 sortable:false
 					  
 						},{  
@@ -251,27 +153,10 @@ Ext.onReady(function(){
 							renderer: function(value){   
 										return value ? Ext.Date.dateFormat(value, 'Y-m-d H:m:s') : '';   
 									}
-						},{  
-						 id:'gUpdateBy',  
-						 header:'Update By',  
-						 width:60,  
-						 dataIndex:'updateBy',  
-						 sortable:false
-					  
-						},{  
-							id:'gUdt',  
-							header:'Update Date',  
-							width:120,  
-							dataIndex:'udt',  
-							//lazyRender: true,  
-														  
-							renderer: function(value){   
-										return value ? Ext.Date.dateFormat(value, 'Y-m-d H:m:s') : '';   
-									}
-						}  
+						}
 			],  
 			height:335,   
-			width:900,   
+			width:400,   
 			title: 'Role List',   
 			renderTo: 'roleGrid',
 			dockedItems:[  					   
@@ -281,7 +166,7 @@ Ext.onReady(function(){
 							 dock: 'top',   
 							 xtype: 'toolbar',   
 							 items: {   
-								 width: 400,   
+								 width: 250,   
 								 fieldLabel: 'Search Role:',   
 								 labelWidth: 80,   
 								 xtype: 'searchfield',   
@@ -298,7 +183,7 @@ Ext.onReady(function(){
 			],
 			listeners: {
 				itemclick: function(dv, record, item, index, e) {
-					showRole(record.get('userId'));      
+					showRole(record.get('roleName'));      
 				}
 			}
 			  
@@ -455,7 +340,7 @@ Ext.onReady(function(){
 
 
 
-	function showRole(userId){
+	function showRole(roleName){
 
 		var roleSelector = isForm.getForm().findField('roleSelector');
 		if (!roleSelector.readOnly && !roleSelector.disabled) {
@@ -464,7 +349,7 @@ Ext.onReady(function(){
 
 		//alert(userId);
 		//Change Title
-		isForm.setTitle( "  " + userId + "  Role List" );
+		isForm.setTitle( "  " + roleName + "  Function List" );
 		Ext.Ajax.request({  //ajax request test  
 				url : '<%=contextPath%>/AjaxUserRoleList.action',  
 				params : {  
@@ -532,7 +417,7 @@ Ext.onReady(function(){
 	/** HTML Layout **/
 	#functionTitle  {position:absolute; visibility:visible; z-index:1; top:5px; left:5px;}
 	#roleGrid  {position:absolute; visibility:visible; z-index:3; top:45px; left:5px;}
-	#roleList  {position:absolute; visibility:visible; z-index:2; top:385px; left:5px;}
+	#roleList  {position:absolute; visibility:visible; z-index:2; top:45px; left:425px;}
 </style>
 <link rel="stylesheet" type="text/css" href="../js/extjs42/examples/ux/css/ItemSelector.css" />
 </head>
