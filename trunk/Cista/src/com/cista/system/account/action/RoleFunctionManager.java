@@ -14,6 +14,10 @@ import com.cista.system.util.BaseAction;
 
 public class RoleFunctionManager extends BaseAction{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String roleId;
 	private String leaf;
 	private String[] chkModifyList;
@@ -22,12 +26,6 @@ public class RoleFunctionManager extends BaseAction{
 	public String searchRoleFunctionPre() throws Exception{
 	
 		request= ServletActionContext.getRequest();
-		
-		// rolelist
-		RoleDao roleDAO = new RoleDao();	
-		List  data = new ArrayList();		
-		data = (ArrayList)roleDAO.searchRoleList("");
-		request.setAttribute("roleList", data);
 		
 		return SUCCESS;
 	}

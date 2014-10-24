@@ -1,5 +1,7 @@
 package com.cista.system.to;
 
+import java.util.Date;
+
 /**
  * SysRole entity.
  * 
@@ -9,11 +11,11 @@ package com.cista.system.to;
 public class SysRoleTo extends com.cista.system.util.BaseObject implements
 		java.io.Serializable {
 
-	// Fields
 
-	private Long roleId;
+
+	private String roleId;
 	private String roleName;
-	private String cdt;
+	private Date cdt;
 
 	// Constructors
 
@@ -23,14 +25,24 @@ public class SysRoleTo extends com.cista.system.util.BaseObject implements
 
 	// Property accessors
 
-	public Long getRoleId() {
-		return this.roleId;
+	// Fields
+
+	public String getRoleId() {
+		return roleId;
 	}
 
-	public void setRoleId(Long roleId) {
+	public void setRoleId(String roleId) {
 		this.roleId = roleId;
 	}
 
+	public Date getCdt() {
+		return cdt;
+	}
+
+	public void setCdt(Date cdt) {
+		this.cdt = cdt;
+	}
+	
 	public String getRoleName() {
 		return this.roleName;
 	}
@@ -39,12 +51,6 @@ public class SysRoleTo extends com.cista.system.util.BaseObject implements
 		this.roleName = roleName;
 	}
 
-	public String getCdt() {
-		return this.cdt;
-	}
 
-	public void setCdt(String cdt) {
-		this.cdt = cdt;
-	}
 
 }

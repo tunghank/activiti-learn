@@ -1,5 +1,7 @@
 package com.cista.system.to;
 
+import java.util.Date;
+
 /**
  * SysRoleFunction entity.
  * 
@@ -11,10 +13,10 @@ public class SysRoleFunctionTo extends com.cista.system.util.BaseObject
 
 	// Fields
 
-	private Long id;
-	private Long roleId;
+	private String id;
+	private String roleId;
 	private Long functionId;
-	private String cdt;
+	private Date cdt;
 	private String cls;
 	
 	// for role
@@ -31,21 +33,7 @@ public class SysRoleFunctionTo extends com.cista.system.util.BaseObject
 
 	// Property accessors
 
-	public Long getId() {
-		return this.id;
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Long getRoleId() {
-		return this.roleId;
-	}
-
-	public void setRoleId(Long roleId) {
-		this.roleId = roleId;
-	}
 
 	public Long getFunctionId() {
 		return this.functionId;
@@ -55,13 +43,7 @@ public class SysRoleFunctionTo extends com.cista.system.util.BaseObject
 		this.functionId = functionId;
 	}
 
-	public String getCdt() {
-		return this.cdt;
-	}
 
-	public void setCdt(String cdt) {
-		this.cdt = cdt;
-	}
 
 	public String getRoleName() {
 		return this.roleName;
@@ -86,5 +68,35 @@ public class SysRoleFunctionTo extends com.cista.system.util.BaseObject
 
 	public void setCls(String cls) {
 		this.cls = cls;
+	}
+
+
+	public String getId() {
+		return id;
+	}
+
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+
+	public String getRoleId() {
+		return roleId;
+	}
+
+
+	public void setRoleId(String roleId) {
+		this.roleId = roleId;
+	}
+
+
+	public Date getCdt() {
+		return cdt;
+	}
+
+
+	public void setCdt(Date cdt) {
+		this.cdt = cdt;
 	}
 }

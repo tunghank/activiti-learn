@@ -20,7 +20,7 @@ public class SysUserRoleTo extends com.cista.system.util.BaseObject implements
 
 	private String id;
 	private String userId;
-	private Long roleId;
+	private String roleId;
 	private String roleName;
 	private Date cdt;
 
@@ -54,8 +54,6 @@ public class SysUserRoleTo extends com.cista.system.util.BaseObject implements
 	}
 
 
-
-
 	public Date getCdt() {
 		return cdt;
 	}
@@ -66,24 +64,23 @@ public class SysUserRoleTo extends com.cista.system.util.BaseObject implements
 	}
 
 
-	public Long getRoleId() {
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
+
+
+	public String getRoleId() {
 		return roleId;
 	}
 
 
-	public void setRoleId(Long roleId) {
+	public void setRoleId(String roleId) {
 		this.roleId = roleId;
 	}
 
 
 	public String getRoleName() {
 		return roleName;
-	}
-
-
-
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
 	}
 	
 }

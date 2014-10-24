@@ -5,7 +5,6 @@
 <%@ page import ="java.util.List"%>
 <%@ page import ="com.cista.system.util.CistaUtil"%>
 <%@ page import ="com.cista.system.to.SysUserTo"%>
-<%@ page import ="com.cista.system.to.SysDepartmentTo"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 
 <%

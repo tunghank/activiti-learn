@@ -167,7 +167,7 @@ public class UserRoleManage extends BaseAction{
 					SysUserRoleTo sysUserRoleTo = new SysUserRoleTo();
 					sysUserRoleTo.setId(uuid.toString().toUpperCase());
 					sysUserRoleTo.setUserId(userId);
-					sysUserRoleTo.setRoleId( Long.parseLong(roleArray[i]) );
+					sysUserRoleTo.setRoleId( roleArray[i]);
 					sysUserRoleTo.setCdt(nowTime.getTime());
 					roleList.add(sysUserRoleTo);
 				}
@@ -241,12 +241,7 @@ public class UserRoleManage extends BaseAction{
 	
 	public String SearchUserRolePre() throws Exception {
 		
-		request= ServletActionContext.getRequest();
-		RoleDao roleDAO = new RoleDao();	
-		List<SysRoleTo>  data = new ArrayList<SysRoleTo>();		
-		data = roleDAO.searchRoleList("");
-		request.setAttribute("roleList", data);		
-		
+	
 		return SUCCESS;
 	}
 	
