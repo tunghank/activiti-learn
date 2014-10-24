@@ -391,7 +391,7 @@ Ext.onReady(function(){
             store: roleDs,
             displayField: 'roleName',
             valueField: 'roleId',
-            allowBlank: false,
+            allowBlank: true,
             msgTarget: 'side'
         }],
 

@@ -139,6 +139,10 @@ public class UserRoleManage extends BaseAction{
 			userId = null != userId ? userId : "";
 			logger.debug("userId " + userId);
 			
+			UserRoleDao userRoleDao = new UserRoleDao();
+			String messageString = "";
+			
+			
 			//1.1 Parser JSON Data
 			Gson gson = new Gson();
 			//String str = gson.fromJson(data, String.class);
@@ -148,46 +152,66 @@ public class UserRoleManage extends BaseAction{
 			
 			//Map<String, Object> map = new Gson().fromJson(data, new TypeToken<Map<String, Object>>() {
 			//}.getType());
-			
+				
 			//1.2 Prepare Insert DB Data
 			String[] roleArray = map.get("roleSelector").split(",");
+			logger.debug("roleArray " + roleArray.length);
 			
-			List<SysUserRoleTo> roleList = new ArrayList<SysUserRoleTo>();
-			Calendar nowTime = Calendar.getInstance();
-			UUID uuid;
-			for(int i=0; i < roleArray.length; i ++ ){
-				uuid = UUID.randomUUID();
-				SysUserRoleTo sysUserRoleTo = new SysUserRoleTo();
-				sysUserRoleTo.setId(uuid.toString().toUpperCase());
-				sysUserRoleTo.setUserId(userId);
-				sysUserRoleTo.setRoleId( Long.parseLong(roleArray[i]) );
-				sysUserRoleTo.setCdt(nowTime.getTime());
-				roleList.add(sysUserRoleTo);
+			if (roleArray.length >=1 && ( !roleArray[0].equals("") )  ) {
+					
+				List<SysUserRoleTo> roleList = new ArrayList<SysUserRoleTo>();
+				Calendar nowTime = Calendar.getInstance();
+				UUID uuid;
+				for(int i=0; i < roleArray.length; i ++ ){
+					uuid = UUID.randomUUID();
+					SysUserRoleTo sysUserRoleTo = new SysUserRoleTo();
+					sysUserRoleTo.setId(uuid.toString().toUpperCase());
+					sysUserRoleTo.setUserId(userId);
+					sysUserRoleTo.setRoleId( Long.parseLong(roleArray[i]) );
+					sysUserRoleTo.setCdt(nowTime.getTime());
+					roleList.add(sysUserRoleTo);
+				}
+				
+				//Insert DB
+				
+				userRoleDao.deleteUserRole(userId);
+				int result []  = userRoleDao.batchInsertUserRole(roleList);
+				
+				//logger.debug("roleSelector " + map.get("roleSelector").toString());
+				//logger.debug("roleSelector " + map.get("roleSelector").length());
+				//logger.debug("uuid " + uuid.toString().toUpperCase());
+				//logger.debug("uuid " + uuid.toString().toUpperCase().length());
+				//logger.debug("roleList.size " + roleList.size() );
+		
+				if (result.length < 1){
+					
+					messageString = getText("System.createUser.message.fail.insertUserError");
+					CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_ERROR);
+					
+					return NONE;
+				}
+				messageString = "Save Finish";
+				// 1.5 Set AJAX response
+				CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_FINISH);
+			}else{
+				/********************************
+				 * 清空ROLE LIST
+				 ********************************/
+				
+				//Delete Role
+				int result = userRoleDao.deleteUserRole(userId);
+				if (result < 0){
+					
+					messageString = getText("System.createUser.message.fail.insertUserError");
+					CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_ERROR);
+					
+					return NONE;
+				}
+				messageString = "Save Finish";
+				// 1.5 Set AJAX response
+				CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_FINISH);
 			}
-			
-			//Insert DB
-			UserRoleDao userRoleDao = new UserRoleDao();	
-			userRoleDao.deleteUserRole(userId);
-			int result []  = userRoleDao.batchInsertUserRole(roleList);
-			
-			logger.debug("roleSelector " + map.get("roleSelector").toString());
-			logger.debug("roleSelector " + map.get("roleSelector").length());
-			//logger.debug("uuid " + uuid.toString().toUpperCase());
-			//logger.debug("uuid " + uuid.toString().toUpperCase().length());
-			logger.debug("roleList.size " + roleList.size() );
-			logger.debug("result [] " + result.length);
 
-			String messageString = "Save Finish";
-			if (result.length < 1){
-				
-				messageString = getText("System.createUser.message.fail.insertUserError");
-				CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_ERROR);
-				
-				return NONE;
-			}
-			messageString = "Save Finish";
-			// 1.5 Set AJAX response
-			CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_FINISH);
 			
 		} catch (Exception e) {
 			this.addActionMessage("ERROR");
