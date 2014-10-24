@@ -111,14 +111,21 @@
             	 <result name="input">/system/userProfile.jsp</result>         
          </action>
          
-         <!-- Role Function -->
+         <!-- Role Function 20141024 -->
          
-         <action name="SearchRoleFunctionPre" class="com.cista.system.account.action.RoleFunctionManager" method="searchRoleFunctionPre">
+         <action name="SearchRoleFunctionPre" class="com.cista.system.account.action.RoleFunctionManager" method="SearchRoleFunctionPre">
           	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>            	
             	 <result name="success">/system/AssignRoleFunction.jsp</result>  
             	 <result name="input">/system/AssignRoleFunction.jsp</result>              	 
          </action>
+         
+         <action name="AjaxRoleSearchLike" class="com.cista.system.account.action.RoleFunctionManager" method="AjaxRoleSearchLike">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success"></result>
+         </action>
+         
          
          <action name="SearchRoleFunction" class="com.cista.system.account.action.RoleFunctionManager" method="searchRoleFunction">
           	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
