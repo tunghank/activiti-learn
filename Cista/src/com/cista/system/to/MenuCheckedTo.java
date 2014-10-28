@@ -12,7 +12,7 @@ import com.cista.system.util.BaseObject;
  * @author 900730
  *
  */
-public class MenuTo extends BaseObject implements Serializable {
+public class MenuCheckedTo extends BaseObject implements Serializable {
     /**
 	 * 
 	 */
@@ -23,8 +23,9 @@ public class MenuTo extends BaseObject implements Serializable {
     private String cls;
     private String href;
     private String hrefTarget;
-    private List<MenuTo> children;
+    private List<MenuCheckedTo> children;
     
+    private boolean checked;
 	/**
 	 * @return the id
 	 */
@@ -76,15 +77,7 @@ public class MenuTo extends BaseObject implements Serializable {
 	/**
 	 * @return the children
 	 */
-	public List<MenuTo> getChildren() {
-		return children;
-	}
-	/**
-	 * @param children the children to set
-	 */
-	public void setChildren(List<MenuTo> children) {
-		this.children = children;
-	}
+
 	public String getHref() {
 		return href;
 	}
@@ -96,6 +89,18 @@ public class MenuTo extends BaseObject implements Serializable {
 	}
 	public void setHrefTarget(String hrefTarget) {
 		this.hrefTarget = hrefTarget;
+	}
+	public boolean isChecked() {
+		return checked;
+	}
+	public void setChecked(boolean checked) {
+		this.checked = checked;
+	}
+	public List<MenuCheckedTo> getChildren() {
+		return children;
+	}
+	public void setChildren(List<MenuCheckedTo> children) {
+		this.children = children;
 	}
 	  
     
