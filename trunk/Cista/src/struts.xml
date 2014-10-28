@@ -335,7 +335,13 @@
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
              <result name="success"></result>
          </action>
-         
+
+         <action name="ShowCheckedTree" class="com.cista.system.tree.action.CheckedTreeAction" method="showCheckedTree">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success"></result>
+         </action>
+                  
          <!-- Smart Search -->
          <action name="SmartSearch" class="com.cista.system.ajax.action.SmartSearchAction" method="smartSearch">
          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
