@@ -339,6 +339,91 @@ Ext.onReady(function(){
     });
 
 
+	//Tree
+
+        Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+
+		//EXTJS4.0
+		var treeStore = new Ext.data.TreeStore ({
+			expanded: true, 
+			proxy: {
+				type: 'ajax',
+				url: '<%=contextPath%>/ShowTree.action'
+			},
+			sorters: [{
+				property: 'id',
+				direction: 'ASC'
+			},{
+				property: 'leaf',
+				direction: 'ASC'
+			}, {
+				property: 'text',
+				direction: 'ASC'
+			}]
+		}); 
+
+	   var tree =  new Ext.tree.Panel({
+			id: 'tree-panel',
+			autoScroll: true,
+			animate:true,
+			enableDD:false,
+			containerScroll: true,
+			rootVisible: false,
+			lines: false,
+			singleExpand: false,
+			useArrows: true,
+			cls: 'my-tree',
+			store: treeStore
+		});
+		
+		setTimeout(function(){tree.expandAll();},0);
+		tree.getRootNode().expand(true);
+
+       var viewport = new Ext.Viewport({
+            layout:'border',
+            items:[{
+                    region:'north',
+					contentEl: 'north',
+                    id:'north-panel',
+                    //title:'North',
+					height: 25,
+                    layout:'accordion',
+                    layoutConfig:{
+                        animate:true
+                    }
+                },{
+                    region:'west',
+					contentEl: 'west',
+                    id:'west-panel',
+                    title:'<s:text name="System.system.menu.function"/>',
+                    split:true,
+                    width: 200,
+                    minSize: 150,
+                    maxSize: 300,
+                    collapsible: true,
+                    layout:'accordion',
+                    layoutConfig:{
+                        animate:true
+                    },
+                    items:tree
+                },{
+                    region:'center',
+                    contentEl: 'center',
+					id:'center-panel',
+                    split:true,
+                    //title:'Center',
+                    margins:'0 0 0 0'
+                }
+             ]
+        });
+		
+		tree.expandAll();
+	//END Tree
+
+
+
+
+
 
 	function showRole(roleName){
 
@@ -375,6 +460,7 @@ Ext.onReady(function(){
 		//var role2s = ['-1','-2'];
 		//isForm.getForm().findField('roleSelector').setValue(role2s);
 	}// End showRole()
+
 });
 
 
