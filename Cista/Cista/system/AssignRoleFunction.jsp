@@ -235,7 +235,7 @@ Ext.onReady(function(){
 		expanded: true, 
 		proxy: {
 			type: 'ajax',
-			url: '<%=contextPath%>/ShowCheckedTree.action'
+			url: '<%=contextPath%>/ShowRoleFunctionTree.action'
 		},
 		sorters: [{
 			property: 'id',
@@ -249,7 +249,7 @@ Ext.onReady(function(){
 		}]
 	}); 
 
-	var roleFunctionTree =  new Ext.tree.Panel({
+	var roleFunctionTree =  new Ext.tree.TreePanel({
 		id: 'tree-panel',
 		title: 'Role Function Tree',
 		autoScroll: true,
@@ -264,7 +264,16 @@ Ext.onReady(function(){
 			height:335,   
 			width:400,  
 		renderTo: 'roleFunctionTreeList',
-		store: treeStore
+		store: treeStore,
+		listeners:{
+            checkchange:function (node,checked,eOpts){
+                //選中事件
+                setChildChecked(node,checked);
+                setParentChecked(node,checked);
+            }
+        }
+
+
 	});
 	
 	setTimeout(function(){roleFunctionTree.expandAll();},0);
@@ -272,6 +281,42 @@ Ext.onReady(function(){
 	roleFunctionTree.expandAll();
 	//END Tree
 
+	/*****************************************
+	* Tree checked
+	******************************************/
+
+	function setChildChecked(node,checked){
+
+		node.expand();
+		node.set({checked:checked});
+		if(node.hasChildNodes()){
+			node.eachChild(function(child) {
+				setChildChecked(child,checked);
+			});
+		}
+	}
+
+	function setParentChecked(node,checked){
+        node.set({checked:checked});
+        var parentNode = node.parentNode;
+        if(parentNode !=null){
+            var flag = false;
+            parentNode.eachChild(function(child) {
+                if(child.data.checked == true){
+                    flag = true;
+                }
+            });
+            if(checked == false){
+                if(!flag){
+                    setParentChecked(parentNode,checked);
+                }
+            }else{
+                if(flag){
+                    setParentChecked(parentNode,checked);
+                }
+            }
+         }
+    }
 
 
 });
