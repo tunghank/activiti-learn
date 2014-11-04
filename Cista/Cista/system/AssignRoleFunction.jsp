@@ -319,6 +319,17 @@ Ext.onReady(function(){
     }
 
 
+	function showRole(roleName){
+		alert(roleName);
+
+		//alert(userId);
+		//Change Title
+		roleFunctionTree.setTitle( "  " + roleName + "  Function List" );
+
+		//var role2s = ['-1','-2'];
+		//isForm.getForm().findField('roleSelector').setValue(role2s);
+	}// End showRole()
+
 });
 
 
