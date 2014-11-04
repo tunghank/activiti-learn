@@ -12,7 +12,7 @@ import com.cista.system.util.BaseObject;
  * @author 900730
  *
  */
-public class MenuCheckedTo extends BaseObject implements Serializable {
+public class RoleFunctionTreeTo extends BaseObject implements Serializable {
     /**
 	 * 
 	 */
@@ -23,7 +23,7 @@ public class MenuCheckedTo extends BaseObject implements Serializable {
     private String cls;
     private String href;
     private String hrefTarget;
-    private List<MenuCheckedTo> children;
+    private List<RoleFunctionTreeTo> children;
     
     private boolean checked;
 	/**
@@ -96,10 +96,10 @@ public class MenuCheckedTo extends BaseObject implements Serializable {
 	public void setChecked(boolean checked) {
 		this.checked = checked;
 	}
-	public List<MenuCheckedTo> getChildren() {
+	public List<RoleFunctionTreeTo> getChildren() {
 		return children;
 	}
-	public void setChildren(List<MenuCheckedTo> children) {
+	public void setChildren(List<RoleFunctionTreeTo> children) {
 		this.children = children;
 	}
 	  
