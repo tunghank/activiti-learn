@@ -132,7 +132,7 @@ Ext.onReady(function(){
 						id:'gRoleId',  
 						//表頭  
 						header:'Role ID',  
-						width:100,  
+						width:280,  
 						//內容  
 						dataIndex:'roleId',  
 						sortable:true
@@ -156,7 +156,7 @@ Ext.onReady(function(){
 						}
 			],  
 			height:335,   
-			width:400,   
+			width:500,   
 			title: 'Role List',   
 			renderTo: 'roleGrid',
 			dockedItems:[  					   
@@ -225,241 +225,54 @@ Ext.onReady(function(){
 			}  
 	); 
 
-    var isForm = Ext.widget('form', {
-        title: 'Role List',
-        width: 400,
-        bodyPadding: 10,
-        renderTo: 'roleList',
-
-        /*tbar:[{
-            text: 'Options',
-            menu: [{
-                text: 'Set value (2,3)',
-                handler: function(){
-                    isForm.getForm().findField('roleSelector').setValue(['2', '3']);
-                }
-            },{
-                text: 'Toggle enabled',
-                handler: function(){
-                    var m = isForm.getForm().findField('roleSelector');
-                    if (!m.disabled) {
-                        m.disable();
-                    } else {
-                        m.enable();
-                    }
-                }
-            },{
-                text: 'Toggle delimiter',
-                handler: function() {
-                    var m = isForm.getForm().findField('roleSelector');
-                    if (m.delimiter) {
-                        m.delimiter = null;
-                        Ext.Msg.alert('Delimiter Changed', 'The delimiter is now set to <b>null</b>. Click Save to ' +
-                                      'see that values are now submitted as separate parameters.');
-                    } else {
-                        m.delimiter = ',';
-                        Ext.Msg.alert('Delimiter Changed', 'The delimiter is now set to <b>","</b>. Click Save to ' +
-                                      'see that values are now submitted as a single parameter separated by the delimiter.');
-                    }
-                }
-            }]
-        }],*/
-
-        items:[{
-            xtype: 'itemselector',
-            name: 'roleSelector',
-            anchor: '100%',
-            fieldLabel: 'Role',
-            imagePath: '../js/extjs42/examples/ux/css/images/',
-
-            store: roleDs,
-            displayField: 'roleName',
-            valueField: 'roleId',
-            allowBlank: true,
-            msgTarget: 'side'
-        }],
-
-        buttons: [{
-            text: 'Clear',
-            handler: function(){
-                var field = isForm.getForm().findField('roleSelector');
-                if (!field.readOnly && !field.disabled) {
-                    field.clearValue();
-                }
-            }
-        }, {
-            text: 'Reset',
-            handler: function() {
-                isForm.getForm().reset();
-            }
-        }, {
-            text: 'Save',
-            handler: function(){
-                if(isForm.getForm().isValid()){
-					/*alert(Ext.encode(isForm.getForm().getValues()));
-                    Ext.Msg.alert('Submitted Values', 'The following will be sent to the server: <br />'+
-                        isForm.getForm().getValues());*/
-
-					//得到選中的行
-					var record = grid.getSelectionModel().getSelection();
-					var userId = record[0].get('userId');
-					//alert(userId);
-
-					Ext.Ajax.timeout = 120000; // 120 seconds
-					Ext.Ajax.request({  //ajax request test  
-								url : '<%=contextPath%>/AjaxSaveUserRoleList.action',  
-								params : {  
-									data: Ext.encode(isForm.getForm().getValues()),
-									userId: userId
-								},
-								method : 'POST',
-								scope:this,
-								success : function(response, options) {
-									//parse Json data
-									var freeback = Ext.JSON.decode(response.responseText);
-									var message =  freeback.ajaxMessage;
-									var status  =  freeback.ajaxStatus;
-									
-									if( status == '<%=CistaUtil.AJAX_RSEPONSE_ERROR%>' ){//ERROR
-										Ext.MessageBox.alert('Success', 'ERROR : '+  message );
-									}else{//FINISH
-										Ext.MessageBox.alert('Success', 'FINISH : '+ userId + "'s Role " + message );
-										
-
-									}
-									
-								},  
-								failure : function(response, options) {  
-									Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
-								}  
-							});//End Ext.Ajax.request
-                }
-            }
-        }]
-    });
 
 
 	//Tree
 
-        Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+    Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+	//EXTJS4.0
+	var treeStore = new Ext.data.TreeStore ({
+		expanded: true, 
+		proxy: {
+			type: 'ajax',
+			url: '<%=contextPath%>/ShowCheckedTree.action'
+		},
+		sorters: [{
+			property: 'id',
+			direction: 'ASC'
+		},{
+			property: 'leaf',
+			direction: 'ASC'
+		}, {
+			property: 'text',
+			direction: 'ASC'
+		}]
+	}); 
 
-		//EXTJS4.0
-		var treeStore = new Ext.data.TreeStore ({
-			expanded: true, 
-			proxy: {
-				type: 'ajax',
-				url: '<%=contextPath%>/ShowTree.action'
-			},
-			sorters: [{
-				property: 'id',
-				direction: 'ASC'
-			},{
-				property: 'leaf',
-				direction: 'ASC'
-			}, {
-				property: 'text',
-				direction: 'ASC'
-			}]
-		}); 
-
-	   var tree =  new Ext.tree.Panel({
-			id: 'tree-panel',
-			autoScroll: true,
-			animate:true,
-			enableDD:false,
-			containerScroll: true,
-			rootVisible: false,
-			lines: false,
-			singleExpand: false,
-			useArrows: true,
-			cls: 'my-tree',
-			store: treeStore
-		});
+	var roleFunctionTree =  new Ext.tree.Panel({
+		id: 'tree-panel',
+		title: 'Role Function Tree',
+		autoScroll: true,
+		animate:true,
+		enableDD:false,
+		containerScroll: true,
+		rootVisible: false,
+		lines: false,
+		singleExpand: false,
+		useArrows: true,
 		
-		setTimeout(function(){tree.expandAll();},0);
-		tree.getRootNode().expand(true);
-
-       var viewport = new Ext.Viewport({
-            layout:'border',
-            items:[{
-                    region:'north',
-					contentEl: 'north',
-                    id:'north-panel',
-                    //title:'North',
-					height: 25,
-                    layout:'accordion',
-                    layoutConfig:{
-                        animate:true
-                    }
-                },{
-                    region:'west',
-					contentEl: 'west',
-                    id:'west-panel',
-                    title:'<s:text name="System.system.menu.function"/>',
-                    split:true,
-                    width: 200,
-                    minSize: 150,
-                    maxSize: 300,
-                    collapsible: true,
-                    layout:'accordion',
-                    layoutConfig:{
-                        animate:true
-                    },
-                    items:tree
-                },{
-                    region:'center',
-                    contentEl: 'center',
-					id:'center-panel',
-                    split:true,
-                    //title:'Center',
-                    margins:'0 0 0 0'
-                }
-             ]
-        });
-		
-		tree.expandAll();
+			height:335,   
+			width:400,  
+		renderTo: 'roleFunctionTreeList',
+		store: treeStore
+	});
+	
+	setTimeout(function(){roleFunctionTree.expandAll();},0);
+	roleFunctionTree.getRootNode().expand(true);
+	roleFunctionTree.expandAll();
 	//END Tree
 
 
-
-
-
-
-	function showRole(roleName){
-
-		var roleSelector = isForm.getForm().findField('roleSelector');
-		if (!roleSelector.readOnly && !roleSelector.disabled) {
-			roleSelector.clearValue();
-		}
-
-		//alert(userId);
-		//Change Title
-		isForm.setTitle( "  " + roleName + "  Function List" );
-		Ext.Ajax.request({  //ajax request test  
-				url : '<%=contextPath%>/AjaxUserRoleList.action',  
-				params : {  
-					query: userId,
-				},
-				method : 'POST',
-				scope:this,
-				success : function(response, options) {
-					//parse Json data
-					var freeback = Ext.JSON.decode(response.responseText);
-					var toatl = freeback.total;
-					var roles = []; // 空陣列
-					for( var i=0; i < toatl; i++ ){
-						//alert(freeback['root'][i].roleId);
-						roles[i]=freeback['root'][i].roleId;
-					}
-					isForm.getForm().findField('roleSelector').setValue(roles);
-				},  
-				failure : function(response, options) {  
-					Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
-				}  
-		});
-		//var role2s = ['-1','-2'];
-		//isForm.getForm().findField('roleSelector').setValue(role2s);
-	}// End showRole()
 
 });
 
@@ -503,7 +316,7 @@ Ext.onReady(function(){
 	/** HTML Layout **/
 	#functionTitle  {position:absolute; visibility:visible; z-index:1; top:5px; left:5px;}
 	#roleGrid  {position:absolute; visibility:visible; z-index:3; top:45px; left:5px;}
-	#roleList  {position:absolute; visibility:visible; z-index:2; top:45px; left:425px;}
+	#roleFunctionTreeList  {position:absolute; visibility:visible; z-index:2; top:45px; left:530px;}
 </style>
 <link rel="stylesheet" type="text/css" href="../js/extjs42/examples/ux/css/ItemSelector.css" />
 </head>
@@ -527,6 +340,6 @@ Ext.onReady(function(){
 </table>
 </div>
 <div id="roleGrid" ></div>
-<div id="roleList" ></div>	
+<div id="roleFunctionTreeList" ></div>	
 </body>
 </html>
