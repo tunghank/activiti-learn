@@ -18,14 +18,14 @@ import com.cista.system.util.CistaUtil;
  * @author 900730
  *
  */
-public class CheckedTreeAction extends BaseAction {
+public class RoleFunctionTreeAction extends BaseAction {
 
 	private static final long serialVersionUID = 1L;
 	private String menuString;
 	private List<MenuCheckedTo> trees;
 	
 
-	public String showCheckedTree() throws Exception {
+	public String ShowRoleFunctionTree() throws Exception {
 
 		CheckedTreeDao treeDao = new CheckedTreeDao();
 		
