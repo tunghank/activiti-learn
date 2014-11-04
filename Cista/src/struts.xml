@@ -336,7 +336,7 @@
              <result name="success"></result>
          </action>
 
-         <action name="ShowCheckedTree" class="com.cista.system.tree.action.CheckedTreeAction" method="showCheckedTree">
+         <action name="ShowRoleFunctionTree" class="com.cista.system.tree.action.RoleFunctionTreeAction" method="ShowRoleFunctionTree">
          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
              <result name="success"></result>
