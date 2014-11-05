@@ -277,6 +277,10 @@ Ext.onReady(function(){
             items: {
                 text: 'Save checked function',
                 handler: function(){
+
+					//得到選中的行
+					var gridRecord = grid.getSelectionModel().getSelection();
+
                     var records = roleFunctionTree.getView().getChecked();
                     var names = [];
 
@@ -391,7 +395,6 @@ Ext.onReady(function(){
 
 
 	function showRole(roleName){
-
 
 		roleFunctionTree.setTitle( "  " + roleName + "  Function List" );
 
