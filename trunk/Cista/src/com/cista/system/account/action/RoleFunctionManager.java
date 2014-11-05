@@ -1,8 +1,13 @@
 package com.cista.system.account.action;
 
+import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import org.apache.struts2.ServletActionContext;
 
@@ -10,10 +15,12 @@ import com.cista.system.account.dao.FunctionDao;
 import com.cista.system.account.dao.RoleDao;
 import com.cista.system.account.dao.RoleFunctionDao;
 import com.cista.system.account.dao.UserDao;
+import com.cista.system.account.dao.UserRoleDao;
 import com.cista.system.to.ExtJSGridTo;
 import com.cista.system.to.SysFunctionTo;
 import com.cista.system.to.SysRoleFunctionTo;
 import com.cista.system.to.SysRoleTo;
+import com.cista.system.to.SysUserRoleTo;
 import com.cista.system.to.SysUserTo;
 import com.cista.system.util.BaseAction;
 import com.cista.system.util.CistaUtil;
@@ -121,6 +128,61 @@ public class RoleFunctionManager extends BaseAction{
    		return NONE;
 	}
 	
+	public String AjaxSaveRoleFunctionList() throws Exception {
+		
+		try {
+			request= ServletActionContext.getRequest();
+			//1.0 Get Data
+			String data = request.getParameter("data"); 
+			data = null != data ? data : "";
+			logger.debug("data " + data);
+
+			
+			String messageString = "";
+			
+			
+			//1.1 Parser JSON Data
+			Gson gson = new Gson();
+			//String str = gson.fromJson(data, String.class);
+			Map<String,String> map=new HashMap<String,String>();
+			map=(Map<String,String>) gson.fromJson(data, map.getClass());
+			
+			
+			//Map<String, Object> map = new Gson().fromJson(data, new TypeToken<Map<String, Object>>() {
+			//}.getType());
+				
+			//1.2 Prepare Insert DB Data
+			String[] roleArray = map.get("roleSelector").split(",");
+			logger.debug("roleArray " + roleArray.length);
+			
+
+
+			
+		} catch (Exception e) {
+			this.addActionMessage("ERROR");
+			e.printStackTrace();
+			logger.error(e.toString());
+			addActionMessage(e.toString());
+          	//AJAX
+          	try{
+  		    	response.setContentType("text/html; charset=UTF-8");
+  				PrintWriter out = response.getWriter();
+  				String returnResult = "ERROR" ;
+
+  				logger.debug(returnResult);
+  				logger.debug("Error");
+  				out.print(returnResult);
+  				out.close();
+          	}catch(Exception ex){
+          		ex.printStackTrace();
+                logger.error(ex.toString());
+                return NONE;
+          	}
+
+		}
+		
+   		return NONE;
+	}	
 	
 	public String searchRoleFunction() throws Exception{
 		

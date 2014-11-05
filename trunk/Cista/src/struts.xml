@@ -125,7 +125,12 @@
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
              <result name="success"></result>
          </action>
-         
+
+         <action name="AjaxSaveRoleFunctionList" class="com.cista.system.account.action.RoleFunctionManager" method="AjaxSaveRoleFunctionList">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success"></result>
+         </action>         
          
          <action name="SearchRoleFunction" class="com.cista.system.account.action.RoleFunctionManager" method="searchRoleFunction">
           	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>

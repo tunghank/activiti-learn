@@ -447,7 +447,7 @@ Ext.onReady(function(){
 								failure : function(response, options) {  
 									Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
 								}  
-							});//End Ext.Ajax.request
+					});//End Ext.Ajax.request
                 }
             }
         }]
