@@ -259,10 +259,9 @@ Ext.onReady(function(){
 		rootVisible: false,
 		lines: false,
 		singleExpand: false,
-		useArrows: true,
-		
-			height:335,   
-			width:400,  
+		useArrows: true,	
+		height:335,   
+		width:400,  
 		renderTo: 'roleFunctionTreeList',
 		store: treeStore,
 		listeners:{
@@ -271,8 +270,80 @@ Ext.onReady(function(){
                 setChildChecked(node,checked);
                 setParentChecked(node,checked);
             }
-        }
+        },
+        dockedItems: [{
+			dock: 'bottom',
+            xtype: 'toolbar',
+            items: {
+                text: 'Save checked function',
+                handler: function(){
+                    var records = roleFunctionTree.getView().getChecked();
+                    var names = [];
 
+					var datar = new Array();
+					for (var i = 0; i < records.length; i++) {
+							datar.push(records[i].data);
+					}
+					var jsonDataEncode = Ext.encode(datar);
+			
+
+                    Ext.Array.each(records, function(rec){
+						names.push([rec.raw.id,rec.raw.text]);
+                        //names.push(rec.get('id') + " - " + rec.get('text')+ " - " + rec.get('leaf'));
+                    });
+                    
+                    Ext.MessageBox.show({
+                        title: 'Selected Nodes',
+                        msg: names.join('<br />'),
+                        icon: Ext.MessageBox.INFO
+                    });
+					
+					var writer = Ext.create('Ext.data.writer.Json');
+					Ext.Ajax.timeout = 120000; // 120 seconds
+					
+					Ext.Ajax.request({  //ajax request test  
+								url : '<%=contextPath%>/AjaxSaveRoleFunctionList.action',
+								//headers: { 'Content-Type': 'application/json' },
+								params : {
+									data:jsonDataEncode
+									//data: writer.getRecordData(records)
+									//data: Ext.encode(records)
+									//jsonData:writer.getRecordData(records)
+								},
+								
+								//jsonData:records,
+								//jsonData: Ext.util.JSON.encode(records),
+								/*jsonData: {
+									  "username" : "admin",
+									  "emailId" : "admin@sivalabs.com"
+								  },*/
+								method : 'POST',
+								scope:this,
+								success : function(response, options) {
+									//parse Json data
+									var freeback = Ext.JSON.decode(response.responseText);
+									var message =  freeback.ajaxMessage;
+									var status  =  freeback.ajaxStatus;
+									
+									if( status == '<%=CistaUtil.AJAX_RSEPONSE_ERROR%>' ){//ERROR
+										Ext.MessageBox.alert('Success', 'ERROR : '+  message );
+									}else{//FINISH
+										Ext.MessageBox.alert('Success', 'FINISH : '+ userId + "'s Role " + message );
+										
+
+									}
+									
+								},  
+								failure : function(response, options) {  
+									Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
+								}  
+					});//End Ext.Ajax.request
+
+
+
+                }
+            }
+        }]
 
 	});
 	
@@ -320,14 +391,11 @@ Ext.onReady(function(){
 
 
 	function showRole(roleName){
-		alert(roleName);
 
-		//alert(userId);
-		//Change Title
+
 		roleFunctionTree.setTitle( "  " + roleName + "  Function List" );
 
-		//var role2s = ['-1','-2'];
-		//isForm.getForm().findField('roleSelector').setValue(role2s);
+
 	}// End showRole()
 
 });

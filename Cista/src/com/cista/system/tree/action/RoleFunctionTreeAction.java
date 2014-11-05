@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONArray;
 import org.apache.struts2.ServletActionContext;
 
+
 import com.cista.system.to.RoleFunctionTreeTo;
 import com.cista.system.to.SysUserTo;
 import com.cista.system.tree.dao.RoleFunctionTreeDao;
@@ -84,7 +85,7 @@ public class RoleFunctionTreeAction extends BaseAction {
 		}
 	}
 	
-		
+	
 	
     public String getMenuString() {
         return menuString;
