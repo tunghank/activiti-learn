@@ -1,8 +1,10 @@
 package com.cista.system.account.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.cista.system.to.SysRoleFunctionTo;
+import com.cista.system.to.SysUserRoleTo;
 import com.cista.system.util.BaseDao;
 
 import org.springframework.dao.DataAccessException;
@@ -113,6 +115,43 @@ public class RoleFunctionDao extends BaseDao {
 		int answer = sjt.update(sql, new Object[] { roleId ,functionId });
 		return answer ;			
 	}
+	
+	//Add 2014/11/05
+	public int deleteRoleFunctionByRole(String roleId) throws DataAccessException{
+		String sql ="";
+		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();
+		
+		sql = " DELETE FROM SYS_Role_FUNCTION A "
+			+ " WHERE A.ROLE_ID = ? ";			
+		
+		int answer = sjt.update(sql, new Object[] {roleId });
+		return answer ;	
+	}
+	
+	public int[] batchInsertRoleFunction(List<SysRoleFunctionTo> roleFunctionList) throws DataAccessException {
+		// TODO Auto-generated method stub
+		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();
+
+		String sql =  " Insert into SYS_ROLE_FUNCTION ( ID, ROLE_ID, FUNCTION_ID, CDT ) " +
+		" Values ( ?, ?, ?, ? )";
+		
+		List<Object[]> batch = new ArrayList<Object[]>();
+		for (SysRoleFunctionTo roleFunctionTo : roleFunctionList) {
+		    Object[] values = new Object[] {
+		    		roleFunctionTo.getId(),
+		    		roleFunctionTo.getRoleId(),
+		    		roleFunctionTo.getFunctionId(),
+		    		roleFunctionTo.getCdt()
+					};
+		    batch.add(values);
+		}
+	
+		logger.debug(sql);
+		
+		int result [] = sjt.batchUpdate(sql, batch);
+		return result;
+	}
+	
 	
 	public int deleteFunctionRole(String roleId,String functionId) throws DataAccessException{
 		String sql ="";
