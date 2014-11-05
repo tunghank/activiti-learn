@@ -17,6 +17,7 @@ import com.cista.system.account.dao.RoleFunctionDao;
 import com.cista.system.account.dao.UserDao;
 import com.cista.system.account.dao.UserRoleDao;
 import com.cista.system.to.ExtJSGridTo;
+import com.cista.system.to.RoleFunctionTreeTo;
 import com.cista.system.to.SysFunctionTo;
 import com.cista.system.to.SysRoleFunctionTo;
 import com.cista.system.to.SysRoleTo;
@@ -25,6 +26,8 @@ import com.cista.system.to.SysUserTo;
 import com.cista.system.util.BaseAction;
 import com.cista.system.util.CistaUtil;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.sun.java_cup.internal.internal_error;
 
 public class RoleFunctionManager extends BaseAction{
 	
@@ -136,7 +139,10 @@ public class RoleFunctionManager extends BaseAction{
 			String data = request.getParameter("data"); 
 			data = null != data ? data : "";
 			logger.debug("data " + data);
-
+			
+			String roleUid = request.getParameter("roleUid"); 
+			roleUid = null != roleUid ? roleUid : "";
+			logger.debug("roleUid " + roleUid);
 			
 			String messageString = "";
 			
@@ -144,16 +150,79 @@ public class RoleFunctionManager extends BaseAction{
 			//1.1 Parser JSON Data
 			Gson gson = new Gson();
 			//String str = gson.fromJson(data, String.class);
-			Map<String,String> map=new HashMap<String,String>();
-			map=(Map<String,String>) gson.fromJson(data, map.getClass());
+			//Map<String,String> map=new HashMap<String,String>();
+			//map=(Map<String,String>) gson.fromJson(data, map.getClass());
 			
+	        // json轉為帶泛型的list  
+	        List<RoleFunctionTreeTo> roleFunctionTree = gson.fromJson(data,  
+	                new TypeToken<List<RoleFunctionTreeTo>>() {  }.getType()); 
 			
-			//Map<String, Object> map = new Gson().fromJson(data, new TypeToken<Map<String, Object>>() {
-			//}.getType());
+			logger.debug("roleFunctionList.size " + roleFunctionTree.size() );
+			
+			List<RoleFunctionTreeTo> roleFunctionSaveList = new ArrayList<RoleFunctionTreeTo>();
+			for(int i =0; i < roleFunctionTree.size() ; i ++){
+				RoleFunctionTreeTo roleFunctionTreeTo = roleFunctionTree.get(i);
+				if(roleFunctionTreeTo.isLeaf() == true && roleFunctionTreeTo.isChecked() == true){
+					roleFunctionSaveList.add(roleFunctionTreeTo);
+					logger.debug(i + " " + roleFunctionTreeTo.toString());
+				}
+			}
+			logger.debug("roleFunctionSaveList.size " + roleFunctionSaveList.size() );
+			
+			/*********************************************************
+			 * 1.2 DataBase 處理 , Insert or 清空.
+			 *********************************************************/
+			RoleFunctionDao roleFunctionDao = new RoleFunctionDao();
+			if ( roleFunctionSaveList.size() >= 0 ) {
+								
+				List<SysRoleFunctionTo> roleFunctionList = new ArrayList<SysRoleFunctionTo>();
+				Calendar nowTime = Calendar.getInstance();
+				UUID uuid;
+				for(int i=0; i < roleFunctionSaveList.size(); i ++ ){
+					RoleFunctionTreeTo roleFunctionTreeTo = roleFunctionSaveList.get(i);
+					uuid = UUID.randomUUID();
+					SysRoleFunctionTo sysRoleFunctionTo = new SysRoleFunctionTo();
+					sysRoleFunctionTo.setId(uuid.toString().toUpperCase());
+					sysRoleFunctionTo.setRoleId(roleUid);
+					sysRoleFunctionTo.setFunctionId( Long.parseLong(roleFunctionTreeTo.getId()) );
+					sysRoleFunctionTo.setCdt(nowTime.getTime());
+					roleFunctionList.add(sysRoleFunctionTo);
+				}
 				
-			//1.2 Prepare Insert DB Data
-			String[] roleArray = map.get("roleSelector").split(",");
-			logger.debug("roleArray " + roleArray.length);
+				//Insert DB
+				
+				roleFunctionDao.deleteRoleFunctionByRole(roleUid);
+				int result []  = roleFunctionDao.batchInsertRoleFunction(roleFunctionList);
+				
+		
+				if (result.length < 1){
+					
+					messageString = getText("System.createUser.message.fail.insertUserError");
+					CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_ERROR);
+					
+					return NONE;
+				}
+				messageString = "Save Finish";
+				// 1.5 Set AJAX response
+				CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_FINISH);
+			}else{
+				/********************************
+				 * 清空ROLE LIST
+				 ********************************/
+				
+				//Delete Role
+				int result = roleFunctionDao.deleteRoleFunctionByRole(roleUid);
+				if (result < 0){
+					
+					messageString = getText("System.createUser.message.fail.insertUserError");
+					CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_ERROR);
+					
+					return NONE;
+				}
+				messageString = "Save Finish";
+				// 1.5 Set AJAX response
+				CistaUtil.ajaxResponse(response, messageString, CistaUtil.AJAX_RSEPONSE_FINISH);
+			}
 			
 
 
@@ -163,21 +232,8 @@ public class RoleFunctionManager extends BaseAction{
 			e.printStackTrace();
 			logger.error(e.toString());
 			addActionMessage(e.toString());
-          	//AJAX
-          	try{
-  		    	response.setContentType("text/html; charset=UTF-8");
-  				PrintWriter out = response.getWriter();
-  				String returnResult = "ERROR" ;
-
-  				logger.debug(returnResult);
-  				logger.debug("Error");
-  				out.print(returnResult);
-  				out.close();
-          	}catch(Exception ex){
-          		ex.printStackTrace();
-                logger.error(ex.toString());
-                return NONE;
-          	}
+          	//AJAX Message
+        	CistaUtil.ajaxResponse(response, e.toString(), CistaUtil.AJAX_RSEPONSE_ERROR);
 
 		}
 		

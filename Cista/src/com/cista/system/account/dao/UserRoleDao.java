@@ -12,6 +12,7 @@ import com.cista.system.util.BaseDao;
 
 public class UserRoleDao extends BaseDao{	
 	
+	//Add 2014/11/05
 	public int deleteUserRole(String userId) throws DataAccessException{
 		
 		String sql = "";
@@ -24,6 +25,7 @@ public class UserRoleDao extends BaseDao{
 		
 	}
 	
+	//Add 2014/11/05
 	public int[] batchInsertUserRole(List<SysUserRoleTo> roleList) throws DataAccessException {
 		// TODO Auto-generated method stub
 		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();

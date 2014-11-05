@@ -105,21 +105,8 @@ public class UserRoleManage extends BaseAction{
 			e.printStackTrace();
 			logger.error(e.toString());
 			addActionMessage(e.toString());
-          	//AJAX
-          	try{
-  		    	response.setContentType("text/html; charset=UTF-8");
-  				PrintWriter out = response.getWriter();
-  				String returnResult = "ERROR" ;
-
-  				logger.debug(returnResult);
-  				logger.debug("Error");
-  				out.print(returnResult);
-  				out.close();
-          	}catch(Exception ex){
-          		ex.printStackTrace();
-                logger.error(ex.toString());
-                return NONE;
-          	}
+          	//AJAX Message
+        	CistaUtil.ajaxResponse(response, e.toString(), CistaUtil.AJAX_RSEPONSE_ERROR);
 
 		}
 		

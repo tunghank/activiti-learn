@@ -13,6 +13,10 @@ public class SysRoleFunctionTo extends com.cista.system.util.BaseObject
 
 	// Fields
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String id;
 	private String roleId;
 	private Long functionId;

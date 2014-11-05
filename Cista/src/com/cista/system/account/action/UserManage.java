@@ -640,14 +640,12 @@ public class UserManage extends BaseAction  {
 
 			//addActionMessage(getText("IE.createUser.message.success.insertUserInDB"));
 		} catch (Exception e) {
-			this.addActionMessage("Save ERROR");
-			String returnResult = "ERROR" ;
-			
-			returnResult = returnResult + ":" + e.toString();
-			CistaUtil.ajaxResponse(response, returnResult , CistaUtil.AJAX_RSEPONSE_ERROR);
+			this.addActionMessage("ERROR");
 			e.printStackTrace();
 			logger.error(e.toString());
 			addActionMessage(e.toString());
+          	//AJAX Message
+        	CistaUtil.ajaxResponse(response, e.toString(), CistaUtil.AJAX_RSEPONSE_ERROR);
 		}
 		
    		return NONE;

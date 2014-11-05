@@ -114,8 +114,8 @@ Ext.onReady(function(){
 	); 
 
 	//創建grid  
-	var grid = Ext.create('Ext.grid.Panel',{  
-		  		  
+	var roleListGrid = Ext.create('Ext.grid.Panel',{  
+		  	id:"roleListGrid", 
 			store:store,  
 			//添加到grid  
 			/*selModel: { selType: 'checkboxmodel' ,
@@ -277,9 +277,21 @@ Ext.onReady(function(){
             items: {
                 text: 'Save checked function',
                 handler: function(){
+					//得到Grid選中的行
+					var gridRecord = roleListGrid.getSelectionModel().getSelection();
+					if(gridRecord.length==0){  
+						 Ext.MessageBox.show({   
+							title:"提示",   
+							msg:"請先選擇'Role' !!!!",
+							icon: Ext.MessageBox.ERROR
+						 })  
+						return;  
+					}
 
-					//得到選中的行
-					var gridRecord = grid.getSelectionModel().getSelection();
+					var roleName = gridRecord[0].get('roleName');
+					var roleUid = gridRecord[0].get('roleId');
+
+					//alert(roleUid + " " + roleName );
 
                     var records = roleFunctionTree.getView().getChecked();
                     var names = [];
@@ -289,38 +301,16 @@ Ext.onReady(function(){
 							datar.push(records[i].data);
 					}
 					var jsonDataEncode = Ext.encode(datar);
-			
 
-                    Ext.Array.each(records, function(rec){
-						names.push([rec.raw.id,rec.raw.text]);
-                        //names.push(rec.get('id') + " - " + rec.get('text')+ " - " + rec.get('leaf'));
-                    });
-                    
-                    Ext.MessageBox.show({
-                        title: 'Selected Nodes',
-                        msg: names.join('<br />'),
-                        icon: Ext.MessageBox.INFO
-                    });
-					
-					var writer = Ext.create('Ext.data.writer.Json');
-					Ext.Ajax.timeout = 120000; // 120 seconds
-					
+					//alert(jsonDataEncode );
+
+					Ext.Ajax.timeout = 120000; // 120 seconds				
 					Ext.Ajax.request({  //ajax request test  
 								url : '<%=contextPath%>/AjaxSaveRoleFunctionList.action',
-								//headers: { 'Content-Type': 'application/json' },
 								params : {
-									data:jsonDataEncode
-									//data: writer.getRecordData(records)
-									//data: Ext.encode(records)
-									//jsonData:writer.getRecordData(records)
+									roleUid: roleUid,
+									data: jsonDataEncode
 								},
-								
-								//jsonData:records,
-								//jsonData: Ext.util.JSON.encode(records),
-								/*jsonData: {
-									  "username" : "admin",
-									  "emailId" : "admin@sivalabs.com"
-								  },*/
 								method : 'POST',
 								scope:this,
 								success : function(response, options) {
@@ -328,13 +318,11 @@ Ext.onReady(function(){
 									var freeback = Ext.JSON.decode(response.responseText);
 									var message =  freeback.ajaxMessage;
 									var status  =  freeback.ajaxStatus;
-									
+
 									if( status == '<%=CistaUtil.AJAX_RSEPONSE_ERROR%>' ){//ERROR
 										Ext.MessageBox.alert('Success', 'ERROR : '+  message );
 									}else{//FINISH
-										Ext.MessageBox.alert('Success', 'FINISH : '+ userId + "'s Role " + message );
-										
-
+										Ext.MessageBox.alert('Success', 'FINISH : '+ roleName + "'s Role Function " + message );										
 									}
 									
 								},  
@@ -400,6 +388,7 @@ Ext.onReady(function(){
 
 
 	}// End showRole()
+
 
 });
 

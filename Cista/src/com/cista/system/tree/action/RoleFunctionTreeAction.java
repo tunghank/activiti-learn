@@ -69,13 +69,13 @@ public class RoleFunctionTreeAction extends BaseAction {
 		RoleFunctionTreeDao treeDao = new RoleFunctionTreeDao();
 		for(int i = 0; i < nextTreeList.size() ; i++){
 			RoleFunctionTreeTo nextNode = (RoleFunctionTreeTo)nextTreeList.get(i);
-			if(nextNode.getCls().equals("folder") && nextNode.getId() != 1 ){
+			if(nextNode.getCls().equals("folder") && !nextNode.getId().equals("1")  ){
 				List<RoleFunctionTreeTo> nextNextTreeList = treeDao.getSubTreeListNotRootByUser(String.valueOf(nextNode.getId()), curUser);
 				if ( nextNextTreeList.size() > 0 ){
 					nextNode.setChildren(nextNextTreeList);
 					getTreeNode(nextNextTreeList, curUser);
 				}
-			}else if(nextNode.getCls().equals("folder") && nextNode.getId() == 1 ){
+			}else if(nextNode.getCls().equals("folder") && nextNode.getId().equals("1") ){
 				List<RoleFunctionTreeTo> nextNextTreeList = treeDao.getSubTreeListNotRootByUser(String.valueOf(nextNode.getId()), curUser);
 				nextNode.setChildren(nextNextTreeList);
 				getTreeNode(nextNextTreeList, curUser);

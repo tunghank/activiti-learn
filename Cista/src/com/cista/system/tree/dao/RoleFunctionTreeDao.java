@@ -41,7 +41,7 @@ public class RoleFunctionTreeDao extends BaseDao {
 			SysFunctionTo node = (SysFunctionTo)funTreeList.get(i);
 			RoleFunctionTreeTo menuNode = new RoleFunctionTreeTo();
 			menuNode.setCls(node.getCls());
-			menuNode.setId(Integer.parseInt(node.getId()));
+			menuNode.setId(node.getId());
 			menuNode.setLeaf(Integer.parseInt(node.getLeaf()) >= 1);
 			menuNode.setText(node.getTitle());
 			menuNode.setHref(node.getUrl());
@@ -77,7 +77,7 @@ public class RoleFunctionTreeDao extends BaseDao {
 			SysFunctionTo node = (SysFunctionTo)funTreeList.get(i);
 			RoleFunctionTreeTo menuNode = new RoleFunctionTreeTo();
 			menuNode.setCls(node.getCls());
-			menuNode.setId(Integer.parseInt(node.getId()));
+			menuNode.setId(node.getId());
 			menuNode.setLeaf(Integer.parseInt(node.getLeaf()) >= 1);
 			menuNode.setText(node.getTitle());
 			menuNode.setHref(node.getUrl());
@@ -118,7 +118,7 @@ public class RoleFunctionTreeDao extends BaseDao {
 			SysFunctionTo node = (SysFunctionTo) funTreeList.get(i);
 			RoleFunctionTreeTo menuNode = new RoleFunctionTreeTo();
 			menuNode.setCls(node.getCls());
-			menuNode.setId(Integer.parseInt(node.getId()));
+			menuNode.setId(node.getId());
 			menuNode.setLeaf(Integer.parseInt(node.getLeaf()) >= 1);
 			menuNode.setText(node.getTitle());
 			menuNode.setHref(node.getUrl());
