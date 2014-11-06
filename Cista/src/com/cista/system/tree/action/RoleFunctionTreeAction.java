@@ -33,6 +33,10 @@ public class RoleFunctionTreeAction extends BaseAction {
 		request= ServletActionContext.getRequest();
 		SysUserTo curUser = (SysUserTo)request.getSession().getAttribute(CistaUtil.CUR_USERINFO);
 		
+		String roleUid = request.getParameter("roleUid"); 
+		roleUid = null != roleUid ? roleUid : "";
+		logger.debug("roleUid " + roleUid);
+		
 		if ( curUser == null ){
 			addActionMessage(getText("System.error.access.nologin"));
 			return ERROR;
@@ -43,7 +47,11 @@ public class RoleFunctionTreeAction extends BaseAction {
 			trees = new ArrayList<RoleFunctionTreeTo>();
 			//1.2 從1開始找
 			getTreeNode(treeRootList, curUser.getUserId());
-			logger.debug(trees.toString());
+			//logger.debug(trees.toString());
+			
+			
+
+			
 	        JSONArray jsonObject = JSONArray.fromObject(trees);
 	        try {
 	            menuString = jsonObject.toString();
@@ -70,13 +78,13 @@ public class RoleFunctionTreeAction extends BaseAction {
 		for(int i = 0; i < nextTreeList.size() ; i++){
 			RoleFunctionTreeTo nextNode = (RoleFunctionTreeTo)nextTreeList.get(i);
 			if(nextNode.getCls().equals("folder") && !nextNode.getId().equals("1")  ){
-				List<RoleFunctionTreeTo> nextNextTreeList = treeDao.getSubTreeListNotRootByUser(String.valueOf(nextNode.getId()), curUser);
+				List<RoleFunctionTreeTo> nextNextTreeList = treeDao.getSubTreeListNotRootByUser(String.valueOf(nextNode.getId()));
 				if ( nextNextTreeList.size() > 0 ){
 					nextNode.setChildren(nextNextTreeList);
 					getTreeNode(nextNextTreeList, curUser);
 				}
 			}else if(nextNode.getCls().equals("folder") && nextNode.getId().equals("1") ){
-				List<RoleFunctionTreeTo> nextNextTreeList = treeDao.getSubTreeListNotRootByUser(String.valueOf(nextNode.getId()), curUser);
+				List<RoleFunctionTreeTo> nextNextTreeList = treeDao.getSubTreeListNotRootByUser(String.valueOf(nextNode.getId()));
 				nextNode.setChildren(nextNextTreeList);
 				getTreeNode(nextNextTreeList, curUser);
 				trees.add(nextNode);
