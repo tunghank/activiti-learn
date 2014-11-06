@@ -247,7 +247,7 @@ public class RoleFunctionManager extends BaseAction{
 		
 		// function list
 		FunctionDao functionDao = new FunctionDao();
-		List  functionData = new ArrayList();	
+		List  functionData = new ArrayList();
 		functionData = (ArrayList) functionDao.getClsFunction(this.leaf);	
 		request.setAttribute("functionList", functionData );
 		

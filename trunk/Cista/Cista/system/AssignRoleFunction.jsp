@@ -183,7 +183,7 @@ Ext.onReady(function(){
 			],
 			listeners: {
 				itemclick: function(dv, record, item, index, e) {
-					showRole(record.get('roleName'));      
+					showRole(record.get('roleId'), record.get('roleName'));      
 				}
 			}
 			  
@@ -233,10 +233,10 @@ Ext.onReady(function(){
 	//EXTJS4.0
 	var treeStore = new Ext.data.TreeStore ({
 		expanded: true, 
-		proxy: {
+		/*proxy: {
 			type: 'ajax',
 			url: '<%=contextPath%>/ShowRoleFunctionTree.action'
-		},
+		},*/
 		sorters: [{
 			property: 'id',
 			direction: 'ASC'
@@ -382,10 +382,43 @@ Ext.onReady(function(){
     }
 
 
-	function showRole(roleName){
+	function showRole(roleUid, roleName){
 
 		roleFunctionTree.setTitle( "  " + roleName + "  Function List" );
+		Ext.Ajax.timeout = 120000; // 120 seconds				
+		Ext.Ajax.request({  //ajax request test  
+					url : '<%=contextPath%>/ShowRoleFunctionTree.action',
+					params : {
+						roleUid: roleUid
+					},
+					method : 'POST',
+					scope:this,
+					success : function(response, options) {
+						//parse Json data
+						var freeback = Ext.JSON.decode(response.responseText);
 
+						//alert(freeback);
+
+						//Load Data in Tree store
+						roleFunctionTree.getRootNode().removeAll();
+						roleFunctionTree.getRootNode().appendChild(freeback);
+						roleFunctionTree.getRootNode().expand(true);
+
+						
+						/*var message =  freeback.ajaxMessage;
+						var status  =  freeback.ajaxStatus;
+
+						if( status == '<%=CistaUtil.AJAX_RSEPONSE_ERROR%>' ){//ERROR
+							Ext.MessageBox.alert('Success', 'ERROR : '+  message );
+						}else{//FINISH
+							Ext.MessageBox.alert('Success', 'FINISH : '+ roleName + "'s Role Function " + message );										
+						}*/
+						
+					},  
+					failure : function(response, options) {  
+						Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
+					}  
+		});//End Ext.Ajax.request
 
 	}// End showRole()
 
