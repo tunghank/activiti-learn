@@ -10,10 +10,12 @@ import org.apache.struts2.ServletActionContext;
 
 
 import com.cista.system.to.RoleFunctionTreeTo;
+import com.cista.system.to.SysRoleFunctionTo;
 import com.cista.system.to.SysUserTo;
 import com.cista.system.tree.dao.RoleFunctionTreeDao;
 import com.cista.system.util.BaseAction;
 import com.cista.system.util.CistaUtil;
+import com.sun.java_cup.internal.internal_error;
 
 /**
  * @author 900730
@@ -36,7 +38,9 @@ public class RoleFunctionTreeAction extends BaseAction {
 		String roleUid = request.getParameter("roleUid"); 
 		roleUid = null != roleUid ? roleUid : "";
 		logger.debug("roleUid " + roleUid);
-		
+		//1.3 Check Role Function
+		List<SysRoleFunctionTo> roleFunctionList =  treeDao.getRoleFunction(roleUid);
+				
 		if ( curUser == null ){
 			addActionMessage(getText("System.error.access.nologin"));
 			return ERROR;
@@ -46,13 +50,14 @@ public class RoleFunctionTreeAction extends BaseAction {
 			//1.1 Set Menu Tree 
 			trees = new ArrayList<RoleFunctionTreeTo>();
 			//1.2 從1開始找
-			getTreeNode(treeRootList, curUser.getUserId());
+
+			getTreeNode(treeRootList, roleFunctionList);
 			//logger.debug(trees.toString());
 			
-			
 
-			
+		
 	        JSONArray jsonObject = JSONArray.fromObject(trees);
+	        
 	        try {
 	            menuString = jsonObject.toString();
 	        } catch (Exception e) {
@@ -73,20 +78,20 @@ public class RoleFunctionTreeAction extends BaseAction {
    		return NONE;
 	}
 
-	public void getTreeNode(List<RoleFunctionTreeTo> nextTreeList, String curUser){
+	public void getTreeNode(List<RoleFunctionTreeTo> nextTreeList, List<SysRoleFunctionTo> roleFunctionList){
 		RoleFunctionTreeDao treeDao = new RoleFunctionTreeDao();
 		for(int i = 0; i < nextTreeList.size() ; i++){
 			RoleFunctionTreeTo nextNode = (RoleFunctionTreeTo)nextTreeList.get(i);
 			if(nextNode.getCls().equals("folder") && !nextNode.getId().equals("1")  ){
-				List<RoleFunctionTreeTo> nextNextTreeList = treeDao.getSubTreeListNotRootByUser(String.valueOf(nextNode.getId()));
+				List<RoleFunctionTreeTo> nextNextTreeList = treeDao.getSubTreeListNotRootByRole(String.valueOf(nextNode.getId()), roleFunctionList);
 				if ( nextNextTreeList.size() > 0 ){
 					nextNode.setChildren(nextNextTreeList);
-					getTreeNode(nextNextTreeList, curUser);
+					getTreeNode(nextNextTreeList, roleFunctionList);
 				}
 			}else if(nextNode.getCls().equals("folder") && nextNode.getId().equals("1") ){
-				List<RoleFunctionTreeTo> nextNextTreeList = treeDao.getSubTreeListNotRootByUser(String.valueOf(nextNode.getId()));
+				List<RoleFunctionTreeTo> nextNextTreeList = treeDao.getSubTreeListNotRootByRole(String.valueOf(nextNode.getId()), roleFunctionList);
 				nextNode.setChildren(nextNextTreeList);
-				getTreeNode(nextNextTreeList, curUser);
+				getTreeNode(nextNextTreeList, roleFunctionList);
 				trees.add(nextNode);
 
 			}

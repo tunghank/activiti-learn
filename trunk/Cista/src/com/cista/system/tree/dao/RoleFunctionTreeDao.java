@@ -11,6 +11,7 @@ import com.cista.system.to.RoleFunctionTreeTo;
 import com.cista.system.to.SysFunctionTo;
 import com.cista.system.to.SysRoleFunctionTo;
 import com.cista.system.util.BaseDao;
+import com.sun.java_cup.internal.internal_error;
 
 /**
  * @author 900730
@@ -94,7 +95,7 @@ public class RoleFunctionTreeDao extends BaseDao {
 		return menuList;
 	}
 
-	public List<RoleFunctionTreeTo> getSubTreeListNotRootByUser(String parentId)
+	public List<RoleFunctionTreeTo> getSubTreeListNotRootByRole(String parentId, List<SysRoleFunctionTo> roleFunctionList)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();
@@ -120,6 +121,14 @@ public class RoleFunctionTreeDao extends BaseDao {
 		for (int i = 0; i < funTreeList.size(); i++) {
 			SysFunctionTo node = (SysFunctionTo) funTreeList.get(i);
 			RoleFunctionTreeTo menuNode = new RoleFunctionTreeTo();
+			
+			for(int j=0; j <roleFunctionList.size(); j++){
+				SysRoleFunctionTo roleFunctionTo = roleFunctionList.get(j);
+				if(roleFunctionTo.getFunctionName().equals( String.valueOf(node.getId()))){
+					
+				}
+			}
+			
 			menuNode.setCls(node.getCls());
 			menuNode.setId(node.getId());
 			menuNode.setLeaf(Integer.parseInt(node.getLeaf()) >= 1);
