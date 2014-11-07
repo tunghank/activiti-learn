@@ -296,10 +296,10 @@
             	 <result name="input" type ="chain">SearchFunction</result>        
          </action>
          
-         <action name="SearchFunctionPre" class="com.cista.system.account.action.FunctionManage" method="searchFunctionPre">
+         <action name="MaintainFunctionPre" class="com.cista.system.account.action.FunctionManage" method="MaintainFunctionPre">
           	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>            	
-            	 <result name="success">/system/searchFunction.jsp</result>         	 
+            	 <result name="success">/system/MaintainFunction.jsp</result>         	 
          </action>
          
          <action name="SearchFunction" class="com.cista.system.account.action.FunctionManage" method="searchFunction">
