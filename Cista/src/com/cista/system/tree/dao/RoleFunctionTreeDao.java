@@ -118,14 +118,20 @@ public class RoleFunctionTreeDao extends BaseDao {
 				new Object[] { parentId, parentId });
 
 		List<RoleFunctionTreeTo> menuList = new ArrayList<RoleFunctionTreeTo>();
+		
 		for (int i = 0; i < funTreeList.size(); i++) {
 			SysFunctionTo node = (SysFunctionTo) funTreeList.get(i);
 			RoleFunctionTreeTo menuNode = new RoleFunctionTreeTo();
 			
+			//logger.debug("roleFunctionList.size() " + roleFunctionList.size());
+			//Check Role Function already assign
 			for(int j=0; j <roleFunctionList.size(); j++){
 				SysRoleFunctionTo roleFunctionTo = roleFunctionList.get(j);
-				if(roleFunctionTo.getFunctionName().equals( String.valueOf(node.getId()))){
-					
+				/*logger.debug("getFunctionId() " + roleFunctionTo.getFunctionId() + 
+						" node.getId() " + String.valueOf(node.getId()));*/
+				if(roleFunctionTo.getFunctionId() == Long.parseLong(node.getId())  ){
+					//logger.debug("YES.........");
+					menuNode.setChecked(true);
 				}
 			}
 			
