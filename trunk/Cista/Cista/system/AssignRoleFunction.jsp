@@ -135,7 +135,8 @@ Ext.onReady(function(){
 						width:280,  
 						//內容  
 						dataIndex:'roleId',  
-						sortable:true
+						sortable:true,
+						hidden:true
 					   
 					 },{  
 						 id:'gRoleName',  
@@ -156,7 +157,7 @@ Ext.onReady(function(){
 						}
 			],  
 			height:335,   
-			width:500,   
+			width:370,   
 			title: 'Role List',   
 			renderTo: 'roleGrid',
 			dockedItems:[  					   
@@ -183,7 +184,7 @@ Ext.onReady(function(){
 			],
 			listeners: {
 				itemclick: function(dv, record, item, index, e) {
-					showRole(record.get('roleId'), record.get('roleName'));      
+					showRoleTree(record.get('roleId'), record.get('roleName'));      
 				}
 			}
 			  
@@ -260,7 +261,7 @@ Ext.onReady(function(){
 		lines: false,
 		singleExpand: false,
 		useArrows: true,	
-		height:335,   
+		height:435,   
 		width:400,  
 		renderTo: 'roleFunctionTreeList',
 		store: treeStore,
@@ -276,6 +277,9 @@ Ext.onReady(function(){
             xtype: 'toolbar',
             items: {
                 text: 'Save checked function',
+				border: 2,
+                scale: 'small',
+				iconCls: 'save',
                 handler: function(){
 					//得到Grid選中的行
 					var gridRecord = roleListGrid.getSelectionModel().getSelection();
@@ -382,7 +386,7 @@ Ext.onReady(function(){
     }
 
 
-	function showRole(roleUid, roleName){
+	function showRoleTree(roleUid, roleName){
 
 		roleFunctionTree.setTitle( "  " + roleName + "  Function List" );
 		Ext.Ajax.timeout = 120000; // 120 seconds				
@@ -396,14 +400,12 @@ Ext.onReady(function(){
 					success : function(response, options) {
 						//parse Json data
 						var freeback = Ext.JSON.decode(response.responseText);
-
-						//alert(freeback);
-
+						
 						//Load Data in Tree store
 						roleFunctionTree.getRootNode().removeAll();
 						roleFunctionTree.getRootNode().appendChild(freeback);
+						
 						roleFunctionTree.getRootNode().expand(true);
-
 						
 						/*var message =  freeback.ajaxMessage;
 						var status  =  freeback.ajaxStatus;
@@ -465,7 +467,7 @@ Ext.onReady(function(){
 	/** HTML Layout **/
 	#functionTitle  {position:absolute; visibility:visible; z-index:1; top:5px; left:5px;}
 	#roleGrid  {position:absolute; visibility:visible; z-index:3; top:45px; left:5px;}
-	#roleFunctionTreeList  {position:absolute; visibility:visible; z-index:2; top:45px; left:530px;}
+	#roleFunctionTreeList  {position:absolute; visibility:visible; z-index:2; top:45px; left:420px;}
 </style>
 <link rel="stylesheet" type="text/css" href="../js/extjs42/examples/ux/css/ItemSelector.css" />
 </head>
