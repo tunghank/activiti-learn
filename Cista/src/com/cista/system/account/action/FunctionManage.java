@@ -17,6 +17,10 @@ import com.cista.system.util.CistaUtil;
 
 public class FunctionManage extends BaseAction{	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String id;
 	private String parentId;
 	private String cls;
@@ -29,14 +33,8 @@ public class FunctionManage extends BaseAction{
 	private String chkRolesList;
 	private String selectFunction;
 	
-	public String searchFunctionPre() throws Exception{
+	public String MaintainFunctionPre() throws Exception{
 		
-		FunctionDao functionDAO = new FunctionDao();
-		// parent list
-		ArrayList parentList = new ArrayList();
-		parentList 	= (ArrayList) functionDAO.searchFunctionList("",CistaUtil.FUNCTION_FOLDER,"");		
-		List<SysFunctionTo> result = (List<SysFunctionTo>) parentList;		
-		request.setAttribute("Data", result);
 		
 		return SUCCESS;
 	}
