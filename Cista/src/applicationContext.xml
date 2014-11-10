@@ -25,5 +25,27 @@
 		</property>
 	</bean>
 
+	<!-- CISTA ERP DataSource-->
+	<bean id="CistaERPDataSource"
+		class="org.springframework.jndi.JndiObjectFactoryBean">
+		<!-- WebLogic -->
+		<property name="jndiName" value="CISTA_ERP"></property>
+		<!-- JBOSS -->
+		<!--  <property name="jndiName" value="java:/CLTQUO"></property> -->
+	</bean>
+
+	<bean id="CistaERPTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource">
+			<ref local="CistaERPDataSource" />
+		</property>
+	</bean>
+
+	<bean id="CistaERPTransactionTemplate"
+		class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager">
+			<ref local="CistaERPTransactionManager" />
+		</property>
+	</bean>
 
 </beans>

@@ -664,6 +664,34 @@ public class CistaUtil {
     }
 
     /**
+     * Return Cista ERP JDBC DataSource.
+     * @return DataSource.
+     */
+    public static DataSource getCistaERPDataSource() {
+        initialize();
+        return (DataSource) context.getBean("CistaERPDataSource");
+    }
+
+    /**
+     * Return a TransactionTemplate.
+     * @return TransactionTemplate.
+     */
+    public static TransactionTemplate getCistaERPTransactionTemplate() {
+        initialize();
+        return (TransactionTemplate) context.getBean("CistaERPTransactionTemplate");
+    }
+    
+    
+    /**
+     * Return a TransactionTemplate.
+     * @return TransactionTemplate.
+     */
+    public static DataSourceTransactionManager getCistaERPTransactionManager() {
+        initialize();
+        return (DataSourceTransactionManager) context.getBean("CistaERPTransactionManager");
+    }
+    
+    /**
      * Return JDBC DataSource.
      * @return DataSource.
      */
@@ -690,8 +718,7 @@ public class CistaUtil {
         initialize();
         return (DataSourceTransactionManager) context.getBean("SystemTransactionManager");
     }
-    
-    
+        
 
     
     public static int calcPages(int resultSize, int pageSize) {
