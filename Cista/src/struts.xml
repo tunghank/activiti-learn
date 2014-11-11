@@ -372,8 +372,20 @@
              <result name="success" type="dispatcher">/dialog/smart_search_quo.jsp</result>
          </action>
 
-
-
+		<!-- Report --> 
+         <action name="WeeklyInventoryPre" class="com.cista.report.action.InventoryReport" method="WeeklyInventoryPre">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success" type="dispatcher">/Report/WeeklyInventory.jsp</result>
+         </action>
+         
+         <action name="WeeklyInventory" class="com.cista.report.action.InventoryReport" method="WeeklyInventory">
+         	
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success" ></result>
+         </action>
+         
 		<!-- NTLM -->
          <!-- <action name="NtlmTest" class="com.cista.system.ldap.action.NtlmTestAction" method="ntlmTest"> -->
          	 <!-- <interceptor-ref name="LoginInterceptor"></interceptor-ref> -->

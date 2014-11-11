@@ -42,7 +42,7 @@ public class TreeAction extends BaseAction {
 			trees = new ArrayList<MenuTo>();
 			//1.2 從1開始找
 			getTreeNode(treeRootList, curUser.getUserId());
-			logger.debug(trees.toString());
+			//logger.debug(trees.toString());
 	        JSONArray jsonObject = JSONArray.fromObject(trees);
 	        try {
 	            menuString = jsonObject.toString();
