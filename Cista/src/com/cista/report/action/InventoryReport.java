@@ -169,7 +169,10 @@ public class InventoryReport extends BaseAction{
     		List<StandardCostTo> standardCostList = standardCostDao.getAllStandardCostByProject(this.project);
     		
     		for(int i =0; i< standardCostList.size(); i ++){
+    			
     			StandardCostTo standardCostTo = standardCostList.get(i);
+    			//Copy Sheet
+    			outWorkbook.copySheet("Template", standardCostTo.getProduct(), 2+i);
                 //Write to Cell
                 //Product
                 standardCostSheet.addCell(new Label(0, 4+i, standardCostTo.getProduct(), cellFormat));
