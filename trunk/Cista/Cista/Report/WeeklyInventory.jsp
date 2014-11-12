@@ -60,10 +60,19 @@ Ext.onReady(function(){
         return value ? value.dateFormat('Y/m/d') : '';
     };
 
+	/*
+	* Project
+	*/
+    var project = Ext.create('Ext.data.Store', {
+    fields: ['name', 'val'],
+    data : [
+			{"name":"S0201", "val":"S0201"}
+		]
+	});
 
 	//User Information
 	//Form
-	var userForm = new  Ext.form.Panel({
+	var queryForm = new  Ext.form.Panel({
         id: 'queryForm',
 		title: 'Query Criteria',
 		labelAlign: 'left',
@@ -105,17 +114,33 @@ Ext.onReady(function(){
 						layout : 'anchor',
 						border: false,
 						items : [
-								
+								{
+										xtype: "combobox",
+										id:'project',
+										name: 'project',
+										fieldLabel : 'Project',
+										labelWidth: 50,
+										labelAlign: 'right',
+										allowBlank : false,
+										store: project,
+										queryMode: 'local',
+										displayField: 'name',
+										valueField: 'val',
+										anchor:'80%'
+									},
 									{
 										xtype: 'datefield',
-										id: 'sdate',
-										fieldLabel: '開始時間',
-										labelWidth: 80,
+										id: 'edate',
+										name: 'edate',
+										fieldLabel: '日期',
+										labelWidth: 50,
 										labelAlign: 'right',
 										emptyText: '請選擇日期',
-										format: 'Y-m-d',
+										format: 'Ymd',
+										allowBlank : false,
 										maxValue: new Date(),
-										value: Ext.Date.add(new Date(), Ext.Date.DAY, -2)
+										value: Ext.Date.add(new Date(), Ext.Date.DAY, -2),
+										anchor:'80%'
 									}
 
 								]
@@ -127,52 +152,51 @@ Ext.onReady(function(){
 
 	function submit(){//提交表單
 		//Check Form Data
-		
-		
+				
 		//Submit & Reset Button Disable
 		//1.0 List Form Button
 		var queryFormSubmit =Ext.getCmp('queryFormSubmit'); 
 		//queryFormSubmit.disable();
 		
-
 		// 初始化 Excel導出 的按鈕  
+        //window.location.href = '<%=contextPath%>/WeeklyInventory.action';
 
-         window.location.href = '<%=contextPath%>/WeeklyInventory.action';  
+		var queryFormItems = queryForm.items;
+		//1.1 Check Must have value
+		for(var i = 0; i < queryFormItems.getAt(0).items.length; i++){
+
+			if( 
+				queryFormItems.getAt(0).items.getAt(i).allowBlank == false && 
+				( typeof(queryFormItems.getAt(0).items.getAt(i).value) == 'undefined' 
+					|| queryFormItems.getAt(0).items.getAt(i).value == null
+				    || queryFormItems.getAt(0).items.getAt(i).value == "" )
+			   ){
+
+				Ext.MessageBox.alert('Message', 'Message : '+ "'" + queryFormItems.getAt(0).items.getAt(i).fieldLabel + "'" + " Can't be blank" );
+				return;
+				//alert(userFormItems.getAt(0).items.getAt(i).fieldLabel + " " + userFormItems.getAt(0).items.getAt(i).value  + " " + userFormItems.getAt(0).items.getAt(i).xtype);
+			}
+			
+		}
 
 
-		/*Ext.Ajax.timeout = 120000; // 120 seconds
-		Ext.Ajax.request({  //ajax request test  
-                    url : '<%=contextPath%>/WeeklyInventory.action',  
-                    params : {  
-                        //data: Ext.encode(queryForm.getValues())
-                    },
-                    method : 'POST',
-					scope:this,
-                    success : function(response, options) {
-
-
-						alert('0000');
-						//parse Json data
-						var freeback = Ext.JSON.decode(response.responseText);
-						var message =  freeback.ajaxMessage;
-						var status  =  freeback.ajaxStatus;
-						//queryFormSubmit.enable();
-						if( status == '<%=CistaUtil.AJAX_RSEPONSE_ERROR%>' ){//ERROR
-							Ext.MessageBox.alert('Success', 'ERROR : '+ message );
-						}else{//FINISH
-							Ext.MessageBox.alert('Success', 'FINISH : '+ message );
-												
-							 queryForm.form.reset();
-						}
-						
-
-                    },  
-                    failure : function(response, options) {  
-                        Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
-                    }  
-                });*/
+		queryForm.submit({
+			url: '<%=contextPath%>/WeeklyInventory.action',
+			//waitMsg: 'Loading...',
+			method: 'POST',
+			standardSubmit: true,
+			success: function (form, action) {
+				Ext.MessageBox.alert('SUCCESS', 'SUCCESS' + action.response.responseText);  
+			},
+			failure: function(form, action) {
+				if (action.result.status == true) {
+					console.log('success!');
+				}
+			}
+		});
 
 	}
+
 	function reset(){//重置表單
 		queryForm.form.reset();
 	}

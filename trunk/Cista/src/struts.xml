@@ -383,7 +383,7 @@
          	
          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
-             <result name="success" ></result>
+             <result name="success" type="dispatcher">/Report/WeeklyInventory.jsp</result>
          </action>
          
 		<!-- NTLM -->

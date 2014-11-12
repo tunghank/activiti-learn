@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -748,6 +749,24 @@ public class CistaUtil {
 		}
     }
 
+    
+    
+    public static float NumScale(float pFloat, int scale) {
+        BigDecimal bd = new BigDecimal(pFloat);
+        BigDecimal bd1 = bd.setScale(scale, bd.ROUND_HALF_UP);
+        pFloat = bd1.floatValue();
+        //long  ll = Double.doubleToLongBits(pDouble);
+        return pFloat;
+    }
+    
+    public static double NumScale(double pDouble, int scale) {
+        BigDecimal bd = new BigDecimal(pDouble);
+        BigDecimal bd1 = bd.setScale(scale, bd.ROUND_HALF_UP);
+        pDouble = bd1.doubleValue();
+        //long  ll = Double.doubleToLongBits(pDouble);
+        return pDouble;
+    }
+    
     public static int getWorkNoString(int weekToMove, int y, int m, int d) {
         Calendar cal = new GregorianCalendar(TimeZone.getDefault());
         cal.set( Calendar.YEAR,  y);
