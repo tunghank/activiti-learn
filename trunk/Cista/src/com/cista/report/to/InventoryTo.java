@@ -18,7 +18,8 @@ implements	java.io.Serializable
 	private String ma002;
 	private String ma003;
 	private String mb001;
-	private String mb064;
+	private int mb064;
+	private double inventoryCost;
 
 	
 	// Constructors
@@ -58,14 +59,26 @@ implements	java.io.Serializable
 	}
 
 
-	public String getMb064() {
+
+	public double getInventoryCost() {
+		return inventoryCost;
+	}
+
+
+	public void setInventoryCost(double inventoryCost) {
+		this.inventoryCost = inventoryCost;
+	}
+
+
+	public int getMb064() {
 		return mb064;
 	}
 
 
-	public void setMb064(String mb064) {
+	public void setMb064(int mb064) {
 		this.mb064 = mb064;
 	}
+
 
 
 

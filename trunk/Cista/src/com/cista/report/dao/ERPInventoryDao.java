@@ -16,9 +16,9 @@ public class ERPInventoryDao extends CistaERPBaseDao{
 	public List<InventoryTo> getInventoryByProduct(String month, String sdate, String edate, String product) throws DataAccessException{
 		
 		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();
-		String sql  = " SELECT MA002, MA003, MB001, FORMAT( SUM(MB064), '0')  MB064  FROM ( " +  
+		String sql  = " SELECT MA002, MA003, MB001, FORMAT( SUM(MB064), '0')  MB064 , SUM(INVENTORY_COST) INVENTORY_COST    FROM ( " +  
 				" SELECT DISTINCT INVMA.MA002 AS MA002,INVMA.MA003 AS MA003,SUBSTRING(MB001, 0,8) MB001, " + 
-				" (ISNULL(LC004,0)  + ISNULL(SUM(LA005*LA011),0) )  MB064, C.MC004  " + 
+				" (ISNULL(LC004,0)  + ISNULL(SUM(LA005*LA011),0) )  MB064, C.MC004, ISNULL(SUM(LA005*LA013),0) + ISNULL(LC005,0) INVENTORY_COST  " + 
 				" FROM CISTA_HK..INVMC I " + 
 				" INNER JOIN CISTA_HK..INVMB AS INVMB ON MB001=I.MC001  " + 
 				" LEFT JOIN CISTA_HK..INVLC AS INVLC ON LC001=I.MC001  " + 
