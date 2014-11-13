@@ -14,8 +14,10 @@ import org.apache.struts2.ServletActionContext;
 import com.cista.system.util.BaseAction;
 import com.cista.report.dao.ERPInventoryDao;
 import com.cista.report.dao.StandardCostDao;
+import com.cista.report.dao.UnitCostDao;
 import com.cista.report.to.InventoryTo;
 import com.cista.report.to.StandardCostTo;
+import com.cista.report.to.UnitCostTo;
 import com.sun.java_cup.internal.internal_error;
 import com.cista.system.util.CistaUtil;
 //JExcel
@@ -140,13 +142,22 @@ public class InventoryReport extends BaseAction{
             numbercellformat_scale2.setFont(f);
             
             //Money
-            NumberFormat currencyFormat = new NumberFormat(NumberFormat.CURRENCY_DOLLAR + " #", NumberFormat.COMPLEX_FORMAT); 
+            NumberFormat currencyFormat = new NumberFormat(NumberFormat.CURRENCY_DOLLAR + "#", NumberFormat.COMPLEX_FORMAT); 
             WritableCellFormat USCurrencyFormat = new WritableCellFormat(currencyFormat);
             USCurrencyFormat.setAlignment(Alignment.RIGHT);
             USCurrencyFormat.setBorder(Border.ALL, BorderLineStyle.THIN);
             USCurrencyFormat.setWrap(false);
             USCurrencyFormat.setBackground(Colour.WHITE);
             USCurrencyFormat.setFont(f);
+            
+            //Money4
+            NumberFormat currencyFormat4 = new NumberFormat(NumberFormat.CURRENCY_DOLLAR + "0.00##", NumberFormat.COMPLEX_FORMAT); 
+            WritableCellFormat USCurrencyFormat4 = new WritableCellFormat(currencyFormat4);
+            USCurrencyFormat4.setAlignment(Alignment.RIGHT);
+            USCurrencyFormat4.setBorder(Border.ALL, BorderLineStyle.THIN);
+            USCurrencyFormat4.setWrap(false);
+            USCurrencyFormat4.setBackground(Colour.WHITE);
+            USCurrencyFormat4.setFont(f);
             
             //Yield Format
             DisplayFormat percentFormat = NumberFormats.PERCENT_FLOAT;
@@ -168,6 +179,9 @@ public class InventoryReport extends BaseAction{
     		 *******************************************************/
     		WritableSheet standardCostSheet = outWorkbook.getSheet(1);
     		StandardCostDao standardCostDao = new StandardCostDao();
+    		ERPInventoryDao erpInventoryDao = new ERPInventoryDao();
+    		UnitCostDao unitCostDao = new UnitCostDao();
+    		
     		List<StandardCostTo> standardCostList = standardCostDao.getStandardCostByProject(this.project);
     		
     		for(int i =0; i< standardCostList.size(); i ++){
@@ -213,9 +227,11 @@ public class InventoryReport extends BaseAction{
     		 * 1.2 Inventory Report
     		 *********************************************************/
     		WritableSheet inventorySheet = outWorkbook.getSheet(0);
-    		ERPInventoryDao erpInventoryDao = new ERPInventoryDao();
+    		
     		String product , project;
     		int openOrder=0, foundry=0, cp=0 , cf=0, csp=0, ft=0 , totalWafer=0, totalDie =0;
+    		double foundryCost=0, cpCost=0 , cfCost=0, cspCost=0, ftCost=0 ;
+    		
     		double inventoryCost =0.0;
 			long expectedFG=0;
     		for(int i =0; i< standardCostList.size(); i ++){
@@ -232,19 +248,19 @@ public class InventoryReport extends BaseAction{
             			InventoryTo inventoryTo = inventoryList.get(j);
             			//CP
             			if(inventoryTo.getMb001().indexOf("1WS") >=0){
-            				cp = Integer.parseInt(inventoryTo.getMb064());
+            				cp = inventoryTo.getMb064();
             			}
             			//CF
             			if(inventoryTo.getMb001().indexOf("3PS") >=0){
-            				cf = Integer.parseInt(inventoryTo.getMb064());
+            				cf = inventoryTo.getMb064();
             			}
             			//AS
             			if(inventoryTo.getMb001().indexOf("3CS") >=0){
-            				csp = Integer.parseInt(inventoryTo.getMb064());
+            				csp = inventoryTo.getMb064();
             			}
             			//FT
             			if(inventoryTo.getMb001().indexOf("3AS") >=0){
-            				ft = Integer.parseInt(inventoryTo.getMb064());
+            				ft = inventoryTo.getMb064();
             			}
             		}
             		
@@ -292,18 +308,151 @@ public class InventoryReport extends BaseAction{
     			        		
     		}
 
-    		//1.3 Product List Sheet
+    		/********************************************
+    		 * 1.3 Product List Sheet
+    		 ********************************************/
+    		int  tFoundry=0, tCp=0 , tCf=0, tCsp=0, tFt=0;
+    		double tFoundryCost=0, tCpCost=0 , tCfCost=0, tCspCost=0, tFtCost=0 ;
+    		UnitCostTo unitCostTo = new UnitCostTo();
     		for(int i =0; i< standardCostList.size(); i ++){
     			
     			StandardCostTo standardCostTo = standardCostList.get(i);
     			//Copy Sheet
     			outWorkbook.copySheet("Template", standardCostTo.getProduct(), 2+i);
+    			WritableSheet productSheet = outWorkbook.getSheet(2+i);
     			
+    			product = standardCostTo.getProduct();
+    			project = standardCostTo.getProject();
+    			
+    			List<InventoryTo> inventoryList = erpInventoryDao.getInventoryByProduct(tMonth, sdate, edate, product);
+    			unitCostTo = unitCostDao.getUnitCostByProduct(product);
+    			
+    			
+    			if( inventoryList != null ){
+    				logger.debug("inventoryList Size " + inventoryList.size() );
+            		logger.debug("inventoryList " + inventoryList.toString());
+            		for(int j=0; j<inventoryList.size(); j ++ ){
+            			InventoryTo inventoryTo = inventoryList.get(j);
+            			//CP
+            			if(inventoryTo.getMb001().indexOf("1WS") >=0){
+            				cp = inventoryTo.getMb064();
+            				cpCost = inventoryTo.getInventoryCost();
+            				tCp = tCp + cp;
+            				tCpCost = tCpCost + cpCost;
+            			}
+            			//CF
+            			if(inventoryTo.getMb001().indexOf("3PS") >=0){
+            				cf =inventoryTo.getMb064();
+            				cfCost = inventoryTo.getInventoryCost();
+            				tCf = tCf + cf;
+            				tCfCost = tCfCost + cfCost;
+            			}
+            			//AS
+            			if(inventoryTo.getMb001().indexOf("3CS") >=0){
+            				csp = inventoryTo.getMb064();
+            				cspCost = inventoryTo.getInventoryCost();
+            				tCsp = tCsp + csp;
+            				tCspCost = tCspCost + cspCost;
+            			}
+            			//FT
+            			if(inventoryTo.getMb001().indexOf("3AS") >=0){
+            				ft = inventoryTo.getMb064();
+            				ftCost = inventoryTo.getInventoryCost();
+            				tFt = tFt + ft;
+            				tFtCost = tFtCost + ftCost;
+            			}
+
+            		}
+            		
+            		
+    			}
+    			//Write to Cell
+    			//到九月的成本
+    			productSheet.addCell(new Label(2, 1, "到" + tMonth + "的成本", cellFormat));
+        		//Quantity
+        		//Wafer
+    			productSheet.addCell(new Number(2, 3, CistaUtil.NumScale(Double.parseDouble(String.valueOf(foundry)),4),cellFormat));
+        		//CP
+    			productSheet.addCell(new Number(2, 4, CistaUtil.NumScale(Double.parseDouble(String.valueOf(cp)),4),cellFormat));
+    			productSheet.addCell(new Number(6, 4, CistaUtil.NumScale(Double.parseDouble(String.valueOf(cp)),4),cellFormat));
+    			
+        		//CF
+    			productSheet.addCell(new Number(2, 5, CistaUtil.NumScale(Double.parseDouble(String.valueOf(cf)),4),cellFormat));
+    			productSheet.addCell(new Number(6, 5, CistaUtil.NumScale(Double.parseDouble(String.valueOf(cf)),4),cellFormat));
+        		//CSP
+    			productSheet.addCell(new Number(2, 6, CistaUtil.NumScale(Double.parseDouble(String.valueOf(csp)),4),cellFormat));
+    			productSheet.addCell(new Number(6, 6, CistaUtil.NumScale(Double.parseDouble(String.valueOf(csp)),4),cellFormat));
+        		//FT
+    			productSheet.addCell(new Number(2, 7, CistaUtil.NumScale(Double.parseDouble(String.valueOf(ft)),4),cellFormat));
+    			productSheet.addCell(new Number(6, 7, CistaUtil.NumScale(Double.parseDouble(String.valueOf(ft)),4),cellFormat));
+    			
+        		//Amount
+        		//Wafer
+    			productSheet.addCell(new Number(3, 3, CistaUtil.NumScale(Double.parseDouble(String.valueOf(foundryCost)),4),cellFormat));
+        		//CP
+    			productSheet.addCell(new Number(3, 4, CistaUtil.NumScale(Double.parseDouble(String.valueOf(cpCost)),4),cellFormat));
+        		//CF
+    			productSheet.addCell(new Number(3, 5, CistaUtil.NumScale(Double.parseDouble(String.valueOf(cfCost)),4),cellFormat));
+        		//CSP
+    			productSheet.addCell(new Number(3, 6, CistaUtil.NumScale(Double.parseDouble(String.valueOf(cspCost)),4),cellFormat));
+        		//FT
+    			productSheet.addCell(new Number(3, 7, CistaUtil.NumScale(Double.parseDouble(String.valueOf(ftCost)),4),cellFormat));
+    			
+        		//Unit Cost
+        		//CP
+    			productSheet.addCell(new Number(5, 4, CistaUtil.NumScale(Double.parseDouble(String.valueOf(unitCostTo.getCp())),4),USCurrencyFormat4));
+        		//CF
+    			productSheet.addCell(new Number(5, 5, CistaUtil.NumScale(Double.parseDouble(String.valueOf(unitCostTo.getCf())),4),USCurrencyFormat4));
+        		//CSP
+    			productSheet.addCell(new Number(5, 6, CistaUtil.NumScale(Double.parseDouble(String.valueOf(unitCostTo.getCsp())),4),USCurrencyFormat4));
+        		//FT
+    			productSheet.addCell(new Number(5, 7, CistaUtil.NumScale(Double.parseDouble(String.valueOf(unitCostTo.getFt())),4),USCurrencyFormat4));
     		}
     		//Summary Sheet
 			outWorkbook.copySheet("Template", this.project + "_Summary", 2 + standardCostList.size());
-			
+			WritableSheet summarySheet = outWorkbook.getSheet(2 + standardCostList.size());
+			//Write to Cell
+			//到九月的成本
+			summarySheet.addCell(new Label(2, 1, "到" + tMonth + "的成本", cellFormat));
+    		//Quantity
+    		//Wafer
+			summarySheet.addCell(new Number(2, 3, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tFoundry)),4),cellFormat));
+    		//CP
+			summarySheet.addCell(new Number(2, 4, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tCp)),4),cellFormat));
+			summarySheet.addCell(new Number(6, 4, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tCp)),4),cellFormat));
+    		//CF
+			summarySheet.addCell(new Number(2, 5, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tCf)),4),cellFormat));
+			summarySheet.addCell(new Number(6, 5, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tCf)),4),cellFormat));
+    		//CSP
+			summarySheet.addCell(new Number(2, 6, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tCsp)),4),cellFormat));
+			summarySheet.addCell(new Number(6, 6, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tCsp)),4),cellFormat));
+    		//FT
+			summarySheet.addCell(new Number(2, 7, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tFt)),4),cellFormat));
+			summarySheet.addCell(new Number(6, 7, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tFt)),4),cellFormat));
     		
+    		//Amount
+    		//Wafer
+			summarySheet.addCell(new Number(3, 3, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tFoundryCost)),4),cellFormat));
+    		//CP
+			summarySheet.addCell(new Number(3, 4, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tCpCost)),4),cellFormat));
+    		//CF
+			summarySheet.addCell(new Number(3, 5, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tCfCost)),4),cellFormat));
+    		//CSP
+			summarySheet.addCell(new Number(3, 6, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tCspCost)),4),cellFormat));
+    		//FT
+			summarySheet.addCell(new Number(3, 7, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tFtCost)),4),cellFormat));
+			
+			//Unit Cost
+    		//CP
+			summarySheet.addCell(new Number(5, 4, CistaUtil.NumScale(Double.parseDouble(String.valueOf(unitCostTo.getCp())),4),USCurrencyFormat4));
+    		//CF
+			summarySheet.addCell(new Number(5, 5, CistaUtil.NumScale(Double.parseDouble(String.valueOf(unitCostTo.getCf())),4),USCurrencyFormat4));
+    		//CSP
+			summarySheet.addCell(new Number(5, 6, CistaUtil.NumScale(Double.parseDouble(String.valueOf(unitCostTo.getCsp())),4),USCurrencyFormat4));
+    		//FT
+			summarySheet.addCell(new Number(5, 7, CistaUtil.NumScale(Double.parseDouble(String.valueOf(unitCostTo.getFt())),4),USCurrencyFormat4));
+			
+			
             outWorkbook.write();
             workbook.close();
             httpOut.flush();

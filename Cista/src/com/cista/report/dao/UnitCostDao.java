@@ -19,7 +19,7 @@ public class UnitCostDao extends BaseDao{
 
 
 
-	public List<UnitCostTo> getUnitCostByProduct(String product) throws DataAccessException{
+	public UnitCostTo getUnitCostByProduct(String product) throws DataAccessException{
 		
 		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();
 		String sql  = " SELECT A.PRODUCT, A.PROJECT, A.WAFER, A.CP, A.CF, A.CSP, A.FT, " +
@@ -35,7 +35,7 @@ public class UnitCostDao extends BaseDao{
     	List<UnitCostTo> result = sjt.query(sql,rowMapper, new Object[] {product} );
 		
 		if (result != null && result.size() > 0) {
-			return result;
+			return result.get(0);
 		} else {
 			return null;
 		}	
