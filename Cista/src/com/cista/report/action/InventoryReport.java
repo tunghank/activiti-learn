@@ -163,16 +163,17 @@ public class InventoryReport extends BaseAction{
             //sheet.mergeCells(0, 1, 3, 1);
 
   		
-    		//1.1 Standard Cost Page
+    		/*******************************************************
+    		 * 1.1 Standard Cost Page
+    		 *******************************************************/
     		WritableSheet standardCostSheet = outWorkbook.getSheet(1);
     		StandardCostDao standardCostDao = new StandardCostDao();
-    		List<StandardCostTo> standardCostList = standardCostDao.getAllStandardCostByProject(this.project);
+    		List<StandardCostTo> standardCostList = standardCostDao.getStandardCostByProject(this.project);
     		
     		for(int i =0; i< standardCostList.size(); i ++){
     			
     			StandardCostTo standardCostTo = standardCostList.get(i);
-    			//Copy Sheet
-    			outWorkbook.copySheet("Template", standardCostTo.getProduct(), 2+i);
+    			
                 //Write to Cell
                 //Product
                 standardCostSheet.addCell(new Label(0, 4+i, standardCostTo.getProduct(), cellFormat));
@@ -208,7 +209,9 @@ public class InventoryReport extends BaseAction{
                 standardCostSheet.addCell(new Number(15, 4+i, CistaUtil.NumScale(Double.parseDouble(String.valueOf(standardCostTo.getUnitCost())),4), cellFormat));
     		}
     		
-    		//1.2 Inventory Report
+    		/*********************************************************
+    		 * 1.2 Inventory Report
+    		 *********************************************************/
     		WritableSheet inventorySheet = outWorkbook.getSheet(0);
     		ERPInventoryDao erpInventoryDao = new ERPInventoryDao();
     		String product , project;
@@ -216,6 +219,7 @@ public class InventoryReport extends BaseAction{
     		double inventoryCost =0.0;
 			long expectedFG=0;
     		for(int i =0; i< standardCostList.size(); i ++){
+    			
     			StandardCostTo standardCostTo = standardCostList.get(i);
     			product = standardCostTo.getProduct();
     			project = standardCostTo.getProject();
@@ -285,10 +289,21 @@ public class InventoryReport extends BaseAction{
             		inventoryCost = expectedFG * CistaUtil.NumScale(Double.parseDouble(String.valueOf(standardCostTo.getUnitCost())),4);
             		inventorySheet.addCell(new Number(14, 4+i, CistaUtil.NumScale(Double.parseDouble(String.valueOf(inventoryCost)),4),USCurrencyFormat));
     			}
-    			
-        		
+    			        		
     		}
 
+    		//1.3 Product List Sheet
+    		for(int i =0; i< standardCostList.size(); i ++){
+    			
+    			StandardCostTo standardCostTo = standardCostList.get(i);
+    			//Copy Sheet
+    			outWorkbook.copySheet("Template", standardCostTo.getProduct(), 2+i);
+    			
+    		}
+    		//Summary Sheet
+			outWorkbook.copySheet("Template", this.project + "_Summary", 2 + standardCostList.size());
+			
+    		
             outWorkbook.write();
             workbook.close();
             httpOut.flush();
