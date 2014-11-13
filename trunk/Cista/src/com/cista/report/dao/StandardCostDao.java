@@ -19,7 +19,7 @@ public class StandardCostDao extends BaseDao{
 
 
 
-	public List<StandardCostTo> getAllStandardCostByProject(String project) throws DataAccessException{
+	public List<StandardCostTo> getStandardCostByProject(String project) throws DataAccessException{
 		
 		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();
 		String sql  = " SELECT A.PRODUCT, A.PROJECT, A.GROSS_DIE, A.WAFER_COST, A.CP_COST, " +
