@@ -13,9 +13,11 @@ import org.apache.struts2.ServletActionContext;
 
 import com.cista.system.util.BaseAction;
 import com.cista.report.dao.ERPInventoryDao;
+import com.cista.report.dao.ProductYieldDao;
 import com.cista.report.dao.StandardCostDao;
 import com.cista.report.dao.UnitCostDao;
 import com.cista.report.to.InventoryTo;
+import com.cista.report.to.ProductYieldTo;
 import com.cista.report.to.StandardCostTo;
 import com.cista.report.to.UnitCostTo;
 import com.sun.java_cup.internal.internal_error;
@@ -181,6 +183,7 @@ public class InventoryReport extends BaseAction{
     		StandardCostDao standardCostDao = new StandardCostDao();
     		ERPInventoryDao erpInventoryDao = new ERPInventoryDao();
     		UnitCostDao unitCostDao = new UnitCostDao();
+    		ProductYieldDao productYieldDao = new ProductYieldDao();
     		
     		List<StandardCostTo> standardCostList = standardCostDao.getStandardCostByProject(this.project);
     		
@@ -231,6 +234,7 @@ public class InventoryReport extends BaseAction{
     		String product , project;
     		int openOrder=0, foundry=0, cp=0 , cf=0, csp=0, ft=0 , totalWafer=0, totalDie =0;
     		double foundryCost=0, cpCost=0 , cfCost=0, cspCost=0, ftCost=0 ;
+    		double fFoundryCost=0, fCpCost=0 , fCfCost=0, fCspCost=0, fFtCost=0 ;
     		
     		double inventoryCost =0.0;
 			long expectedFG=0;
@@ -326,7 +330,7 @@ public class InventoryReport extends BaseAction{
     			
     			List<InventoryTo> inventoryList = erpInventoryDao.getInventoryByProduct(tMonth, sdate, edate, product);
     			unitCostTo = unitCostDao.getUnitCostByProduct(product);
-    			
+    			ProductYieldTo productYieldTo = productYieldDao.getProductYield(product);
     			
     			if( inventoryList != null ){
     				logger.debug("inventoryList Size " + inventoryList.size() );
@@ -366,6 +370,14 @@ public class InventoryReport extends BaseAction{
             		
             		
     			}
+    			// 未來加工費
+    			fCpCost = (foundry+cp)*unitCostTo.getCp();
+    			fCfCost = (foundry+cp+cf)*unitCostTo.getCf();
+    			fCspCost = (foundry+cp+cf+csp)*unitCostTo.getCsp();
+    			double cspDie = ( ( (foundry+cp+cf+csp)* standardCostTo.getGrossDie()*productYieldTo.getCspYield() ) + ft );
+    			cspDie = CistaUtil.NumScale(cspDie,0);
+    			fFtCost = cspDie * unitCostTo.getFt();
+    			logger.debug(product + " CSP DIE QTY " + cspDie);
     			//Write to Cell
     			//到九月的成本
     			productSheet.addCell(new Label(2, 1, "到" + tMonth + "的成本", cellFormat));
@@ -397,6 +409,7 @@ public class InventoryReport extends BaseAction{
     			productSheet.addCell(new Number(3, 6, CistaUtil.NumScale(Double.parseDouble(String.valueOf(cspCost)),4),cellFormat));
         		//FT
     			productSheet.addCell(new Number(3, 7, CistaUtil.NumScale(Double.parseDouble(String.valueOf(ftCost)),4),cellFormat));
+    			 			
     			
         		//Unit Cost
         		//CP
@@ -407,6 +420,18 @@ public class InventoryReport extends BaseAction{
     			productSheet.addCell(new Number(5, 6, CistaUtil.NumScale(Double.parseDouble(String.valueOf(unitCostTo.getCsp())),4),USCurrencyFormat4));
         		//FT
     			productSheet.addCell(new Number(5, 7, CistaUtil.NumScale(Double.parseDouble(String.valueOf(unitCostTo.getFt())),4),USCurrencyFormat4));
+    			
+        		//Future Amount
+        		//Wafer
+    			productSheet.addCell(new Number(8, 3, CistaUtil.NumScale(Double.parseDouble(String.valueOf(fFoundryCost)),4),USCurrencyFormat4));
+        		//CP
+    			productSheet.addCell(new Number(8, 4, CistaUtil.NumScale(Double.parseDouble(String.valueOf(fCpCost)),4),USCurrencyFormat4));
+        		//CF
+    			productSheet.addCell(new Number(8, 5, CistaUtil.NumScale(Double.parseDouble(String.valueOf(fCfCost)),4),USCurrencyFormat4));
+        		//CSP
+    			productSheet.addCell(new Number(8, 6, CistaUtil.NumScale(Double.parseDouble(String.valueOf(fCspCost)),4),USCurrencyFormat4));
+        		//FT
+    			productSheet.addCell(new Number(8, 7, CistaUtil.NumScale(Double.parseDouble(String.valueOf(fFtCost)),4),USCurrencyFormat4));
     		}
     		//Summary Sheet
 			outWorkbook.copySheet("Template", this.project + "_Summary", 2 + standardCostList.size());
