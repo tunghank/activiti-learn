@@ -233,13 +233,15 @@ public class InventoryReport extends BaseAction{
     		
     		String product , project;
     		int openOrder=0, foundry=0, cp=0 , cf=0, csp=0, ft=0 , totalWafer=0, totalDie =0;
-    		double foundryCost=0, cpCost=0 , cfCost=0, cspCost=0, ftCost=0 ;
-    		double fFoundryCost=0, fCpCost=0 , fCfCost=0, fCspCost=0, fFtCost=0 ;
+    		double foundryCost=0, cpCost=0 , cfCost=0, cspCost=0, ftCost=0, amountTotal=0;
+    		//Future Amount
+    		double fFoundryCost=0, fCpCost=0 , fCfCost=0, fCspCost=0, fFtCost=0, fAmountTotal=0 ;
+    		double fSumFoundryCost=0, fSumCpCost=0 , fSumCfCost=0, fSumCspCost=0, fSumFtCost=0, fSumAmountTotal=0 ;
     		
     		double inventoryCost =0.0;
 			long expectedFG=0;
     		for(int i =0; i< standardCostList.size(); i ++){
-    			
+    			        		
     			StandardCostTo standardCostTo = standardCostList.get(i);
     			product = standardCostTo.getProduct();
     			project = standardCostTo.getProject();
@@ -332,6 +334,9 @@ public class InventoryReport extends BaseAction{
     			unitCostTo = unitCostDao.getUnitCostByProduct(product);
     			ProductYieldTo productYieldTo = productYieldDao.getProductYield(product);
     			
+    			//Cost 值歸0
+    			fFoundryCost=0; fCpCost=0; fCfCost=0; fCspCost=0; fFtCost=0;
+    			
     			if( inventoryList != null ){
     				logger.debug("inventoryList Size " + inventoryList.size() );
             		logger.debug("inventoryList " + inventoryList.toString());
@@ -365,18 +370,22 @@ public class InventoryReport extends BaseAction{
             				tFt = tFt + ft;
             				tFtCost = tFtCost + ftCost;
             			}
-
             		}
-            		
-            		
+
     			}
+    			amountTotal = cpCost + cfCost + cspCost + ftCost;
     			// 未來加工費
+    			//Future Amount 清空0
+        		fFoundryCost=0; fCpCost=0 ; fCfCost=0;fCspCost=0;fFtCost=0;fAmountTotal=0 ;
+        		
     			fCpCost = (foundry+cp)*unitCostTo.getCp();
     			fCfCost = (foundry+cp+cf)*unitCostTo.getCf();
     			fCspCost = (foundry+cp+cf+csp)*unitCostTo.getCsp();
     			double cspDie = ( ( (foundry+cp+cf+csp)* standardCostTo.getGrossDie()*productYieldTo.getCspYield() ) + ft );
     			cspDie = CistaUtil.NumScale(cspDie,0);
     			fFtCost = cspDie * unitCostTo.getFt();
+    			
+    			fAmountTotal = fCpCost + fCfCost + fCspCost + fFtCost;
     			logger.debug(product + " CSP DIE QTY " + cspDie);
     			//Write to Cell
     			//到九月的成本
@@ -409,7 +418,8 @@ public class InventoryReport extends BaseAction{
     			productSheet.addCell(new Number(3, 6, CistaUtil.NumScale(Double.parseDouble(String.valueOf(cspCost)),4),cellFormat));
         		//FT
     			productSheet.addCell(new Number(3, 7, CistaUtil.NumScale(Double.parseDouble(String.valueOf(ftCost)),4),cellFormat));
-    			 			
+    			//Amount Total
+    			productSheet.addCell(new Number(3, 8, CistaUtil.NumScale(Double.parseDouble(String.valueOf(amountTotal)),4),cellFormat));			
     			
         		//Unit Cost
         		//CP
@@ -432,6 +442,8 @@ public class InventoryReport extends BaseAction{
     			productSheet.addCell(new Number(8, 6, CistaUtil.NumScale(Double.parseDouble(String.valueOf(fCspCost)),4),USCurrencyFormat4));
         		//FT
     			productSheet.addCell(new Number(8, 7, CistaUtil.NumScale(Double.parseDouble(String.valueOf(fFtCost)),4),USCurrencyFormat4));
+    			//Total Future Amount
+    			productSheet.addCell(new Number(8, 8, CistaUtil.NumScale(Double.parseDouble(String.valueOf(fAmountTotal)),4),USCurrencyFormat4));
     		}
     		//Summary Sheet
 			outWorkbook.copySheet("Template", this.project + "_Summary", 2 + standardCostList.size());
