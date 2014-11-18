@@ -13,9 +13,11 @@ import org.apache.struts2.ServletActionContext;
 
 import com.cista.system.util.BaseAction;
 import com.cista.report.dao.ERPInventoryDao;
+import com.cista.report.dao.InWipCostDao;
 import com.cista.report.dao.ProductYieldDao;
 import com.cista.report.dao.StandardCostDao;
 import com.cista.report.dao.UnitCostDao;
+import com.cista.report.to.InWipCostTo;
 import com.cista.report.to.InventoryTo;
 import com.cista.report.to.ProductYieldTo;
 import com.cista.report.to.StandardCostTo;
@@ -182,6 +184,8 @@ public class InventoryReport extends BaseAction{
     		WritableSheet standardCostSheet = outWorkbook.getSheet(1);
     		StandardCostDao standardCostDao = new StandardCostDao();
     		ERPInventoryDao erpInventoryDao = new ERPInventoryDao();
+    		InWipCostDao inWipCostDao = new InWipCostDao();
+    		
     		UnitCostDao unitCostDao = new UnitCostDao();
     		ProductYieldDao productYieldDao = new ProductYieldDao();
     		
@@ -234,12 +238,27 @@ public class InventoryReport extends BaseAction{
     		String product , project;
     		int openOrder=0, foundry=0, cp=0 , cf=0, csp=0, ft=0 , totalWafer=0, totalDie =0;
     		double foundryCost=0, cpCost=0 , cfCost=0, cspCost=0, ftCost=0, amountTotal=0;
+    		double foundryWipCost=0, cpWipCost=0 , cfWipCost=0, cspWipCost=0, ftWipCost=0;
+    		
+    		int fg=0;
+    		double fgCost=0, shipCost=0;
+    		//Cost & Qty
+    		int  summaryFoundry=0, summaryCp=0 , summaryCf=0, summaryCsp=0, summaryFt=0;
+    		double summaryFoundryCost=0, summaryCpCost=0 , summaryCfCost=0, summaryCspCost=0, summaryFtCost=0 ,summaryAmountTotal=0;
+    		double unitCost=0, summaryUnitCost=0;
+    		
     		//Future Amount
     		double fFoundryCost=0, fCpCost=0 , fCfCost=0, fCspCost=0, fFtCost=0, fAmountTotal=0 ;
     		double fSummayFoundryCost=0, fSummayCpCost=0 , fSummayCfCost=0, fSummayCspCost=0, fSummayFtCost=0, fSummayAmountTotal=0 ;
+    		double fUnitCost=0, fSummaryUnitCost=0;
     		//Total Final Cost
     		double tFoundryCost=0, tCpCost=0 , tCfCost=0, tCspCost=0, tFtCost=0, tAmountTotal=0 ;
     		double tSummayFoundryCost=0, tSummayCpCost=0 , tSummayCfCost=0, tSummayCspCost=0, tSummayFtCost=0, tSummayAmountTotal=0 ;
+    		double tUnitCost=0, tSummaryUnitCost=0;
+    		//Expected Yield
+    		double expectedYield=0, summaryExpectedYield=0;
+    		//Good Die
+    		long goodDie=0, summaryGoodDie=0;
     		
     		double inventoryCost =0.0;
 			long expectedFG=0;
@@ -250,6 +269,7 @@ public class InventoryReport extends BaseAction{
     			project = standardCostTo.getProject();
     			
     			List<InventoryTo> inventoryList = erpInventoryDao.getInventoryByProduct(tMonth, sdate, edate, product);
+
     			if( inventoryList != null ){
     				logger.debug("inventoryList Size " + inventoryList.size() );
             		logger.debug("inventoryList " + inventoryList.toString());
@@ -320,8 +340,7 @@ public class InventoryReport extends BaseAction{
     		/********************************************
     		 * 1.3 Product List Sheet
     		 ********************************************/
-    		int  summaryFoundry=0, summaryCp=0 , summaryCf=0, summaryCsp=0, summaryFt=0;
-    		double summaryFoundryCost=0, summaryCpCost=0 , summaryCfCost=0, summaryCspCost=0, summaryFtCost=0 ;
+    		
     		UnitCostTo unitCostTo = new UnitCostTo();
     		for(int i =0; i< standardCostList.size(); i ++){
     			
@@ -339,7 +358,33 @@ public class InventoryReport extends BaseAction{
     			
     			//Cost 值歸0
     			fFoundryCost=0; fCpCost=0; fCfCost=0; fCspCost=0; fFtCost=0;
+    			foundryWipCost=0; cpWipCost=0 ; cfWipCost=0; cspWipCost=0; ftWipCost=0;
+    			//Wip Cost
+    			List<InWipCostTo> inWipCostList = inWipCostDao.getInWipCostByProduct(tMonth, product);
     			
+    			if( inWipCostList != null ){
+    				logger.debug("Wip List Size " + inWipCostList.size());
+    				for(int k=0; k<inWipCostList.size(); k ++ ){
+    					InWipCostTo inWipCostTo = inWipCostList.get(k);
+						//CP
+						if(inWipCostTo.getTa001().indexOf("1PS") >=0){
+							cpWipCost = inWipCostTo.getMaterialCost();
+						}
+						//CF
+						if(inWipCostTo.getTa001().indexOf("3CS") >=0){
+							cfWipCost = inWipCostTo.getMaterialCost();
+						}
+						//AS
+						if(inWipCostTo.getTa001().indexOf("3AS") >=0){
+							cspWipCost = inWipCostTo.getMaterialCost();
+							logger.debug("cspWipCost " + cspWipCost);
+						}
+						//FT
+						if(inWipCostTo.getTa001().indexOf("3FT") >=0){
+							ftWipCost = inWipCostTo.getMaterialCost();
+						}
+					}
+    			}
     			if( inventoryList != null ){
     				logger.debug("inventoryList Size " + inventoryList.size() );
             		logger.debug("inventoryList " + inventoryList.toString());
@@ -350,33 +395,41 @@ public class InventoryReport extends BaseAction{
             				cp = inventoryTo.getMb064();
             				cpCost = inventoryTo.getInventoryCost();
             				summaryCp = summaryCp + cp;
-            				summaryCpCost = summaryCpCost + cpCost;
+            				
             			}
             			//CF
             			if(inventoryTo.getMb001().indexOf("3PS") >=0){
             				cf =inventoryTo.getMb064();
             				cfCost = inventoryTo.getInventoryCost();
             				summaryCf = summaryCf + cf;
-            				summaryCfCost = summaryCfCost + cfCost;
+            				
             			}
             			//AS
             			if(inventoryTo.getMb001().indexOf("3CS") >=0){
             				csp = inventoryTo.getMb064();
             				cspCost = inventoryTo.getInventoryCost();
             				summaryCsp = summaryCsp + csp;
-            				summaryCspCost = summaryCspCost + cspCost;
+            				
             			}
             			//FT
             			if(inventoryTo.getMb001().indexOf("3AS") >=0){
             				ft = inventoryTo.getMb064();
             				ftCost = inventoryTo.getInventoryCost();
             				summaryFt = summaryFt + ft;
-            				summaryFtCost = summaryFtCost + ftCost;
+            				
+            			}
+            			//FG
+            			if(inventoryTo.getMb001().indexOf("3FS") >=0){
+            				fg=0;
+            				fgCost = inventoryTo.getInventoryCost();
+
+            				
             			}
             		}
 
     			}
-    			amountTotal = cpCost + cfCost + cspCost + ftCost;
+    			amountTotal = cpCost + cfCost + cspCost + ftCost +
+    					cpWipCost + cfWipCost + cspWipCost + ftWipCost;
     			// 未來加工費
     			//Future Amount 清空0
         		fFoundryCost=0; fCpCost=0 ; fCfCost=0;fCspCost=0;fFtCost=0;fAmountTotal=0 ;
@@ -391,13 +444,42 @@ public class InventoryReport extends BaseAction{
     			fAmountTotal = fCpCost + fCfCost + fCspCost + fFtCost;
     			logger.debug(product + " CSP DIE QTY " + cspDie);
     			
-    			//Summary 
+    			tAmountTotal = fAmountTotal + amountTotal;
+    			//Expected Yield
+    			expectedYield = 0;
+    			expectedYield = productYieldTo.getCspYield() * productYieldTo.getFtYield();
+    			summaryExpectedYield = summaryExpectedYield  + expectedYield;
+    			//Good Die
+    			goodDie = 0;
+    			double tmpGoodDie = ( (foundry+cp+cf+csp) * standardCostTo.getGrossDie() * expectedYield ) + 
+    					ft * productYieldTo.getFtYield();
+    			goodDie =Math.round(tmpGoodDie);
+    			summaryGoodDie= summaryGoodDie + goodDie;
+    			//Unit Cost
+    			unitCost =0;fUnitCost=0;tUnitCost=0;
+    			unitCost = amountTotal / goodDie;
+    			fUnitCost = fAmountTotal / goodDie;
+    			tUnitCost = tAmountTotal / goodDie;
+    			/**************************************************
+    			 * Summary 
+    			 **************************************************/
+    			//Cost & Qty
+    			summaryCpCost = summaryCpCost + cpCost + cpWipCost;
+    			summaryCfCost = summaryCfCost + cfCost + cfWipCost;
+    			summaryCspCost = summaryCspCost + cspCost + cspWipCost;
+    			summaryFtCost = summaryFtCost + ftCost + ftWipCost;
+    			
+    			summaryAmountTotal = summaryAmountTotal + amountTotal;
+    			
+    			//Funture
     			fSummayFoundryCost = fSummayFoundryCost + fFoundryCost;
     			fSummayCpCost = fSummayCpCost + fCpCost;
     			fSummayCfCost = fSummayCfCost + fCfCost;
     			fSummayCspCost = fSummayCspCost + fCspCost;
     			fSummayFtCost = fSummayFtCost + fFtCost;
     			fSummayAmountTotal = fSummayAmountTotal + fAmountTotal;
+    			
+    			
     			//Write to Cell
     			//到九月的成本
     			productSheet.addCell(new Label(2, 1, "到" + tMonth + "的成本", cellFormat));
@@ -422,13 +504,13 @@ public class InventoryReport extends BaseAction{
         		//Wafer
     			productSheet.addCell(new Number(3, 3, CistaUtil.NumScale(Double.parseDouble(String.valueOf(foundryCost)),4),cellFormat));
         		//CP
-    			productSheet.addCell(new Number(3, 4, CistaUtil.NumScale(Double.parseDouble(String.valueOf(cpCost)),4),cellFormat));
+    			productSheet.addCell(new Number(3, 4, CistaUtil.NumScale(Double.parseDouble(String.valueOf(cpCost + cpWipCost)),4),cellFormat));
         		//CF
-    			productSheet.addCell(new Number(3, 5, CistaUtil.NumScale(Double.parseDouble(String.valueOf(cfCost)),4),cellFormat));
+    			productSheet.addCell(new Number(3, 5, CistaUtil.NumScale(Double.parseDouble(String.valueOf(cfCost + cfWipCost)),4),cellFormat));
         		//CSP
-    			productSheet.addCell(new Number(3, 6, CistaUtil.NumScale(Double.parseDouble(String.valueOf(cspCost)),4),cellFormat));
+    			productSheet.addCell(new Number(3, 6, CistaUtil.NumScale(Double.parseDouble(String.valueOf(cspCost + cspWipCost)),4),cellFormat));
         		//FT
-    			productSheet.addCell(new Number(3, 7, CistaUtil.NumScale(Double.parseDouble(String.valueOf(ftCost)),4),cellFormat));
+    			productSheet.addCell(new Number(3, 7, CistaUtil.NumScale(Double.parseDouble(String.valueOf(ftCost + ftWipCost)),4),cellFormat));
     			//Amount Total
     			productSheet.addCell(new Number(3, 8, CistaUtil.NumScale(Double.parseDouble(String.valueOf(amountTotal)),4),cellFormat));			
     			
@@ -458,23 +540,34 @@ public class InventoryReport extends BaseAction{
     			
         		//Total Final Cost
         		//Wafer
-    			tFoundryCost = fFoundryCost + foundryCost;
+    			tFoundryCost = fFoundryCost + foundryCost + foundryWipCost;
     			productSheet.addCell(new Number(10, 3, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tFoundryCost)),4),USCurrencyFormat4));
         		//CP
-    			tCpCost = fCpCost + cpCost;
+    			tCpCost = fCpCost + cpCost+ cpWipCost;
     			productSheet.addCell(new Number(10, 4, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tCpCost)),4),USCurrencyFormat4));
         		//CF
-    			tCfCost = fCfCost + cfCost;
+    			tCfCost = fCfCost + cfCost + cfWipCost;
     			productSheet.addCell(new Number(10, 5, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tCfCost)),4),USCurrencyFormat4));
         		//CSP
-    			tCspCost = fCspCost + cspCost;
+    			tCspCost = fCspCost + cspCost + cspWipCost;
     			productSheet.addCell(new Number(10, 6, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tCspCost)),4),USCurrencyFormat4));
         		//FT
-    			tFtCost = fFtCost + ftCost;
+    			tFtCost = fFtCost + ftCost + ftWipCost;
     			productSheet.addCell(new Number(10, 7, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tFtCost)),4),USCurrencyFormat4));
     			//Total Future Amount
-    			tAmountTotal = fAmountTotal + amountTotal;
+    			
     			productSheet.addCell(new Number(10, 8, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tAmountTotal)),4),USCurrencyFormat4));
+    			
+    			//Expected Yield
+    			productSheet.addCell(new Number(10, 10, CistaUtil.NumScale(Double.parseDouble(String.valueOf(expectedYield)),4),yieldFormat));
+       			//Good Die
+    			productSheet.addCell(new Number(10, 11, goodDie,cellFormat));
+    			//Unit Cost
+    			productSheet.addCell(new Number(3, 12, CistaUtil.NumScale(Double.parseDouble(String.valueOf(unitCost)),4),USCurrencyFormat4));
+    			//Funture Unit Cost
+    			productSheet.addCell(new Number(8, 12, CistaUtil.NumScale(Double.parseDouble(String.valueOf(fUnitCost)),4),USCurrencyFormat4));
+    			//Total Unit Cost
+    			productSheet.addCell(new Number(10, 12, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tUnitCost)),4),USCurrencyFormat4));
     		}
     		//Summary Sheet
 			outWorkbook.copySheet("Template", this.project + "_Summary", 2 + standardCostList.size());
@@ -508,7 +601,9 @@ public class InventoryReport extends BaseAction{
     		//CSP
 			summarySheet.addCell(new Number(3, 6, CistaUtil.NumScale(Double.parseDouble(String.valueOf(summaryCspCost)),4),cellFormat));
     		//FT
-			summarySheet.addCell(new Number(3, 7, CistaUtil.NumScale(Double.parseDouble(String.valueOf(summaryFtCost)),4),cellFormat));
+			summarySheet.addCell(new Number(3, 7, CistaUtil.NumScale(Double.parseDouble(String.valueOf(summaryFtCost)),4),cellFormat));	
+			//Total Amount
+			summarySheet.addCell(new Number(3, 8, CistaUtil.NumScale(Double.parseDouble(String.valueOf(summaryAmountTotal)),4),cellFormat));
 			
 			//Unit Cost
     		//CP
@@ -533,6 +628,42 @@ public class InventoryReport extends BaseAction{
 			summarySheet.addCell(new Number(8, 7, CistaUtil.NumScale(Double.parseDouble(String.valueOf(fSummayFtCost)),4),USCurrencyFormat4));
 			//Total Future Amount
 			summarySheet.addCell(new Number(8, 8, CistaUtil.NumScale(Double.parseDouble(String.valueOf(fSummayAmountTotal)),4),USCurrencyFormat4));
+			
+			
+    		//Total Final Cost
+    		//Wafer
+			tSummayFoundryCost = fSummayFoundryCost + summaryFoundryCost;
+			summarySheet.addCell(new Number(10, 3, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tSummayFoundryCost)),4),USCurrencyFormat4));
+    		//CP
+			tSummayCpCost = fSummayCpCost + summaryCpCost;
+			summarySheet.addCell(new Number(10, 4, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tSummayCpCost)),4),USCurrencyFormat4));
+    		//CF
+			tSummayCfCost = fSummayCfCost + summaryCfCost;
+			summarySheet.addCell(new Number(10, 5, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tSummayCfCost)),4),USCurrencyFormat4));
+    		//CSP
+			tSummayCspCost = fSummayCspCost + summaryCspCost;
+			summarySheet.addCell(new Number(10, 6, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tSummayCspCost)),4),USCurrencyFormat4));
+    		//FT
+			tSummayFtCost = fSummayFtCost + summaryFtCost;
+			summarySheet.addCell(new Number(10, 7, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tSummayFtCost)),4),USCurrencyFormat4));
+			//Total Future Amount
+			tSummayAmountTotal = fSummayAmountTotal + summaryAmountTotal;
+			summarySheet.addCell(new Number(10, 8, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tSummayAmountTotal)),4),USCurrencyFormat4));
+			
+			//Expected Yield
+			summarySheet.addCell(new Number(10, 10, CistaUtil.NumScale(Double.parseDouble(String.valueOf(summaryExpectedYield/standardCostList.size())),4),yieldFormat));
+   			//Good Die
+			summarySheet.addCell(new Number(10, 11, summaryGoodDie,cellFormat));
+			
+			//Unit Cost
+			summaryUnitCost = summaryAmountTotal / summaryGoodDie;
+			summarySheet.addCell(new Number(3, 12, CistaUtil.NumScale(Double.parseDouble(String.valueOf(summaryUnitCost)),4),USCurrencyFormat4));
+			//Funture Unit Cost
+			fSummaryUnitCost = fSummayAmountTotal / summaryGoodDie;
+			summarySheet.addCell(new Number(8, 12, CistaUtil.NumScale(Double.parseDouble(String.valueOf(fSummaryUnitCost)),4),USCurrencyFormat4));
+			//Total Unit Cost
+			tSummaryUnitCost = tSummayAmountTotal / summaryGoodDie;
+			summarySheet.addCell(new Number(10, 12, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tSummaryUnitCost)),4),USCurrencyFormat4));
 			
             outWorkbook.write();
             workbook.close();
