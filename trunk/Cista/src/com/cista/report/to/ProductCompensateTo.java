@@ -20,7 +20,7 @@ implements	java.io.Serializable
 	private String product;
 	private String project;
 	private String month;
-	private double compensation;
+	private Double compensation;
 	private Date create_date;
 
 	
@@ -61,14 +61,6 @@ implements	java.io.Serializable
 	}
 
 
-	public double getCompensation() {
-		return compensation;
-	}
-
-
-	public void setCompensation(double compensation) {
-		this.compensation = compensation;
-	}
 
 
 	public Date getCreate_date() {
@@ -78,6 +70,16 @@ implements	java.io.Serializable
 
 	public void setCreate_date(Date create_date) {
 		this.create_date = create_date;
+	}
+
+
+	public Double getCompensation() {
+		return compensation;
+	}
+
+
+	public void setCompensation(Double compensation) {
+		this.compensation = compensation;
 	}
 
 

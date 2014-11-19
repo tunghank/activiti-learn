@@ -19,7 +19,7 @@ implements	java.io.Serializable
 	private String ta001;
 	private String product;
 	private Double materialCost;
-
+	private Double ngCost;
 
 	
 	// Constructors
@@ -62,6 +62,18 @@ implements	java.io.Serializable
 
 	public void setMaterialCost(Double materialCost) {
 		this.materialCost = materialCost;
+	}
+
+
+
+	public Double getNgCost() {
+		return ngCost;
+	}
+
+
+
+	public void setNgCost(Double ngCost) {
+		this.ngCost = ngCost;
 	}
 
 
