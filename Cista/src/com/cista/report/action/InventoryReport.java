@@ -18,6 +18,7 @@ import com.cista.report.dao.InWipCostDao;
 import com.cista.report.dao.ProductCompensateDao;
 import com.cista.report.dao.ProductOpenStockDao;
 import com.cista.report.dao.ProductYieldDao;
+import com.cista.report.dao.PurchasePoDao;
 import com.cista.report.dao.StandardCostDao;
 import com.cista.report.dao.StockHistoryDao;
 import com.cista.report.dao.UnitCostDao;
@@ -27,6 +28,7 @@ import com.cista.report.to.InventoryTo;
 import com.cista.report.to.ProductCompensateTo;
 import com.cista.report.to.ProductOpenStockTo;
 import com.cista.report.to.ProductYieldTo;
+import com.cista.report.to.PurchasePoTo;
 import com.cista.report.to.StandardCostTo;
 import com.cista.report.to.StockHistoryTo;
 import com.cista.report.to.UnitCostTo;
@@ -143,6 +145,23 @@ public class InventoryReport extends BaseAction{
             cellFormat.setWrap(false);
             cellFormat.setBackground(Colour.WHITE);
             cellFormat.setFont(f);
+            
+            //Header
+            WritableFont headerF = new WritableFont(WritableFont.ARIAL, 12, WritableFont.BOLD, false,
+            		UnderlineStyle.NO_UNDERLINE,Colour.WHITE);
+            //Row Format
+            WritableCellFormat headerFormat = new WritableCellFormat();
+            headerFormat.setBorder(Border.ALL, BorderLineStyle.THIN);
+            headerFormat.setWrap(false);
+            headerFormat.setBackground(Colour.BLUE);
+            // 置中對齊
+            headerFormat.setAlignment(Alignment.CENTRE);
+            // 垂直置中
+            headerFormat.setVerticalAlignment(VerticalAlignment.CENTRE);
+            // 上方框粗線
+            headerFormat.setBorder(Border.TOP, BorderLineStyle.MEDIUM, Colour.BLACK); 
+            headerFormat.setFont(headerF);
+            
             //存儲格樣式,保留兩位小數
             NumberFormat scale2format = new NumberFormat("#.0000");  
             WritableCellFormat numbercellformat_scale2 = new WritableCellFormat(scale2format);              
@@ -196,6 +215,7 @@ public class InventoryReport extends BaseAction{
     		ProductOpenStockDao productOpenStockDao = new ProductOpenStockDao();
     		ProductCompensateDao productCompensateDao = new ProductCompensateDao();
     		FgReceiveBinDao fgReceiveBinDao = new FgReceiveBinDao();
+    		PurchasePoDao purchasePoDao = new PurchasePoDao();
     		
     		UnitCostDao unitCostDao = new UnitCostDao();
     		ProductYieldDao productYieldDao = new ProductYieldDao();
@@ -310,6 +330,13 @@ public class InventoryReport extends BaseAction{
             			}
             		}
             		
+            		//Open Order
+            		openOrder =0;
+            		PurchasePoTo purchasePoTo = purchasePoDao.getOpenPoQtyProduct(product);
+            		if(purchasePoTo != null ){
+            			openOrder = purchasePoTo.getNotReceiveQty().intValue();
+            		}
+            		
                     //Product
             		inventorySheet.addCell(new Label(0, 4+i, standardCostTo.getProduct(), cellFormat));
                     //Project
@@ -317,7 +344,7 @@ public class InventoryReport extends BaseAction{
                     //GROSS_DIE
             		inventorySheet.addCell(new Number(2, 4+i, standardCostTo.getGrossDie(), cellFormat));
                     //Open Order
-                    
+            		inventorySheet.addCell(new Number(3, 4+i, openOrder, cellFormat));
                     //Foundry
                     
                     //CP
@@ -381,6 +408,9 @@ public class InventoryReport extends BaseAction{
 				productCost=0;
     			//Wip Cost
     			List<InWipCostTo> inWipCostList = inWipCostDao.getInWipCostByProduct(tMonth, product);
+    			//Ng Cost
+    			List<InWipCostTo> ngCostList = inWipCostDao.getNgCostByProduct(edate, product);
+    			
     			//Stock History
     			List<StockHistoryTo> fgStockOutList = stockHistoryDao.getFgOut(edate, product);
     			//Open Stock 
@@ -434,10 +464,22 @@ public class InventoryReport extends BaseAction{
 						//FT
 						if(inWipCostTo.getTa001().indexOf("6FS") >=0){
 							ftWipCost = inWipCostTo.getMaterialCost();
-							fgNgCost = inWipCostTo.getNgCost();
 						}
 					}
     			}
+    			
+    			//Ng Cost
+    			if( ngCostList != null ){
+    				logger.debug("Ng List Size " + ngCostList.size());
+    				for(int k=0; k< ngCostList.size(); k ++ ){
+    					InWipCostTo ngCostTo = ngCostList.get(k);
+						//FT
+						if(ngCostTo.getTa001().indexOf("6FS") >=0){
+							fgNgCost = ngCostTo.getNgCost();
+						}
+					}
+    			}
+    			
     			if( inventoryList != null ){
     				logger.debug("inventoryList Size " + inventoryList.size() );
             		logger.debug("inventoryList " + inventoryList.toString());
@@ -553,7 +595,7 @@ public class InventoryReport extends BaseAction{
     			summaryProductCost = summaryProductCost + productCost;
     			//Write to Cell
     			//到九月的成本
-    			productSheet.addCell(new Label(2, 1, "到" + tMonth + "的成本", cellFormat));
+    			productSheet.addCell(new Label(2, 1, "到" + tMonth + "的成本", headerFormat));
         		//Quantity
         		//Wafer
     			productSheet.addCell(new Number(2, 3, CistaUtil.NumScale(Double.parseDouble(String.valueOf(foundry)),4),cellFormat));
@@ -654,7 +696,7 @@ public class InventoryReport extends BaseAction{
 			WritableSheet summarySheet = outWorkbook.getSheet(2 + standardCostList.size());
 			//Write to Cell
 			//到九月的成本
-			summarySheet.addCell(new Label(2, 1, "到" + tMonth + "的成本", cellFormat));
+			summarySheet.addCell(new Label(2, 1, "到" + tMonth + "的成本", headerFormat));
     		//Quantity
     		//Wafer
 			summarySheet.addCell(new Number(2, 3, CistaUtil.NumScale(Double.parseDouble(String.valueOf(summaryFoundry)),4),cellFormat));
