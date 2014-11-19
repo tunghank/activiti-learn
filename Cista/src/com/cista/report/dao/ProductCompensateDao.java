@@ -19,13 +19,15 @@ public class ProductCompensateDao extends BaseDao{
 
 
 
-	public List<ProductCompensateTo> getCompensationByProduct(String product) throws DataAccessException{
+	public ProductCompensateTo getCompensationByProduct(String product) throws DataAccessException{
 		
 		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();
-		String sql  = " SELECT A.PRODUCT, A.PROJECT, A.MONTH, A.COMPENSATION, A.CREATE_DATE " +
+		String sql  = " SELECT A.PRODUCT, A.PROJECT, SUM(A.COMPENSATION) COMPENSATION " +
 					" FROM RPT_PRODUCT_COMPENSATE A " +
 					" WHERE 1=1 " +
-					" AND A.PRODUCT = ?" ;
+					" AND A.PRODUCT = ?" +
+					" GROUP BY A.PRODUCT, A.PROJECT" +
+					" ORDER BY 1" ;
 		
     	ParameterizedBeanPropertyRowMapper<ProductCompensateTo> rowMapper = 
     		new ParameterizedBeanPropertyRowMapper<ProductCompensateTo>();
@@ -34,7 +36,7 @@ public class ProductCompensateDao extends BaseDao{
     	List<ProductCompensateTo> result = sjt.query(sql,rowMapper, new Object[] {product} );
 		
 		if (result != null && result.size() > 0) {
-			return result;
+			return result.get(0);
 		} else {
 			return null;
 		}	
