@@ -242,6 +242,7 @@ public class InventoryReport extends BaseAction{
     		
     		int fg=0;
     		double fgCost=0, shipCost=0;
+    		
     		//Cost & Qty
     		int  summaryFoundry=0, summaryCp=0 , summaryCf=0, summaryCsp=0, summaryFt=0;
     		double summaryFoundryCost=0, summaryCpCost=0 , summaryCfCost=0, summaryCspCost=0, summaryFtCost=0 ,summaryAmountTotal=0;
