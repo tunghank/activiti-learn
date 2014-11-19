@@ -1,7 +1,8 @@
 package com.cista.report.to;
 
+
 /**
- * SysFunction entity.
+ * InWipCostTo entity.
  * 
  * @author MyEclipse Persistence Tools
  */
