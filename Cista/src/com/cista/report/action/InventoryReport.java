@@ -3,6 +3,7 @@ package com.cista.report.action;
 
 import java.io.File;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -120,6 +121,7 @@ public class InventoryReport extends BaseAction{
             response.setHeader("Content-Disposition",
                                "attachment; filename=Weekly inventory Report_" + rptFile
                                + ".xls");
+            
             OutputStream httpOut = response.getOutputStream();
             Workbook workbook = Workbook.getWorkbook(excelTemplate);
 
