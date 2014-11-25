@@ -32,7 +32,7 @@ public class ERPInventoryDao extends CistaERPBaseDao{
 				" LEFT JOIN CISTA_HK..ACTMA A ON A.MA001 =INVMA.MA004  AND A.MA050=MC039  " + 
 				" LEFT JOIN CISTA_HK..CMSMF AS CMSMF ON MF001= 'USD' " + 
 				" Where 1=1   " + 
-				" and  (MB002 LIKE '" + product  + "%')   " + 
+				" and  (MB003 LIKE '" + product  + "%')   " + 
 				" AND C.MC004='1'  " + 
 				" GROUP BY INVMA.MA002,INVMA.MA003,MB001,MB002,MB003,   " + 
 				" MB004,MB072,I.MC002,LC004,LC005,LC030,  INVMA.MA004,A.MA003,MF004,MF005,C.MC002,MB090,   " + 
@@ -40,7 +40,9 @@ public class ERPInventoryDao extends CistaERPBaseDao{
 				" MB070,MB057,MB058,MB059,MB060,MF006,LB004,LB006,LB007,LB008,LB009,   " + 
 				" MB100,MB101,MB102,MB052,MB098,MB103,MB104,MB105,MB106,MB107,MB108,C.MC004 ) A " + 
 			" GROUP BY MA002, MA003,MB001 ";
-								
+		
+		logger.debug("sql " + sql);
+		
     	ParameterizedBeanPropertyRowMapper<InventoryTo> rowMapper = 
     		new ParameterizedBeanPropertyRowMapper<InventoryTo>();
     	rowMapper.setMappedClass(InventoryTo.class);

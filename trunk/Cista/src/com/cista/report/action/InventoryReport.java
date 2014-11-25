@@ -3,8 +3,8 @@ package com.cista.report.action;
 
 import java.io.File;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -225,12 +225,19 @@ public class InventoryReport extends BaseAction{
     		ProductYieldDao productYieldDao = new ProductYieldDao();
     		
     		List<StandardCostTo> standardCostList = standardCostDao.getStandardCostByProject(this.project);
+    		List<StandardCostTo> standardCostList2 = standardCostDao.getStandardCostNotByProject(this.project);
+    		
+    		List<StandardCostTo> allStandardCostList = new ArrayList<StandardCostTo>();
+    		allStandardCostList.addAll(standardCostList);
+    		allStandardCostList.addAll(standardCostList2);
+    		logger.debug("allStandardCostList.size() " + allStandardCostList.size() );
+    		
     		//Header
             standardCostSheet.addCell(new Label(0, 1, "For the week ended: " + edate, cellFormat));
             
-    		for(int i =0; i< standardCostList.size(); i ++){
+    		for(int i =0; i< allStandardCostList.size(); i ++){
     			
-    			StandardCostTo standardCostTo = standardCostList.get(i);
+    			StandardCostTo standardCostTo = allStandardCostList.get(i);
     			
                 //Write to Cell
                 //Product
@@ -309,12 +316,15 @@ public class InventoryReport extends BaseAction{
     		//Header
 			inventorySheet.addCell(new Label(0, 1, "For the week ended: " + edate, cellFormat));
 			
-    		for(int i =0; i< standardCostList.size(); i ++){
+    		for(int i =0; i< allStandardCostList.size(); i ++){
     			        		
-    			StandardCostTo standardCostTo = standardCostList.get(i);
+    			StandardCostTo standardCostTo = allStandardCostList.get(i);
     			product = standardCostTo.getProduct();
     			project = standardCostTo.getProject();
     			
+    			//清為0
+    			openOrder=0; foundry=0; cp=0; cf=0; csp=0; ft=0;
+    			logger.debug("Product " + product);
     			List<InventoryTo> inventoryList = erpInventoryDao.getInventoryByProduct(tMonth, sdate, edate, product);
 
     			if( inventoryList != null ){
@@ -356,7 +366,7 @@ public class InventoryReport extends BaseAction{
                     //Open Order
             		inventorySheet.addCell(new Number(3, 4+i, openOrder, cellFormat));
                     //Foundry
-                    
+            		inventorySheet.addCell(new Number(4, 4+i, foundry, cellFormat));
                     //CP
             		inventorySheet.addCell(new Number(5, 4+i, CistaUtil.NumScale(Double.parseDouble(String.valueOf(cp)),4),cellFormat));
                     //CP_YIELD
