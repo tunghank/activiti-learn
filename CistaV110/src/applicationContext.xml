@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="SystemDataSource"
+		class="org.springframework.jndi.JndiObjectFactoryBean">
+		<!-- WebLogic -->
+		<property name="jndiName" value="CISTA"></property>
+		<!-- JBOSS -->
+		<!--  <property name="jndiName" value="java:/CLTQUO"></property> -->
+	</bean>
+
+	<bean id="SystemTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource">
+			<ref local="SystemDataSource" />
+		</property>
+	</bean>
+
+	<bean id="SystemTransactionTemplate"
+		class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager">
+			<ref local="SystemTransactionManager" />
+		</property>
+	</bean>
+
+	<!-- CISTA ERP DataSource-->
+	<bean id="CistaERPDataSource"
+		class="org.springframework.jndi.JndiObjectFactoryBean">
+		<!-- WebLogic -->
+		<property name="jndiName" value="CISTA_ERP"></property>
+		<!-- JBOSS -->
+		<!--  <property name="jndiName" value="java:/CLTQUO"></property> -->
+	</bean>
+
+	<bean id="CistaERPTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource">
+			<ref local="CistaERPDataSource" />
+		</property>
+	</bean>
+
+	<bean id="CistaERPTransactionTemplate"
+		class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager">
+			<ref local="CistaERPTransactionManager" />
+		</property>
+	</bean>
+
+</beans>
