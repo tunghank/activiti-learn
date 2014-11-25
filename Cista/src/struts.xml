@@ -376,14 +376,14 @@
          <action name="WeeklyInventoryPre" class="com.cista.report.action.InventoryReport" method="WeeklyInventoryPre">
          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
-             <result name="success" type="dispatcher">/Report/WeeklyInventory.jsp</result>
+             <result name="success" >/Report/WeeklyInventory.jsp</result>
          </action>
          
          <action name="WeeklyInventory" class="com.cista.report.action.InventoryReport" method="WeeklyInventory">
          	
          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
-             <result name="success" type="dispatcher">/Report/WeeklyInventory.jsp</result>
+             <result name="success">/Report/WeeklyInventory.jsp</result>
          </action>
          
 		<!-- NTLM -->

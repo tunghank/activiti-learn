@@ -87,6 +87,7 @@ public class InventoryReport extends BaseAction{
 			
 	        createExcel(response, excelTemplate);
 	        
+	        
 	        return SUCCESS;
 		} catch (Exception e) {
 			this.addActionMessage("ERROR");

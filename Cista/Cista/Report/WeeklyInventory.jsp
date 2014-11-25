@@ -19,6 +19,7 @@
     if (null == curUserTo) {
         throw new Exception(EXCEP_MSG_SESSION);
    }
+
 %>
 <html>
 <head>
@@ -55,7 +56,8 @@ Ext.require(
 
 Ext.onReady(function(){
     Ext.QuickTips.init();
-
+	//alert( Ext.Date.add (Ext.Date.getFirstDateOfMonth(new Date() ), Ext.Date.DAY, -1) );
+	
     function formatDate(value){
         return value ? value.dateFormat('Y/m/d') : '';
     };
@@ -139,7 +141,8 @@ Ext.onReady(function(){
 										format: 'Ymd',
 										allowBlank : false,
 										maxValue: new Date(),
-										value: Ext.Date.add(new Date(), Ext.Date.DAY, -2),
+										//value:Ext.Date.getFirstDateOfMonth(Ext.Date.DAY),
+										value: Ext.Date.add (Ext.Date.getFirstDateOfMonth(new Date() ), Ext.Date.DAY, -1),
 										anchor:'80%'
 									}
 
@@ -179,6 +182,30 @@ Ext.onReady(function(){
 			
 		}
 
+		/*var ProgressBar = new Ext.ProgressBar({
+			text:'working.......',
+			width:300,//設定進度條的寬度
+			renderTo:'ProgressBar'
+		});
+
+		ProgressBar.wait({
+			//duration:10000,//進度條持續更新10秒鐘
+			interval:1000,//每1秒鐘更新一次
+			//increment:10,//進度條分10次更新完畢
+			text: 'Loading...',//進度條上的文字
+			scope:this,//回調函數的執行範圍
+			fn:function(){
+				//alert('更新完畢');
+			}
+		});*/
+
+		Ext.MessageBox.show({
+		  msg: 'Processing your data, please wait...',
+		  progressText: 'Saving...',
+		  width:300,
+		  wait:true,
+		  waitConfig: {interval:200}
+		});
 
 		queryForm.submit({
 			url: '<%=contextPath%>/WeeklyInventory.action',
@@ -245,6 +272,7 @@ Ext.onReady(function(){
 	/** HTML Layout **/
 	#functionTitle  {position:absolute; visibility:visible; z-index:1; top:5px; left:5px;}
 	#queryForm  {position:absolute; visibility:visible; z-index:3; top:20px; left:5px;}
+	#ProgressBar  {position:absolute; visibility:visible; z-index:3; top:320px; left:200px;}
 </style>
 <link rel="stylesheet" type="text/css" href="../js/extjs42/examples/ux/css/ItemSelector.css" />
 </head>
@@ -268,6 +296,7 @@ Ext.onReady(function(){
 </table>
 </div>
 <div id="queryForm" ></div>
-<div id="roleFunctionTreeList" ></div>	
+
+<div id='ProgressBar'></div>
 </body>
 </html>
