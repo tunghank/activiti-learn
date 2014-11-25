@@ -199,13 +199,13 @@ Ext.onReady(function(){
 			}
 		});*/
 
-		Ext.MessageBox.show({
+		/*Ext.MessageBox.show({
 		  msg: 'Processing your data, please wait...',
 		  progressText: 'Saving...',
 		  width:300,
 		  wait:true,
 		  waitConfig: {interval:200}
-		});
+		});*/
 
 		queryForm.submit({
 			url: '<%=contextPath%>/WeeklyInventory.action',
@@ -298,5 +298,6 @@ Ext.onReady(function(){
 <div id="queryForm" ></div>
 
 <div id='ProgressBar'></div>
+
 </body>
 </html>
