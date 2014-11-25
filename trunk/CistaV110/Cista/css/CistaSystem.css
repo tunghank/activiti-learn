@@ -1,0 +1,600 @@
+.report_title { 
+	font-family: "Arial", "Helvetica", "sans-serif"; 
+	font-size: 16px; 
+	color: #000033; 
+	font-style: normal; 
+	line-height: normal; 
+	font-weight: bold
+}
+
+td {  
+	font-family: "Arial", "Helvetica", "sans-serif"; 
+	font-size: 12px; 
+	color: #000000
+}
+
+input.button {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	font-style: normal;
+	border: 1px ridge;
+	height: 20px;
+	width: 60px;
+	background-color: #A7D6FC;
+	color: #000000;
+}
+
+input.button3 {
+	/*green*/
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	font-style: normal;
+	border: 1px ridge;
+	height: 20px;
+	width: 60px;	
+	background-color: #96CDCD;
+	color: #000000;
+}
+
+label {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	font-style: normal;
+	color: #000000;
+}
+
+input.text { 
+	font-family: "Arial", "Helvetica", "sans-serif"; 
+	font-size: 12px; 
+	font-style: normal; 
+	border: 1px solid; 
+	border-color: black #CCCCCC #CCCCCC black
+}
+
+.text { 
+	font-family: "Arial", "Helvetica", "sans-serif"; 
+	font-size: 12px; 
+	font-style: normal; 
+	border: 1px solid; 
+	border-color: black #CCCCCC #CCCCCC black}
+
+.text_readonly {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12pt;
+    border: none;
+	background-color: #D9D9D9;
+	width: 60px;
+}
+
+.textReadonly {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 10pt;
+	background-color: #D9D9D9;
+}
+
+.bottom_line {
+	border-color: black black #999999;
+	border-style: solid;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 1px;
+	border-left-width: 0px;
+    text-align: right;
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	font-weight: bold;
+	color: #444444;
+	height: 28px
+}
+
+select {  
+	font-family: "Arial", "Helvetica", "sans-serif"; 
+	font-size: 12px
+}
+
+.select_width_small {
+	font-family: "Arial", "Helvetica", "sans-serif"; 
+	font-size: 12px;
+	width: 80px;
+}
+
+pre {
+	font-family: "Arial", "Helvetica", "sans-serif"; 
+	font-size: 12px
+}
+
+a:hover {
+	color: #FF9933;
+	text-decoration: underline;
+}
+
+.OrangeLine {
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 1px;
+	border-left-width: 0px;
+	border-bottom-style: solid;
+	border-bottom-color: #FF6600;
+}
+
+.portlet-title-nobg {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	font-weight: bold;
+	color: #444444;
+	height: 20px;
+}
+
+.portlet-title-bg1 {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	color: #444444;
+	background-color:#F0FFCE;
+	height: 20px;
+}
+
+.portlet-title-bg2 {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	color: #400080;
+	background-color:#FFFFCC;
+	height: 20px;
+}
+
+.portlet-title-bg3 {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	color: #400080;
+	background-color:#CCDCF7;
+	height: 20px;
+}
+
+.portlet-title-bg4 {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	color: #400080;
+	background-color:#FFB5C5;
+	height: 20px;
+}
+
+.portlet-title-bg5 {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	color: #400080;
+	background-color:#FFCCFF;
+	height: 20px;
+}
+
+.portlet-title-bg6 {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	color: #400080;
+	background-color:#FFCC99;
+	height: 20px;
+}
+
+.portlet-title-bgSearch2 {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	color: #400080;	
+	/*background-color:EEFCF5; ===> green*/
+	background-color:EBF5FF;
+	height: 20px;
+}
+
+.portlet-title-bgSearch1 {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	color: #400080;	
+	/*background-color:A2CFD0;===>green*/
+	background-color:BAD6F4;===> blue
+	height: 20px;
+}
+
+.portlet-title-bgSearch4 {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	color: #400080;
+	background-color:EEFCF5;
+	/*background-color:EBF5FF;===> blue*/
+	height: 20px;
+}
+
+.portlet-title-bgSearch3 {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	color: #400080;
+	background-color:A2CFD0;
+	/*background-color:BAD6F4;===> blue*/
+	height: 20px;
+}
+
+.portlet-title-bgSearch5 {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	color: #400080;	
+	background-color:EBF5FF;
+	height: 20px;
+}
+
+
+.col-width
+{
+	width: 290 px ;
+}
+
+.col-width2
+{
+	width: 245 px ;
+}
+
+.col-titles
+{
+	width: 150 px ;
+	/font-weight: bold;	
+	/* text-align: right;*/
+}
+.col-star
+{
+	color: #ff0000;
+	font-size: 18 px;
+}
+
+.Alertword {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	font-weight: bolder;
+	color: #CC0000;
+}
+
+.redword {
+
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	font-weight: bolder;
+	color: #CC0000;
+}
+
+.actionMessage {
+
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	font-weight: bolder;
+	color: #CC0000;
+}
+
+.Title-link {
+	font-family: "Verdana", "Arial", "Helvetica", "sans-serif";
+	font-size: 15px;
+	font-weight: bold;
+	color: #003333;
+	text-decoration: underline;
+	height: 30px;
+}
+
+.Title {
+
+	font-family: "Verdana", "Arial", "Helvetica", "sans-serif";
+	font-size: 15px;
+	font-weight: bold;
+	color: #003333;
+	height: 30px;
+}
+
+.portlet_content {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	color: #333333;
+}
+
+.portlet_content_noBorder {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #333333;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+}
+
+.portlet_content_border {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #333333;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+}
+
+.portlet-title-white {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	font-weight: bold;
+	color: #FFFFFF;
+	height: 20px;
+}
+
+.TableContent-Border-Color {
+	background-color: #AFAFAF;
+	padding: 1px;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #c1bbc0;
+	border-right-color: #c1bbc0;
+	border-bottom-color: #c1bbc0;
+	border-left-color: #c1bbc0;
+	color: #400080;
+}
+
+.TableContent {
+	background-color: #AFAFAF;
+	padding: 1px;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #003366;
+	border-right-color: #003366;
+	border-bottom-color: #003366;
+	border-left-color: #003366;
+	color: #400080;
+}
+
+.TableContent01 {
+	background-color: #CBDBD8;
+	padding: 1px;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 1px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #003366;
+	border-right-color: #003366;
+	border-bottom-color: #003366;
+	border-left-color: #003366;
+}
+
+.TableContent02 {
+	background-color: #ECF2F1;
+	padding: 1px;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 1px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #003366;
+	border-right-color: #003366;
+	border-bottom-color: #003366;
+	border-left-color: #003366;
+}
+
+.TableContent02-Border {
+	background-color: #ECF2F1;
+	padding: 1px;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #003366;
+	border-right-color: #003366;
+	border-bottom-color: #003366;
+	border-left-color: #003366;
+}
+
+.TableContent03 {
+	background-color: #FFCCFF;
+	padding: 1px;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 1px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #003366;
+	border-right-color: #003366;
+	border-bottom-color: #003366;
+	border-left-color: #003366;
+}
+
+.TableContent04 {
+	background-color: #ECF2F1;
+	padding: 1px;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #003366;
+	border-right-color: #003366;
+	border-bottom-color: #003366;
+	border-left-color: #003366;
+}
+
+.TableContent05 {
+	background-color: #AFAFAF;
+	padding: 1px;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #003366;
+	border-right-color: #003366;
+	border-bottom-color: #003366;
+	border-left-color: #003366;
+	color: #400080;
+}
+
+.TableContent06 {
+	background-color: #D1FEC2;
+	padding: 1px;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #003366;
+	border-right-color: #003366;
+	border-bottom-color: #003366;
+	border-left-color: #003366;
+	color: #400080;
+}
+
+.TableContentWords {
+
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	color: #3300FF;
+}
+
+.star {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: medium;
+	font-weight: bolder;
+	color: #CC0000;
+}
+.asl-col-small
+{
+	width: 10 px ;	
+}
+.asl-col-middle
+{
+	width: 100 px ;	
+}
+.asl-col-large
+{
+	width: 200 px ;	
+}
+.asl-col-verylarger
+{
+	width: 600 px ;	
+}
+
+.button_red {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	font-style: normal;
+	border: 1px ridge;
+	height: 20px;
+	width: 60px;
+	background-color: #A7D6FC;
+	color: #FF0000;
+}
+
+.button_red_middle {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	font-style: normal;
+	border: 1px ridge;
+	height: 20px;
+	width: 100px;
+	background-color: #A7D6FC;
+	color: #FF0000;
+}
+
+.normal-button {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	font-style: normal;
+	border: 1px ridge;
+	height: 20px;
+	width: 60px;
+	background-color: #A7D6FC;
+	color: #000000;
+}
+
+.w80-button {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	font-style: normal;
+	border: 1px ridge;
+	height: 20px;
+	width: 80px;
+	background-color: #A7D6FC;
+	color: #000000;
+}
+
+.w100-button {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	font-style: normal;
+	border: 1px ridge;
+	height: 20px;
+	width: 100px;
+	background-color: #A7D6FC;
+	color: #000000;
+}
+
+.w100-button-color-red {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	font-style: normal;
+	font-weight: bolder;
+	border: 1px ridge;
+	height: 20px;
+	width: 100px;
+	background-color: #A7D6FC;
+	color: #CB1D03;
+}
+
+.w150-button {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	font-style: normal;
+	border: 1px ridge;
+	height: 20px;
+	width: 150px;
+	background-color: #A7D6FC;
+	color: #000000;
+}
+
+.w160-button {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	font-style: normal;
+	border: 1px ridge;
+	height: 20px;
+	width: 160px;
+	background-color: #A7D6FC;
+	color: #000000;
+}

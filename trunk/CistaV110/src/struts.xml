@@ -1,0 +1,401 @@
+<!DOCTYPE struts PUBLIC   
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"   
+        "http://struts.apache.org/dtds/struts-2.0.dtd">  
+  
+<struts>
+	<constant name="struts.custom.i18n.resources" value="application" />
+	
+	<package name="default" namespace="/" extends="struts-default">
+	     <interceptors>
+       		<interceptor name="LoginInterceptor" class="com.cista.system.util.LoginInterceptor"></interceptor>
+     	</interceptors>
+	
+		 <!--Global Result-->
+		 <global-results>
+			<result name="error">/common/error.jsp</result>
+		 </global-results>
+
+		 <!-- User Function -->
+		 <!-- 1.Login System -->
+         <action name="Login" class="com.cista.system.account.action.LoginAction" method="UserLogin">
+             <result name="success">/layout/welcome.jsp</result>
+             <result name="input">/index.jsp</result>
+         </action>
+
+		<!-- User -->		
+        <action name="UserCreatePre" class="com.cista.system.account.action.UserManage" method="UserCreatePre">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+            	 <result name="success">/system/UserCreate.jsp</result>
+         </action>
+
+	 	<action name="UserSave" class="com.cista.system.account.action.UserManage" method="UserSave">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success"></result>
+         </action>
+
+		 <action name="AjaxUserSearchLike" class="com.cista.system.account.action.UserManage" method="AjaxUserSearchLike">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success"></result>
+         </action>
+                  
+		 <action name="AjaxUserSearch" class="com.cista.system.account.action.UserManage" method="AjaxUserSearch">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success"></result>
+         </action>
+
+		 <action name="AjaxUserDelete" class="com.cista.system.account.action.UserManage" method="AjaxUserDelete">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success"></result>
+         </action>
+
+		 <action name="AjaxUserDisable" class="com.cista.system.account.action.UserManage" method="AjaxUserDisable">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success"></result>
+         </action>
+         
+         <action name="ModifyUserPre" class="com.cista.system.account.action.UserManage" method="modifyUserPre">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+            	 <result name="input">/system/modifyUser.jsp</result>         	 
+         </action>
+         
+          <action name="ModifyUser" class="com.cista.system.account.action.UserManage" method="modifyUser">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+            	 <result name="input">/system/modifyUser.jsp</result>
+            	 <result name="success" type="chain">UserSearch</result>           	      	
+         </action>
+         
+         <action name="FetchADUser" class="com.cista.system.account.action.UserManage" method="fetchADUser">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>            	 
+         </action>
+         
+         <action name="UserSearchPre" class="com.cista.system.account.action.UserManage" method="UserSearchPre">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success">/system/UserSearch.jsp</result>
+         </action>
+         
+		 <!--
+         <action name="UserSearch" class="com.cista.system.account.action.UserManage" method="userSearch">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success">/system/UserSearchResult.jsp</result>
+             <result name="input">/system/UserSearchResult.jsp</result>
+         </action>
+         
+         <action name="DisableUser" class="com.cista.system.account.action.UserManage" method="disableUser">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref> -->
+             <!-- <result name="success">/system/userSearchResult.jsp</result>-->
+         <!--     <result name="success" type ="chain">UserSearch</result>
+         </action> -->
+         
+         <action name="UserProfilePre" class="com.cista.system.account.action.UserManage" method="userProfilePre">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>            	
+            	 <result name="success">/system/userProfile.jsp</result>            	 
+         </action>
+         
+         <action name="UserProfile" class="com.cista.system.account.action.UserManage" method="userProfile">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>            	
+            	 <result name="success">/system/userProfile.jsp</result>
+            	 <result name="input">/system/userProfile.jsp</result>         
+         </action>
+         
+         <!-- Role Function 20141024 -->
+         
+         <action name="SearchRoleFunctionPre" class="com.cista.system.account.action.RoleFunctionManager" method="SearchRoleFunctionPre">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>            	
+            	 <result name="success">/system/AssignRoleFunction.jsp</result>  
+            	 <result name="input">/system/AssignRoleFunction.jsp</result>              	 
+         </action>
+         
+         <action name="AjaxRoleSearchLike" class="com.cista.system.account.action.RoleFunctionManager" method="AjaxRoleSearchLike">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success"></result>
+         </action>
+
+         <action name="AjaxSaveRoleFunctionList" class="com.cista.system.account.action.RoleFunctionManager" method="AjaxSaveRoleFunctionList">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success"></result>
+         </action>         
+         
+         <action name="SearchRoleFunction" class="com.cista.system.account.action.RoleFunctionManager" method="searchRoleFunction">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>            	
+            	 <result name="success">/system/searchRoleFunctionResult.jsp</result>  
+            	 <result name="input">/system/searchRoleFunctionResult.jsp</result>              	 
+         </action>
+         
+         <action name="ModifyRoleFunction" class="com.cista.system.account.action.RoleFunctionManager" method="modifyRoleFunction">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>            	
+            	 <result name="success" type ="chain">SearchRoleFunction</result>  
+            	 <result name="input" type ="chain">SearchRoleFunction</result>              	 
+         </action>
+         
+         <action name="SearchUserRolePre" class="com.cista.system.account.action.UserRoleManage" method="SearchUserRolePre">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>            	
+            	 <result name="success">/system/AssignUserRole.jsp</result>  
+            	 <result name="input">/system/AssignUserRole.jsp</result>              	 
+         </action>
+         
+         <!--New Function 20141006-->
+         <action name="AjaxRoleList" class="com.cista.system.account.action.UserRoleManage" method="AjaxRoleList">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success"></result>
+         </action>
+
+         <action name="AjaxUserRoleList" class="com.cista.system.account.action.UserRoleManage" method="AjaxUserRoleList">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success"></result>
+         </action>         
+
+         <action name="AjaxSaveUserRoleList" class="com.cista.system.account.action.UserRoleManage" method="AjaxSaveUserRoleList">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success"></result>
+         </action>  
+         
+         <action name="SearchUserRole" class="com.cista.system.account.action.UserRoleManage" method="searchUserRole">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>            	
+            	 <result name="success">/system/assignUserRoleResult.jsp</result>  
+            	 <result name="input">/system/assignUserRoleResult.jsp</result>              	 
+         </action>
+         
+          <action name="ModifyUserRole" class="com.cista.system.account.action.UserRoleManage" method="modifyUserRole">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>            	
+            	 <result name="success" type ="chain">SearchUserRole</result>  
+            	 <result name="input" type ="chain">SearchUserRole</result>              	 
+         </action>
+         
+        <!-- Department -->        
+         <action name="DepartmentCreatePre" class="com.cista.system.account.action.DepartmentManage" method="departmentCreatePre">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>            	
+            	 <result name="success">/system/departmentCreate.jsp</result> 
+         </action>
+         
+         <action name="DepartmentSave" class="com.cista.system.account.action.DepartmentManage" method="departmentSave">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>            	
+            	 <result name="success" type ="chain">SearchDepartment</result> 
+            	 <result name="input" type ="chain">DepartmentCreatePre</result>            	           	
+         </action>
+         
+         <action name="SearchDepartmentPre" class="com.cista.system.account.action.DepartmentManage" method="searchDepartmentPre">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>            	
+            	 <result name="success">/system/searchDepartment.jsp</result>         	 
+         </action>
+         
+         <action name="SearchDepartment" class="com.cista.system.account.action.DepartmentManage" method="searchDepartment">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>      	
+            	 <result name="success">/system/searchDepartmentResult.jsp</result>
+            	 <result name="input" >/system/searchDepartmentResult.jsp</result>         
+         </action>         
+         
+          <action name="DeleteDepartment" class="com.cista.system.account.action.DepartmentManage" method="deleteDepartment">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>      	
+            	 <result name="success" type ="chain">SearchDepartment</result> 
+            	 <result name="input" type ="chain">SearchDepartment</result>    
+         </action>         
+         
+          <action name="ModifyDepartmentPre" class="com.cista.system.account.action.DepartmentManage" method="modifyDepartmentPre">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>            	
+            	 <result name="input" >/system/modifyDepartment.jsp</result>         
+         </action>
+         
+         <action name="ModifyDepartment" class="com.cista.system.account.action.DepartmentManage" method="modifyDepartment">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+            	 <result name="success" type ="chain">SearchDepartment</result>  
+            	 <result name="input" >/system/modifyDepartment.jsp</result>         
+         </action> 
+         
+         <!-- Role Create -->                  
+         <action name="RoleCreatePre" class="com.cista.system.account.action.RoleManage" method="roleCreatePre">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>            	
+            	 <result name="success">/system/roleCreate.jsp</result>            	 
+         </action>
+         
+         <action name="RoleCreate" class="com.cista.system.account.action.RoleManage" method="roleCreate">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>            	
+            	 <result name="success" type ="chain">SearchRole</result>
+            	 <result name="input">/system/roleCreate.jsp</result>         
+         </action>  
+         
+         <action name="SearchRolePre" class="com.cista.system.account.action.RoleManage" method="searchRolePre">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>      	
+            	 <result name="success">/system/searchRole.jsp</result>
+            	 <result name="input" >/system/searchRole.jsp</result>         
+         </action>  
+         
+          <action name="SearchRole" class="com.cista.system.account.action.RoleManage" method="searchRole">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>      	
+            	 <result name="success">/system/searchRoleResult.jsp</result>
+            	 <result name="input" >/system/searchRoleResult.jsp</result>         
+         </action>  
+         
+         <action name="DeleteRole" class="com.cista.system.account.action.RoleManage" method="deleteRole">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>      	
+            	 <result name="success" type ="chain">SearchRole</result>
+            	  <result name="input" type ="chain">SearchRole</result>        
+         </action>         
+         
+          <action name="ModifyRolePre" class="com.cista.system.account.action.RoleManage" method="modifyRolePre">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>      	
+            	 <result name="success">/system/modifyRole.jsp</result>
+            	 <result name="input" >/system/modifyRole.jsp</result>         
+         </action>  
+         
+          <action name="ModifyRole" class="com.cista.system.account.action.RoleManage" method="modifyRole">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>      	
+            	 <result name="success" type ="chain">SearchRole</result> 
+            	 <result name="input" type ="chain">ModifyRolePre</result>         
+         </action>             
+                 
+         <!-- Function -->         
+         <action name="FunctionCreatePre" class="com.cista.system.account.action.FunctionManage" method="functionCreatePre">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>            	
+            	 <result name="success">/system/functionCreate.jsp</result>            	 
+         </action>
+         
+         <action name="FunctionCreate" class="com.cista.system.account.action.FunctionManage" method="functionCreate">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>            	
+            	 <result name="success" type ="chain">SearchFunction</result>
+            	 <result name="input" type ="chain">SearchFunction</result>        
+         </action>
+         
+         <action name="MaintainFunctionPre" class="com.cista.system.account.action.FunctionManage" method="MaintainFunctionPre">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>            	
+            	 <result name="success">/system/MaintainFunction.jsp</result>         	 
+         </action>
+         
+         <action name="SearchFunction" class="com.cista.system.account.action.FunctionManage" method="searchFunction">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>      	
+            	 <result name="success">/system/searchFunctionResult.jsp</result>
+            	 <result name="input" >/system/searchFunctionResult.jsp</result>         
+         </action>
+        
+          <action name="DeleteFunction" class="com.cista.system.account.action.FunctionManage" method="deleteFunction">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>      	
+            	 <result name="success" type ="chain">SearchFunction</result>
+            	 <result name="input" type ="chain">SearchFunction</result>
+         </action>         
+             
+          <action name="ModifyFunctionPre" class="com.cista.system.account.action.FunctionManage" method="modifyFunctionPre">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>      	
+            	 <result name="success">/system/modifyFunction.jsp</result>      
+         </action>
+         
+         <action name="ModifyFunction" class="com.cista.system.account.action.FunctionManage" method="modifyFunction">
+          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>      	
+            	 <result name="success" type ="chain">SearchFunction</result>
+            	 <result name="input" >/system/modifyFunction.jsp</result>         
+         </action>
+         
+         <!-- 1.1 Logout System -->
+         <action name="Logout" class="com.cista.system.account.action.LogoutAction" method="userLogout">
+             <result name="success">/index.jsp</result>
+         </action> 
+				  
+         <!-- Ext JS Tree  -->        
+         <action name="ShowTree" class="com.cista.system.tree.action.TreeAction" method="showTree">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success"></result>
+         </action>
+
+         <action name="ShowRoleFunctionTree" class="com.cista.system.tree.action.RoleFunctionTreeAction" method="ShowRoleFunctionTree">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success"></result>
+         </action>
+                  
+         <!-- Smart Search -->
+         <action name="SmartSearch" class="com.cista.system.ajax.action.SmartSearchAction" method="smartSearch">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success" type="dispatcher">/dialog/smart_search.jsp</result>
+         </action>
+
+         <action name="SmartSearchPre" class="com.cista.system.ajax.action.SmartSearchAction" method="smartSearch">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success" type="dispatcher">/dialog/smart_search.jsp</result>
+         </action>
+
+         <action name="SmartSearchQuo" class="com.cista.system.ajax.action.SmartSearchQuoAction" method="smartSearchQuo">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success" type="dispatcher">/dialog/smart_search_quo.jsp</result>
+         </action>
+
+         <action name="SmartSearchQuoPre" class="com.cista.system.ajax.action.SmartSearchQuoAction" method="smartSearchQuo">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success" type="dispatcher">/dialog/smart_search_quo.jsp</result>
+         </action>
+
+		<!-- Report --> 
+         <action name="WeeklyInventoryPre" class="com.cista.report.action.InventoryReport" method="WeeklyInventoryPre">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success" >/Report/WeeklyInventory.jsp</result>
+         </action>
+         
+         <action name="WeeklyInventory" class="com.cista.report.action.InventoryReport" method="WeeklyInventory">
+         	
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success">/Report/WeeklyInventory.jsp</result>
+         </action>
+         
+		<!-- NTLM -->
+         <!-- <action name="NtlmTest" class="com.cista.system.ldap.action.NtlmTestAction" method="ntlmTest"> -->
+         	 <!-- <interceptor-ref name="LoginInterceptor"></interceptor-ref> -->
+         <!--	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success" type ="chain" >QuoPaperQuotePre</result>
+			 <result name="login">/index.jsp</result>
+         </action> -->
+
+     </package>
+
+	
+
+</struts>
