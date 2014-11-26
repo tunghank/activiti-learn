@@ -854,6 +854,9 @@ public class InventoryReport extends BaseAction{
 			//Project Cost
 			summarySheet.addCell(new Number(3, 20, CistaUtil.NumScale(Double.parseDouble(String.valueOf(summaryProductCost)),4),USCurrencyFormat4));
 			
+			
+			outWorkbook.removeSheet(2 + standardCostList.size() + 1);
+			
             outWorkbook.write();
             workbook.close();
             httpOut.flush();
