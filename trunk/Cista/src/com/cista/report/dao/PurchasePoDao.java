@@ -42,7 +42,9 @@ public class PurchasePoDao extends CistaERPBaseDao{
 					" Group By SUBSTRING(TD006,0,6) " +
 					" Having (SUM(PURTD.TD008)- SUM(PURTD.TD015)) > 0 " +
 					" ORDER BY 1,2,3,4";
-								
+		
+		logger.debug("sql " + sql);
+		
     	ParameterizedBeanPropertyRowMapper<PurchasePoTo> rowMapper = 
     		new ParameterizedBeanPropertyRowMapper<PurchasePoTo>();
     	rowMapper.setMappedClass(PurchasePoTo.class);
