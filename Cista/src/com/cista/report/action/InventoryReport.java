@@ -326,7 +326,25 @@ public class InventoryReport extends BaseAction{
     			openOrder=0; foundry=0; cp=0; cf=0; csp=0; ft=0;
     			logger.debug("Product " + product);
     			List<InventoryTo> inventoryList = erpInventoryDao.getInventoryByProduct(tMonth, sdate, edate, product);
-
+        		//Open Order
+        		openOrder =0;
+        		PurchasePoTo purchasePoTo = purchasePoDao.getOpenPoQtyProduct(product);
+        		
+        		if(purchasePoTo != null ){
+        			openOrder = purchasePoTo.getNotReceiveQty().intValue();
+        		}
+        		
+                //Product
+        		inventorySheet.addCell(new Label(0, 4+i, standardCostTo.getProduct(), cellFormat));
+                //Project
+        		inventorySheet.addCell(new Label(1, 4+i, standardCostTo.getProject(), cellFormat));
+                //GROSS_DIE
+        		inventorySheet.addCell(new Number(2, 4+i, standardCostTo.getGrossDie(), cellFormat));
+                //Open Order
+        		inventorySheet.addCell(new Number(3, 4+i, openOrder, cellFormat));
+                //Foundry
+        		inventorySheet.addCell(new Number(4, 4+i, foundry, cellFormat));
+        		
     			if( inventoryList != null ){
     				logger.debug("inventoryList Size " + inventoryList.size() );
             		logger.debug("inventoryList " + inventoryList.toString());
@@ -349,24 +367,40 @@ public class InventoryReport extends BaseAction{
             				ft = inventoryTo.getMb064();
             			}
             		}
+
+                    //CP
+            		inventorySheet.addCell(new Number(5, 4+i, CistaUtil.NumScale(Double.parseDouble(String.valueOf(cp)),4),cellFormat));
+                    //CP_YIELD
+            		inventorySheet.addCell(new Number(6, 4+i, CistaUtil.NumScale(Double.parseDouble(String.valueOf(standardCostTo.getCpYield())),4),yieldFormat));
+                    //CF
+            		inventorySheet.addCell(new Number(7, 4+i, CistaUtil.NumScale(Double.parseDouble(String.valueOf(cf)),4),cellFormat));
+                    //CSP
+            		inventorySheet.addCell(new Number(8, 4+i, CistaUtil.NumScale(Double.parseDouble(String.valueOf(csp)),4),cellFormat));
+                    //CSP Yield
+            		inventorySheet.addCell(new Number(9, 4+i, CistaUtil.NumScale(Double.parseDouble(String.valueOf(standardCostTo.getCspYield())),4),yieldFormat));
+                    //FT
+            		inventorySheet.addCell(new Number(10, 4+i, CistaUtil.NumScale(Double.parseDouble(String.valueOf(ft)),4),cellFormat));
+                    //CSP Yield
+            		inventorySheet.addCell(new Number(11, 4+i, CistaUtil.NumScale(Double.parseDouble(String.valueOf(standardCostTo.getFtYield())),4),yieldFormat));
+                    //Expected FG
+            		totalWafer = openOrder+foundry+cp+cf+csp;
+            		logger.debug("openOrder+foundry+cp+cf+csp "  + totalWafer);
+            		totalDie =Math.round(totalWafer * standardCostTo.getGrossDie() * standardCostTo.getCspYield() ) ;
+            		totalDie = totalDie + ft;
+            		logger.debug("total die "  + totalDie);
+            		logger.debug("FT die "  + totalDie );
             		
-            		//Open Order
-            		openOrder =0;
-            		PurchasePoTo purchasePoTo = purchasePoDao.getOpenPoQtyProduct(product);
-            		if(purchasePoTo != null ){
-            			openOrder = purchasePoTo.getNotReceiveQty().intValue();
-            		}
-            		
-                    //Product
-            		inventorySheet.addCell(new Label(0, 4+i, standardCostTo.getProduct(), cellFormat));
-                    //Project
-            		inventorySheet.addCell(new Label(1, 4+i, standardCostTo.getProject(), cellFormat));
-                    //GROSS_DIE
-            		inventorySheet.addCell(new Number(2, 4+i, standardCostTo.getGrossDie(), cellFormat));
-                    //Open Order
-            		inventorySheet.addCell(new Number(3, 4+i, openOrder, cellFormat));
-                    //Foundry
-            		inventorySheet.addCell(new Number(4, 4+i, foundry, cellFormat));
+            		Double tmpExpectedFG = totalDie * CistaUtil.NumScale(Double.parseDouble(String.valueOf(standardCostTo.getFtYield())),4);
+            		expectedFG = (Math.round(tmpExpectedFG))  ;
+            		inventorySheet.addCell(new Number(12, 4+i, CistaUtil.NumScale(Double.parseDouble(String.valueOf(expectedFG)),4),cellFormat));
+                    //UNIT_COST
+            		inventorySheet.addCell(new Number(13, 4+i, CistaUtil.NumScale(Double.parseDouble(String.valueOf(standardCostTo.getUnitCost())),4), cellFormat));
+                    //Iventory Cost
+            		inventoryCost = expectedFG * CistaUtil.NumScale(Double.parseDouble(String.valueOf(standardCostTo.getUnitCost())),4);
+            		inventorySheet.addCell(new Number(14, 4+i, CistaUtil.NumScale(Double.parseDouble(String.valueOf(inventoryCost)),4),USCurrencyFormat));
+    			}else{
+    				cp=0; cf=0; csp=0; ft=0;
+
                     //CP
             		inventorySheet.addCell(new Number(5, 4+i, CistaUtil.NumScale(Double.parseDouble(String.valueOf(cp)),4),cellFormat));
                     //CP_YIELD
