@@ -166,6 +166,22 @@ public class InventoryReport extends BaseAction{
             headerFormat.setBorder(Border.TOP, BorderLineStyle.MEDIUM, Colour.BLACK); 
             headerFormat.setFont(headerF);
             
+            //Header
+            WritableFont headerF2 = new WritableFont(WritableFont.ARIAL, 12, WritableFont.BOLD, false,
+            		UnderlineStyle.NO_UNDERLINE, Colour.BLACK);
+            //Row Format
+            WritableCellFormat headerF2ormat = new WritableCellFormat();
+            headerF2ormat.setBorder(Border.ALL, BorderLineStyle.THIN);
+            headerF2ormat.setWrap(false);
+            //headerF2ormat.setBackground(Colour.WHITE);
+            // 置中對齊
+            headerF2ormat.setAlignment(Alignment.CENTRE);
+            // 垂直置中
+            headerF2ormat.setVerticalAlignment(VerticalAlignment.CENTRE);
+            // 下方框粗線
+            headerF2ormat.setBorder(Border.BOTTOM, BorderLineStyle.MEDIUM, Colour.BLACK); 
+            headerF2ormat.setFont(headerF2);
+            
             //存儲格樣式,保留兩位小數
             NumberFormat scale2format = new NumberFormat("#.0000");  
             WritableCellFormat numbercellformat_scale2 = new WritableCellFormat(scale2format);              
@@ -648,6 +664,8 @@ public class InventoryReport extends BaseAction{
     			productCost = amountTotal + fgCost + compensation;
     			summaryProductCost = summaryProductCost + productCost;
     			//Write to Cell
+    			//Title
+    			productSheet.addCell(new Label(0, 0, product, headerF2ormat));
     			//到九月的成本
     			productSheet.addCell(new Label(2, 1, "到" + tMonth + "的成本", headerFormat));
         		//Quantity
@@ -749,6 +767,8 @@ public class InventoryReport extends BaseAction{
 			outWorkbook.copySheet("Template", this.project + "_Summary", 2 + standardCostList.size());
 			WritableSheet summarySheet = outWorkbook.getSheet(2 + standardCostList.size());
 			//Write to Cell
+			//Title
+			summarySheet.addCell(new Label(0, 0, this.project + "_Summary", headerF2ormat));
 			//到九月的成本
 			summarySheet.addCell(new Label(2, 1, "到" + tMonth + "的成本", headerFormat));
     		//Quantity
