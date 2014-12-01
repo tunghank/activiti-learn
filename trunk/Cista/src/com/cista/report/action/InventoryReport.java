@@ -217,8 +217,8 @@ public class InventoryReport extends BaseAction{
             yieldFormat.setBackground(Colour.WHITE);
             yieldFormat.setFont(f);
             //Report Time
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-            Calendar calendar = Calendar.getInstance();
+            //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            //Calendar calendar = Calendar.getInstance();
             
             //sheet.addCell(new Label(0, 1, "Report Time: " + rptDT, cellFormat));
             //sheet.mergeCells(0, 1, 3, 1);
