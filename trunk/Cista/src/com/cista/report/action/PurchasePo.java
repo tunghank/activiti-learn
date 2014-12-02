@@ -119,7 +119,7 @@ public class PurchasePo extends BaseAction{
             //Output to Web
             response.setContentType("application/vnd.ms-excel");
             response.setHeader("Content-Disposition",
-                               "attachment; filename=Weekly inventory Report_" + rptFile
+                               "attachment; filename=Purchase PO_" + rptFile
                                + ".xls");
             
             OutputStream httpOut = response.getOutputStream();
@@ -230,16 +230,8 @@ public class PurchasePo extends BaseAction{
     		WritableSheet standardCostSheet = outWorkbook.getSheet(1);
     		
     		StandardCostDao standardCostDao = new StandardCostDao();
-    		ERPInventoryDao erpInventoryDao = new ERPInventoryDao();
-    		InWipCostDao inWipCostDao = new InWipCostDao();
-    		StockHistoryDao stockHistoryDao = new StockHistoryDao();
-    		ProductOpenStockDao productOpenStockDao = new ProductOpenStockDao();
-    		ProductCompensateDao productCompensateDao = new ProductCompensateDao();
-    		FgReceiveBinDao fgReceiveBinDao = new FgReceiveBinDao();
     		PurchasePoDao purchasePoDao = new PurchasePoDao();
     		
-    		UnitCostDao unitCostDao = new UnitCostDao();
-    		ProductYieldDao productYieldDao = new ProductYieldDao();
     		
     		List<StandardCostTo> standardCostList = standardCostDao.getStandardCostByProject(this.project);
     		List<StandardCostTo> standardCostList2 = standardCostDao.getStandardCostNotByProject(this.project);
@@ -255,7 +247,7 @@ public class PurchasePo extends BaseAction{
     		for(int i =0; i< allStandardCostList.size(); i ++){
     			
     			StandardCostTo standardCostTo = allStandardCostList.get(i);
-    			
+    			purchasePoDao.getOpenPO3301(project);
                 //Write to Cell
                 //Product
                 standardCostSheet.addCell(new Label(0, 4+i, standardCostTo.getProduct(), cellFormat));
