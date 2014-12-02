@@ -208,7 +208,7 @@ Ext.onReady(function(){
 		});*/
 
 		queryForm.submit({
-			url: '<%=contextPath%>/WeeklyInventory.action',
+			url: '<%=contextPath%>/PurchasePo.action',
 			//waitMsg: 'Loading...',
 			method: 'POST',
 			standardSubmit: true,
@@ -287,7 +287,7 @@ Ext.onReady(function(){
 		<div align="left">
 			<table width="100%" border="0" cellspacing="0" cellpadding="0" align="left" class="OrangeLine">
 				<tr>
-					<td class="Title">Weekly Inventory Report</td>
+					<td class="Title">Purchase PO Report</td>
 				</tr>
 			</table>
 		</div>
