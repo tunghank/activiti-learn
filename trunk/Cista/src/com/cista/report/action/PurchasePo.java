@@ -227,60 +227,72 @@ public class PurchasePo extends BaseAction{
     		/*******************************************************
     		 * 1.1 Standard Cost Page
     		 *******************************************************/
-    		WritableSheet standardCostSheet = outWorkbook.getSheet(1);
+    		WritableSheet poListSheet = outWorkbook.getSheet(0);
     		
     		StandardCostDao standardCostDao = new StandardCostDao();
     		PurchasePoDao purchasePoDao = new PurchasePoDao();
     		
     		
-    		List<StandardCostTo> standardCostList = standardCostDao.getStandardCostByProject(this.project);
-    		List<StandardCostTo> standardCostList2 = standardCostDao.getStandardCostNotByProject(this.project);
+    		List<StandardCostTo> standardCostList = standardCostDao.getProductFormStandCost();
     		
-    		List<StandardCostTo> allStandardCostList = new ArrayList<StandardCostTo>();
-    		allStandardCostList.addAll(standardCostList);
-    		allStandardCostList.addAll(standardCostList2);
-    		logger.debug("allStandardCostList.size() " + allStandardCostList.size() );
+    		logger.debug("standardCostList.size() " + standardCostList.size() );
     		
     		//Header
-            standardCostSheet.addCell(new Label(0, 1, "For the week ended: " + edate, cellFormat));
-            
-    		for(int i =0; i< allStandardCostList.size(); i ++){
+    		//poListSheet.addCell(new Label(0, 1, "For the week ended: " + edate, cellFormat));
+            String poType = "";
+            List<PurchasePoTo> purchasePoList = new ArrayList<PurchasePoTo>();
+            int p=0;
+    		for(int i =0; i< standardCostList.size(); i ++){
     			
-    			StandardCostTo standardCostTo = allStandardCostList.get(i);
-    			purchasePoDao.getOpenPO3301(project);
-                //Write to Cell
-                //Product
-                standardCostSheet.addCell(new Label(0, 4+i, standardCostTo.getProduct(), cellFormat));
-                //Project
-                standardCostSheet.addCell(new Label(1, 4+i, standardCostTo.getProject(), cellFormat));
-                //GROSS_DIE
-                standardCostSheet.addCell(new Number(2, 4+i, standardCostTo.getGrossDie(), cellFormat));
-                //WAFER_COST
-                standardCostSheet.addCell(new Number(3, 4+i, standardCostTo.getWaferCost(), cellFormat));
-                //CP_COST
-                standardCostSheet.addCell(new Number(4, 4+i, standardCostTo.getCpCost(), cellFormat));
-                //CP_YIELD
-                standardCostSheet.addCell(new Number(5, 4+i, CistaUtil.NumScale(Double.parseDouble(String.valueOf(standardCostTo.getCpYield())),4),yieldFormat));
-                //CF_COST
-                standardCostSheet.addCell(new Number(6, 4+i, standardCostTo.getCfCost(), cellFormat));
-                //CSP_COST
-                standardCostSheet.addCell(new Number(7, 4+i, standardCostTo.getCspCost(), cellFormat));
-                //CSP_YIELD
-                standardCostSheet.addCell(new Number(8, 4+i, CistaUtil.NumScale(Double.parseDouble(String.valueOf(standardCostTo.getCspYield())),4), yieldFormat));
-                //CSP_DIE
-                standardCostSheet.addCell(new Number(9, 4+i, standardCostTo.getCspDie(), cellFormat));
-                //FT_UNIT_COST
-                standardCostSheet.addCell(new Number(10, 4+i, CistaUtil.NumScale(Double.parseDouble(String.valueOf(standardCostTo.getFtUnitCost())),4), cellFormat));
-                //FT_FEE
-                standardCostSheet.addCell(new Number(11, 4+i, CistaUtil.NumScale(Double.parseDouble(String.valueOf(standardCostTo.getFtFee())),4), cellFormat));
-                //FT_YIELD
-                standardCostSheet.addCell(new Number(12, 4+i, CistaUtil.NumScale(Double.parseDouble(String.valueOf(standardCostTo.getFtYield())),4), yieldFormat));
-                //TOTAL_COST
-                standardCostSheet.addCell(new Number(13, 4+i, standardCostTo.getTotalCost(), cellFormat));
-                //GOOD_PART
-                standardCostSheet.addCell(new Number(14, 4+i, standardCostTo.getGoodPart(), cellFormat));
-                //UNIT_COST
-                standardCostSheet.addCell(new Number(15, 4+i, CistaUtil.NumScale(Double.parseDouble(String.valueOf(standardCostTo.getUnitCost())),4), cellFormat));
+    			StandardCostTo standardCostTo = standardCostList.get(i);
+    			purchasePoList = purchasePoDao.getOpenPO3301ByProduct(standardCostTo.getProduct());
+    			
+    			if(purchasePoList !=null ){
+    				
+    				logger.debug("purchasePoList size() " + purchasePoList.size() );
+    				logger.debug( purchasePoList.toString() );
+    				for(int j =0; j< purchasePoList.size(); j ++) {
+    					    					
+    					PurchasePoTo purchasePoTo = purchasePoList.get(j);
+                        //Write to Cell
+    					if( purchasePoTo.getPoNum().indexOf("3301") >=0 ){
+    						poType = "Normal";
+    					}else{
+    						poType = "Compensation";
+    					}
+    					
+    					if( purchasePoTo.getPoNum().indexOf("3301-2014040001") >=0){
+    						purchasePoTo.setPurchaseQty(Long.valueOf("200"));
+    						purchasePoTo.setReceiveQty(Long.valueOf("186"));
+    						purchasePoTo.setNotReceiveQty(Long.valueOf("14"));
+    						purchasePoTo.setPoAmount(Double.valueOf(String.valueOf((200*600)))  );
+    					}
+    					logger.debug(standardCostTo.getProduct() + " - " + purchasePoTo.getPoNum() );
+    					
+                        //PO
+        				poListSheet.addCell(new Label(1, 2 + p, poType , cellFormat));
+                        //Project
+        				poListSheet.addCell(new Label(2, 2 + p, standardCostTo.getProject() , cellFormat));
+        				//PO
+        				poListSheet.addCell(new Label(3, 2 + p, purchasePoTo.getPoNum() , cellFormat));
+        				//PO QTY
+        				poListSheet.addCell(new Number(4, 2 + p, purchasePoTo.getPurchaseQty() , cellFormat));
+        				//Receive QTY
+        				poListSheet.addCell(new Number(5, 2 + p, purchasePoTo.getReceiveQty() , cellFormat));
+        				//Not Receive QTY
+        				poListSheet.addCell(new Number(6, 2 + p, purchasePoTo.getNotReceiveQty() , cellFormat));
+        				//Unit Price
+        				poListSheet.addCell(new Number(7, 2 + p, purchasePoTo.getUnitPrice() , USCurrencyFormat4));
+        				//PO Amount
+        				poListSheet.addCell(new Number(8, 2 + p, purchasePoTo.getPoAmount() , USCurrencyFormat4));
+        				
+        				p = p + 1;
+    				}
+    				    				
+    			}else{
+    				logger.debug("purchasePoList size() = null " );
+    			}
+
     		}
     		
 

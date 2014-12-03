@@ -24,6 +24,7 @@ implements	java.io.Serializable
 	  
 	  private String vendor;
 	  private String vendorName;
+	  private String poNum;
 	  private String partNum;
 	  private String product;
 	  private String unit;
@@ -125,6 +126,14 @@ implements	java.io.Serializable
 
 	public void setUnit(String unit) {
 		this.unit = unit;
+	}
+
+	public String getPoNum() {
+		return poNum;
+	}
+
+	public void setPoNum(String poNum) {
+		this.poNum = poNum;
 	}
 
 
