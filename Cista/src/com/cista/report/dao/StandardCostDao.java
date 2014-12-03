@@ -68,4 +68,24 @@ public class StandardCostDao extends BaseDao{
 			return null;
 		}	
 	}
+	
+	public List<StandardCostTo> getProductFormStandCost() throws DataAccessException{
+		
+		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();
+		String sql  = " SELECT DISTINCT SUBSTR(A.PRODUCT,2,3) PRODUCT, A.PROJECT " +
+				" FROM RPT_STANDARD_COST A" +
+				" WHERE 1=1" ;
+		
+    	ParameterizedBeanPropertyRowMapper<StandardCostTo> rowMapper = 
+    		new ParameterizedBeanPropertyRowMapper<StandardCostTo>();
+    	rowMapper.setMappedClass(StandardCostTo.class);
+
+    	List<StandardCostTo> result = sjt.query(sql,rowMapper, new Object[] {} );
+		
+		if (result != null && result.size() > 0) {
+			return result;
+		} else {
+			return null;
+		}	
+	}	
 }
