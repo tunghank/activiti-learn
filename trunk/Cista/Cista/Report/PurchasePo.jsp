@@ -129,7 +129,7 @@ Ext.onReady(function(){
 										displayField: 'name',
 										valueField: 'val',
 										anchor:'80%'
-									},
+									}/*,
 									{
 										xtype: 'datefield',
 										id: 'edate',
@@ -144,7 +144,7 @@ Ext.onReady(function(){
 										//value:Ext.Date.getFirstDateOfMonth(Ext.Date.DAY),
 										value: Ext.Date.add (Ext.Date.getFirstDateOfMonth(new Date() ), Ext.Date.DAY, -1),
 										anchor:'80%'
-									}
+									}*/
 
 								]
 					}
