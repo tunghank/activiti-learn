@@ -104,12 +104,12 @@ public class PurchasePo extends BaseAction{
     private void createExcel(HttpServletResponse response , File excelTemplate) {
 
         try {
-        	String tMonth, sdate, edate;
+        	/*String tMonth, sdate, edate;
         	tMonth = this.edate.substring(0,6);
         	sdate = tMonth + "01";
         	edate = this.edate;
         	
-        	logger.debug(tMonth + " " + sdate + " " + edate);
+        	logger.debug(tMonth + " " + sdate + " " + edate);*/
         	
             SimpleDateFormat dateFormat2 = new SimpleDateFormat(
                 "yyyyMMddHHmmss");
