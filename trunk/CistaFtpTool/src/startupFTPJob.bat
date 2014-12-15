@@ -1,0 +1,2 @@
+@echo off
+c:\jdk1.5\bin\java -Xms128m -Xmx128m -classpath "./edaFTP.jar;./lib/commons-logging-1.1.1.jar;./lib/commons-net-2.0.jar;./lib/jakarta-oro-2.0.8.jar;./lib/log4j-1.2.15.jar;./lib/commons-collections.jar;./lib/quartz-1.6.5.jar;./lib/spring.jar" com.himax.job.DataImportEngineBootstrape
