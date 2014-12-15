@@ -637,10 +637,16 @@ public class InventoryReport extends BaseAction{
     			goodDie =Math.round(tmpGoodDie);
     			summaryGoodDie= summaryGoodDie + goodDie;
     			//Unit Cost
+    			logger.debug("amountTotal " + amountTotal);
+    			logger.debug("goodDie " + goodDie);
+    			
     			unitCost =0;fUnitCost=0;tUnitCost=0;
-    			unitCost = amountTotal / goodDie;
-    			fUnitCost = fAmountTotal / goodDie;
-    			tUnitCost = tAmountTotal / goodDie;
+    			if( goodDie > 0 ){
+    				unitCost = amountTotal / goodDie;
+        			fUnitCost = fAmountTotal / goodDie;
+        			tUnitCost = tAmountTotal / goodDie;
+    			}
+
     			/**************************************************
     			 * Summary 
     			 **************************************************/
@@ -748,6 +754,7 @@ public class InventoryReport extends BaseAction{
        			//Good Die
     			productSheet.addCell(new Number(10, 11, goodDie,cellFormat));
     			//Unit Cost
+    			logger.debug("unitCost " + unitCost);
     			productSheet.addCell(new Number(3, 12, CistaUtil.NumScale(Double.parseDouble(String.valueOf(unitCost)),4),USCurrencyFormat4));
     			//Funture Unit Cost
     			productSheet.addCell(new Number(8, 12, CistaUtil.NumScale(Double.parseDouble(String.valueOf(fUnitCost)),4),USCurrencyFormat4));
@@ -851,14 +858,19 @@ public class InventoryReport extends BaseAction{
    			//Good Die
 			summarySheet.addCell(new Number(10, 11, summaryGoodDie,cellFormat));
 			
+			if( summaryGoodDie > 0 ){
+				summaryUnitCost = summaryAmountTotal / summaryGoodDie;
+				fSummaryUnitCost = fSummayAmountTotal / summaryGoodDie;
+				tSummaryUnitCost = tSummayAmountTotal / summaryGoodDie;
+			}
 			//Unit Cost
-			summaryUnitCost = summaryAmountTotal / summaryGoodDie;
+			
 			summarySheet.addCell(new Number(3, 12, CistaUtil.NumScale(Double.parseDouble(String.valueOf(summaryUnitCost)),4),USCurrencyFormat4));
 			//Funture Unit Cost
-			fSummaryUnitCost = fSummayAmountTotal / summaryGoodDie;
+			
 			summarySheet.addCell(new Number(8, 12, CistaUtil.NumScale(Double.parseDouble(String.valueOf(fSummaryUnitCost)),4),USCurrencyFormat4));
 			//Total Unit Cost
-			tSummaryUnitCost = tSummayAmountTotal / summaryGoodDie;
+			
 			summarySheet.addCell(new Number(10, 12, CistaUtil.NumScale(Double.parseDouble(String.valueOf(tSummaryUnitCost)),4),USCurrencyFormat4));
 			
 			//FG Cost
