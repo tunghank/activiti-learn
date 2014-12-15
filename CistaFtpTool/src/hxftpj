@@ -1,0 +1,29 @@
+#!/bin/sh
+
+PATH=$PATH:/usr/bin
+LOGPATH=/home/wmadmin/log
+SHELLNAME=HoldLotj
+EXE_PATH="/home/wmadmin/java/report"
+
+#### For Java Config ####
+JAVA_HOME=/usr/java/jre1.5.0_16
+export JAVA_HOME
+PATH=$JAVA_HOME/bin:$PATH
+export PATH
+CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JAVA_HOME/jre/lib/rt.jar
+export CLASSPATH
+MEM_ARGS="-Xms128m -Xmx196m"
+JAVA_EXE="bin/java"
+JAVA_RUN="${JAVA_HOME}/${JAVA_EXE} ${MEM_ARGS} "
+
+EXE_CLASSPATH="./edaFTP.jar:./lib/commons-logging-1.1.1.jar:./lib/commons-net-2.0.jar:./lib/jakarta-oro-2.0.8.jar:./lib/log4j-1.2.15.jar:"
+
+cd ${EXE_PATH}/holdlot
+
+echo "$SHELLNAME start on `date`"  >> $LOGPATH/$SHELLNAME.log
+
+
+${JAVA_RUN} -classpath ${CLASSPATH}:${EXE_CLASSPATH} edaFTPGet 10.240.73.72 hank abc816 /TEMP /tmp >> $LOGPATH/$SHELLNAME.log
+
+echo "$SHELLNAME end on `date`"  >> $LOGPATH/$SHELLNAME.log
+ 
