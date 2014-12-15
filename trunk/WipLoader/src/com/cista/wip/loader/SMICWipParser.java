@@ -92,12 +92,12 @@ public class SMICWipParser extends Thread {
     		//Using Find Target "|=124" or ",=44" Count
             for( int i = 0; i < lineDataList.size(); i++ ){
             	
-            	logger.debug(lineDataList.get(i));
+            	//logger.debug(lineDataList.get(i));
             	String[] tmpStr = lineDataList.get(i).split(",");	
-            	logger.info("Line " + i);
+            	//logger.info("Line " + i);
             	
             	FoundryWipTo wipTo = new FoundryWipTo();         	
-            	logger.info(tmpStr.length);
+            	//logger.info(tmpStr.length);
             	
             	if( tmpStr.length == 15 || tmpStr.length == 14 ){
             		UUID foundryWipUuid = UUID.randomUUID();
@@ -114,16 +114,30 @@ public class SMICWipParser extends Thread {
             		wipTo.setVendorLotId(tmpStr[3]);
             		wipTo.setWaferQty(Long.parseLong(tmpStr[7]));
             		
-            		if(tmpStr[3].equals("") || tmpStr[3].indexOf("3302-") < 0 || tmpStr[3].indexOf("3390-") < 0 ){
+            		logger.debug(tmpStr[2]);
+            		logger.debug("tmpStr[2].indexOf('3301') " +tmpStr[2].indexOf("3301"));
+            		if(   
+            				tmpStr[2].indexOf("3390") < 0 && 
+            				tmpStr[2].indexOf("3301") < 0 ){
             			wipTo.setLotType("EN");
-            		}else{
+            		}else {
             			wipTo.setLotType("MP");
             		}
             		
             		wipTo.setTotalLayer(Long.parseLong(tmpStr[11]));
             		wipTo.setRemainLayer(Long.parseLong(tmpStr[11]));
             		wipTo.setLotStatus(tmpStr[4]);
-            		wipTo.setCurrHoldDay(0.0);
+            		//Hold
+            		if(tmpStr[4].indexOf("Hold") >= 0){
+            			//Hold day
+            			//Today -  Date stgInDate =  df.parse(tmpStr[6]);
+            			Date tDate = Calendar.getInstance().getTime();
+            			Date stgInDate =  df.parse(tmpStr[6]);
+            			long diff = ( tDate.getTime() - stgInDate.getTime() ) / (1000 * 60 * 60 * 24) ;
+            			wipTo.setCurrHoldDay( Double.parseDouble( String.valueOf(diff)  ) );
+            			logger.debug( "Current Hold Day : " + wipTo.getCurrHoldDay() );
+            		}
+
             		wipTo.setHoldCode("");
             		wipTo.setHoldReas("");
             		wipTo.setPriority("");
@@ -142,7 +156,7 @@ public class SMICWipParser extends Thread {
             		}
             		if( !tmpStr[8].equals("") ){
             			Date rsod =  df.parse(tmpStr[8]);
-            			wipTo.setSod(rsod);
+            			wipTo.setRsod(rsod);
             		}
         			Date rprDate =  dfRpt.parse(rptDateString);
         			wipTo.setRptDate(rprDate);
@@ -154,11 +168,11 @@ public class SMICWipParser extends Thread {
             		return false;
             	}
             	
-            	for(int j = 0; j < tmpStr.length; j++){
+/*            	for(int j = 0; j < tmpStr.length; j++){
             		logger.debug(tmpStr[j]);           		
             		
             	}
-            	
+            	*/
             	logger.debug("------------------------------");
             }
     		
