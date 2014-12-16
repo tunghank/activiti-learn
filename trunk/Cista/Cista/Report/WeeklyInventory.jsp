@@ -140,7 +140,7 @@ Ext.onReady(function(){
 										emptyText: '請選擇日期',
 										format: 'Ymd',
 										allowBlank : false,
-										maxValue: new Date(),
+										maxValue: Ext.Date.add (Ext.Date.getFirstDateOfMonth(new Date() ), Ext.Date.DAY, -1),
 										//value:Ext.Date.getFirstDateOfMonth(Ext.Date.DAY),
 										value: Ext.Date.add (Ext.Date.getFirstDateOfMonth(new Date() ), Ext.Date.DAY, -1),
 										anchor:'80%'
