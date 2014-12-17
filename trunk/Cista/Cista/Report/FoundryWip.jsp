@@ -24,7 +24,7 @@
 <html>
 <head>
 
-<TITLE>System User Create Function</TITLE>
+<TITLE>Foundry Wip Report</TITLE>
 <jsp:include page="/common/normalcheck.jsp" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="pragma" content="no-cache">
@@ -73,14 +73,14 @@ Ext.onReady(function(){
 
 	//User Information
 	//Form
-	var userForm = new  Ext.form.Panel({
-        id: 'userForm',
+	var queryForm = new  Ext.form.Panel({
+        id: 'queryForm',
 		title: 'User Information',
 		labelAlign: 'left',
 		frame:true,
 		height:380,
 		width:400,
-		renderTo: "userForm",
+		renderTo: "queryForm",
 		bodyPadding: 5,
 		autoScroll:true,
 		layout : {
@@ -100,12 +100,12 @@ Ext.onReady(function(){
 		},
 		buttons :[
 					{
-						id:'userFormSubmit',
+						id:'queryFormSubmit',
 						text : 'Submit',
 						handler : submit
 					},
 					{
-						id:'userFormReset',
+						id:'queryFormReset',
 						text : 'Reset',
 						handler : reset
 					}
@@ -285,22 +285,22 @@ Ext.onReady(function(){
 	function submit(){//提交表單
 		//Check Form Data
 		//1.0 List Form Items
-		var userFormItems = userForm.items;
+		var queryFormItems = queryForm.items;
 		var i = 0;
 		//1.1 Check Must have value
-		for(i = 0; i < userFormItems.getAt(0).items.length; i++){
+		for(i = 0; i < queryFormItems.getAt(0).items.length; i++){
 
 
-			if( userFormItems.getAt(0).items.getAt(i).xtype == "textfield" &&
-				userFormItems.getAt(0).items.getAt(i).allowBlank == false && 
-				( typeof(userFormItems.getAt(0).items.getAt(i).value) == 'undefined' 
-					|| userFormItems.getAt(0).items.getAt(i).value == null
-				    || userFormItems.getAt(0).items.getAt(i).value == "" )
+			if( queryFormItems.getAt(0).items.getAt(i).xtype == "textfield" &&
+				queryFormItems.getAt(0).items.getAt(i).allowBlank == false && 
+				( typeof(queryFormItems.getAt(0).items.getAt(i).value) == 'undefined' 
+					|| queryFormItems.getAt(0).items.getAt(i).value == null
+				    || queryFormItems.getAt(0).items.getAt(i).value == "" )
 			   ){
 
-				Ext.MessageBox.alert('Message', 'Message : '+ "'" + userFormItems.getAt(0).items.getAt(i).fieldLabel + "'" + " Can't be blank" );
+				Ext.MessageBox.alert('Message', 'Message : '+ "'" + queryFormItems.getAt(0).items.getAt(i).fieldLabel + "'" + " Can't be blank" );
 				return;
-				//alert(userFormItems.getAt(0).items.getAt(i).fieldLabel + " " + userFormItems.getAt(0).items.getAt(i).value  + " " + userFormItems.getAt(0).items.getAt(i).xtype);
+				//alert(queryFormItems.getAt(0).items.getAt(i).fieldLabel + " " + queryFormItems.getAt(0).items.getAt(i).value  + " " + queryFormItems.getAt(0).items.getAt(i).xtype);
 			}
 			
 		}
@@ -325,15 +325,15 @@ Ext.onReady(function(){
 	
 		//Submit & Reset Button Disable
 		//1.0 List Form Button
-		var userFormSubmit =Ext.getCmp('userFormSubmit'); 
-		userFormSubmit.disable();
+		var queryFormSubmit =Ext.getCmp('queryFormSubmit'); 
+		queryFormSubmit.disable();
 		
 
 		Ext.Ajax.timeout = 120000; // 120 seconds
 		Ext.Ajax.request({  //ajax request test  
                     url : '<%=contextPath%>/UserSave.action',  
                     params : {  
-                        data: Ext.encode(userForm.getValues())
+                        data: Ext.encode(queryForm.getValues())
                     },
                     method : 'POST',
 					scope:this,
@@ -342,18 +342,18 @@ Ext.onReady(function(){
 						var freeback = Ext.JSON.decode(response.responseText);
 						var message =  freeback.ajaxMessage;
 						var status  =  freeback.ajaxStatus;
-						userFormSubmit.enable();
+						queryFormSubmit.enable();
 						if( status == '<%=CistaUtil.AJAX_RSEPONSE_ERROR%>' ){//ERROR
 							Ext.MessageBox.alert('Success', 'ERROR : '+ message );
 						}else{//FINISH
 							Ext.MessageBox.alert('Success', 'FINISH : '+ message );
 							
-							//alert(userForm.getForm().findField('userId').getValue());
+							//alert(queryForm.getForm().findField('userId').getValue());
 							//Grid load data Ajax
 							Ext.Ajax.request({  //ajax request test  
 									url : '<%=contextPath%>/AjaxUserSearch.action',  
 									params : {  
-										query: userForm.getForm().findField('userId').getValue(),
+										query: queryForm.getForm().findField('userId').getValue(),
 										start:'0',
 										limit:'10'
 									},
@@ -374,13 +374,13 @@ Ext.onReady(function(){
 									}  
 								});
 							
-							 userForm.form.reset();
+							 queryForm.form.reset();
 							//Set Edit Status
-							//userForm.getForm().findField('editStatus').setValue('0');
+							//queryForm.getForm().findField('editStatus').setValue('0');
 							//User ID 設定為唯讀
-							userForm.getForm().findField('userId').setReadOnly (false); 
-							//userForm.getForm().findField('userId').setFieldStyle('color:#000000;background:#FFFFFF;');
-							userForm.getForm().findField('userId').removeCls('x-item-disabled');
+							queryForm.getForm().findField('userId').setReadOnly (false); 
+							//queryForm.getForm().findField('userId').setFieldStyle('color:#000000;background:#FFFFFF;');
+							queryForm.getForm().findField('userId').removeCls('x-item-disabled');
 						}
 						
 
@@ -392,7 +392,7 @@ Ext.onReady(function(){
 
 	}
 	function reset(){//重置表單
-		userForm.form.reset();
+		queryForm.form.reset();
 	}
 
 	//Verify Mail Address
@@ -647,7 +647,7 @@ Ext.onReady(function(){
 			height:380,   
 			width:700,   
 			title: 'User Information',   
-			renderTo: 'userGrid',   
+			renderTo: 'rptGrid',   
 			 
 			dockedItems:[  
 						 //多選框控件  
@@ -741,13 +741,13 @@ Ext.onReady(function(){
 
 
 
-		userForm.loadRecord(record[0]); 		
+		queryForm.loadRecord(record[0]); 		
 		//Set Edit Status
-		userForm.getForm().findField('editStatus').setValue('1');
+		queryForm.getForm().findField('editStatus').setValue('1');
 		//User ID 設定為唯讀
-		userForm.getForm().findField('userId').setReadOnly (true); 
-		//userForm.getForm().findField('userId').setFieldStyle('color:#0000CC;background:#E1E1E1;');
-		userForm.getForm().findField('userId').addCls('x-item-disabled');
+		queryForm.getForm().findField('userId').setReadOnly (true); 
+		//queryForm.getForm().findField('userId').setFieldStyle('color:#0000CC;background:#E1E1E1;');
+		queryForm.getForm().findField('userId').addCls('x-item-disabled');
  
 	}//End updateUser()
 
@@ -887,8 +887,8 @@ Ext.onReady(function(){
 
 	/** HTML Layout **/
 	#functionTitle  {position:absolute; visibility:visible; z-index:1; top:5px; left:5px;}
-	#userForm  {position:absolute; visibility:visible; z-index:2; top:25px; left:5px; }
-	#userGrid  {position:absolute; visibility:visible; z-index:3; top:53px; left:420px;}
+	#queryForm  {position:absolute; visibility:visible; z-index:2; top:25px; left:5px; }
+	#rptGrid  {position:absolute; visibility:visible; z-index:3; top:53px; left:420px;}
 
 </style>
 
@@ -904,7 +904,7 @@ Ext.onReady(function(){
 		<div align="left">
 			<table width="100%" border="0" cellspacing="0" cellpadding="0" align="left" class="OrangeLine">
 				<tr>
-					<td class="Title">System User Create Function</td>
+					<td class="Title">Foundry Wip Report</td>
 				</tr>
 			</table>
 		</div>
@@ -912,8 +912,8 @@ Ext.onReady(function(){
 	</tr>
 </table>
 </div>
-<div id="userForm" ></div>
-<div id="userGrid" ></div>
+<div id="queryForm" ></div>
+<div id="rptGrid" ></div>
 	
 </body>
 </html>
