@@ -104,6 +104,11 @@ public class SMICWipParser extends Thread {
                 	wipTo.setFoundryWipUuid(foundryWipUuid.toString());
                 	
             		wipTo.setVendorCode(vendorCode);
+            		if(vendorCode.equals("10001")){
+            			wipTo.setVendor("SMIC");
+            		}else{
+            			wipTo.setVendor("");
+            		}
             		wipTo.setVendorSiteNum(tmpStr[13]);
             		wipTo.setProcess("WF");
             		wipTo.setCistaPo(tmpStr[2]);

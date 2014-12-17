@@ -52,14 +52,14 @@ public class FoundryWipDao extends BaseDao {
 		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();
 
         String sql = " Insert INTO RPT_FOUNDRY_WIP ( " +
-        		" FOUNDRY_WIP_UUID, VENDOR_CODE, VENDOR_SITE_NUM, PROCESS, " +
+        		" FOUNDRY_WIP_UUID, VENDOR_CODE, VENDOR, VENDOR_SITE_NUM, PROCESS, " +
         		" CISTA_PO, VENDOR_PROD, CISTA_PART_NUM, CISTA_PROJECT, " +
         		" WAFER_LOT_ID, VENDOR_LOT_ID, WAFER_QTY, LOT_TYPE, " +
         		" TOTAL_LAYER, REMAIN_LAYER, LOT_STATUS, CURR_HOLD_DAY, " +
         		" HOLD_CODE, HOLD_REAS, PRIORITY, WAFER_START, " +
         		" CURR_STAGE, STG_IN_DATE, SOD, RSOD, RPT_DATE, " +
         		" SHIP_TO ) VALUES ( " +
-        		" ?,?,?,?, " +
+        		" ?,?,?,?,?, " +
         		" ?,?,?,?, " +
         		" ?,?,?,?, " +
         		" ?,?,?,?, " +
@@ -73,6 +73,7 @@ public class FoundryWipDao extends BaseDao {
             Object[] values = new Object[] {
             		wipTo.getFoundryWipUuid(),
             		wipTo.getVendorCode(),
+            		wipTo.getVendor(),
             		wipTo.getVendorSiteNum(),
             		wipTo.getProcess(),
             		wipTo.getCistaPo(),
