@@ -399,6 +399,18 @@
              <result name="success">/Report/PurchasePo.jsp</result>
          </action>
          
+         <!-- 3. Foundry Wip -->
+         <action name="FoundryWipPre" class="com.cista.report.action.FoundryWip" method="FoundryWipPre">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success" >/Report/FoundryWip.jsp</result>
+         </action>
+
+         <action name="CreateFoundryWip" class="com.cista.report.action.FoundryWip" method="CreateFoundryWip">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success">/Report/FoundryWip.jsp</result>
+         </action>         
 		<!-- NTLM -->
          <!-- <action name="NtlmTest" class="com.cista.system.ldap.action.NtlmTestAction" method="ntlmTest"> -->
          	 <!-- <interceptor-ref name="LoginInterceptor"></interceptor-ref> -->
