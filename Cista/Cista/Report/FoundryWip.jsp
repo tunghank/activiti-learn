@@ -75,7 +75,7 @@ Ext.onReady(function(){
 	//Form
 	var queryForm = new  Ext.form.Panel({
         id: 'queryForm',
-		title: 'User Information',
+		title: 'Query Criteria',
 		labelAlign: 'left',
 		frame:true,
 		height:380,
@@ -395,29 +395,11 @@ Ext.onReady(function(){
 		queryForm.form.reset();
 	}
 
-	//Verify Mail Address
-	function verifyAddress(obj){
-		// obtain form value into variable
-		var email = obj.value;
-		//alert ('email' + email);
-		// define regex
-		var pattern = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-
-		// test for pattern
-		flag = pattern.test(email);
-
-		if(flag){
-			//alert("Right e-mail format!");
-			return true;
-		}else{
-			//alert("Wrong e-mail format!");
-			return false;
-		}
-	}
 
 	/*************************
-	*User Information Grid
+	* User Information Grid
 	**************************/
+
 
 	var isEdit = false;   
 	//創建Model  
@@ -426,33 +408,36 @@ Ext.onReady(function(){
 			{  
 				extend:'Ext.data.Model',  
 				fields:[  
-						{name:'userId',mapping:'userId'},  
-						{name:'realName',mapping:'realName'},  
-						{name:'company',mapping:'company'},  
-					    {name:'companyType',mapping:'companyType'},  
-						{name:'position',mapping:'position'},
-						{name:'email',mapping:'email'},
-						{name:'phoneNum',mapping:'phoneNum'},
-						{name:'active',mapping:'active'},
-						{name:'createBy',mapping:'createBy'},
-						{name:'cdt',mapping:'cdt',type:'date',dataFormat:'Y-m-d'},
-						{name:'updateBy',mapping:'updateBy'},
-					    {name:'udt',mapping:'udt',type:'date',dataFormat:'Y-m-d'}
+						{name:'vendorCode',mapping:'vendorCode'},  
+						{name:'vendorSiteNum',mapping:'vendorSiteNum'},  
+						{name:'process',mapping:'process'},  
+					    {name:'cistaPo',mapping:'cistaPo'},  
+						{name:'vendorProd',mapping:'vendorProd'},
+						{name:'cistaPartNum',mapping:'cistaPartNum'},
+						{name:'cistaProject',mapping:'cistaProject'},
+						{name:'waferLotId',mapping:'waferLotId'},
+						{name:'vendorLotId',mapping:'vendorLotId'},
+
+						{name:'waferQty',mapping:'waferQty'},  
+						{name:'lotType',mapping:'lotType'},  
+						{name:'totalLayer',mapping:'totalLayer'},  
+					    {name:'remainLayer',mapping:'remainLayer'},  
+						{name:'lotStatus',mapping:'lotStatus'},
+						{name:'currHoldDay',mapping:'currHoldDay'},
+						{name:'holdCode',mapping:'holdCode'},
+						{name:'holdReas',mapping:'holdReas'},
+						{name:'priority',mapping:'priority'},
+
+						{name:'waferStart',mapping:'waferStart',type:'date',dataFormat:'Y-m-d'},
+						{name:'currStage',mapping:'currStage'},
+					    {name:'stgInDate',mapping:'stgInDate',type:'date',dataFormat:'Y-m-d'},
+						{name:'sod',mapping:'sod',type:'date',dataFormat:'Y-m-d'},
+						{name:'rsod',mapping:'rsod',type:'date',dataFormat:'Y-m-d'},
+						{name:'rptDate',mapping:'rptDate',type:'date',dataFormat:'Y-m-d'}
 				]  
 			}  
 	)
 
-	//創建本地數據源  
-	var activeStore = Ext.create(  
-			'Ext.data.Store',  
-			{  
-				fields:['id','name'],  
-				data:[  
-					  {"id":"1","name":"Active"},  
-					  {"id":"0","name":"No Active"}  
-				]  
-			}  
-	);  
 	  
 	//創建數據源  
 	var store = Ext.create(  
@@ -478,50 +463,24 @@ Ext.onReady(function(){
 			}  
 	); 
 
-	//創建多選框  
-	var checkBox = Ext.create('Ext.selection.CheckboxModel');   
-	var cellEditing = Ext.create('Ext.grid.plugin.CellEditing',  
-			{  
-				//表示「雙擊」才可以修改內容（取值只能為「1」或「2」）  
-				clicksToEdit:2  
-			}  
-	  
-	); 
-
 	//創建grid  
 	var grid = Ext.create('Ext.grid.Panel',{  
 		  
-			tbar:[  
-				/*{  
+			tbar:[ 
+				{  
 					xtype:'button',  
-					text:'添加',  
-					handler:'addUser'
-				},*/{  
-					xtype:'button',  
-					text:'修改',  
-					handler:updateUser
-				},{  
-					xtype:'button',  
-					text:'刪除',  
-					handler:deleteUser
-				},{  
-					xtype:'button',  
-					text:'Disable',  
-					handler:disableUser
+					text:'Save To Excel',
+					border: 2,
+					scale: 'small',
+					iconCls: 'save'/*,
+					handler:updateUser*/
 				}
 			],  
 			  
 			store:store,  
-			//添加到grid  
-			selModel: { selType: 'checkboxmodel' ,
-						mode: "single",//multi,simple,single；默认为多选multi
-						},   //選擇框
-			//表示可以選擇行  
-			disableSelection: false,  
 			columnLines: true,   
 			loadMask: true,   
 			//添加修改功能  
-			plugins: [cellEditing] ,  
 			columns:[  
 					 {  
 						id:'gUserId',  
@@ -583,33 +542,6 @@ Ext.onReady(function(){
 						 sortable:false
 					  
 						},{  
-							id:'gActive',  
-							header:'Active',  
-							width:60,  
-							dataIndex:'active',  
-							editor:{  
-								xtype:'combobox',  
-								store:activeStore,  
-								displayField:'name',  
-								valueField:'id',
-								readOnly :true/*,
-								listeners:{       
-									select : function(combo, record,index){   
-										isEdit = true;   
-									}   
-								}*/
-							},
-							renderer: function(value) {
-								var rec = activeStore.getById(value);
-								
-								if (rec)
-								{
-									return rec.get('name');
-								}
-								
-								return '&mdash;';
-							}
-						},{  
 						 id:'gCreateBy',  
 						 header:'Creator',  
 						 width:60,  
@@ -646,61 +578,11 @@ Ext.onReady(function(){
 			],  
 			height:380,   
 			width:700,   
-			title: 'User Information',   
+			title: 'Foundry Wip',   
 			renderTo: 'rptGrid',   
 			 
 			dockedItems:[  
-						 //多選框控件  
-						 /*{  
-							 dock:'top',  
-							 xtype:'toolbar',  
-							 items:[  
-									{  
-										itemId:'Button',  
-										text:'顯示所選',  
-										//tooltip:'Add a new row',  
-										//iconCls:'add',  
-										handler:function(){  
-											//得到選中的行  
-											var record = grid.getSelectionModel().getSelection();   
-											if(record.length==0){  
-												 Ext.MessageBox.show({   
-													title:"提示",   
-													msg:"請先選擇您要操作的行!"   
-												 })  
-												return;  
-											}else{  
-												var ids = "";   
-												for(var i = 0; i < record.length; i++){   
-													ids += record[i].get("id")   
-													if(i<record.length-1){   
-														ids = ids + ",";   
-													}   
-												}  
-												Ext.MessageBox.show({   
-														title:"所選ID列表",   
-														msg:ids   
-													}  
-												)  
-											}  
-										}  
-									}  
-							 ]  
-						 },*/
-						   
-						   
-						 //添加搜索控件  
-						 {  
-							 dock: 'top',   
-							 xtype: 'toolbar',   
-							 items: {   
-								 width: 400,   
-								 fieldLabel: 'Search User ID:',   
-								 labelWidth: 80,   
-								 xtype: 'searchfield',   
-								 store: store   
-							}  
-						 },{   
+						{   
 							 dock: 'bottom',   
 							 xtype: 'pagingtoolbar',   
 							 store: store,   
@@ -712,7 +594,7 @@ Ext.onReady(function(){
 			  
 		}  
 	)  
-	store.loadPage(1);
+	//store.loadPage(1);
 
 	//Grid Function
 	function updateUser(){
@@ -752,100 +634,6 @@ Ext.onReady(function(){
 	}//End updateUser()
 
 
-	function deleteUser(){
-
-		//得到選中的行
-		var record = grid.getSelectionModel().getSelection();
-		if(record.length==0){  
-			 Ext.MessageBox.show({   
-				title:"提示",   
-				msg:"請先選擇您要'刪除'的行!"   
-			 })  
-			return;  
-		}else{  
-			var ids = "";   
-			for(var i = 0; i < record.length; i++){   
-				ids += record[i].get("userId")   
-				if(i<record.length-1){   
-					ids = ids + ",";   
-				}   
-			}  
-			//AJAX Call Delete Function
-			//Grid load data Ajax
-			Ext.Ajax.timeout = 120000; // 120 seconds
-			Ext.Ajax.request({  //ajax request test  
-					url : '<%=contextPath%>/AjaxUserDelete.action',  
-					params : {  
-						query: ids,
-						start:'0',
-						limit:'10'
-					},
-					method : 'POST',
-					scope:this,
-					success : function(response, options) {
-						//parse Json data
-						var freeback = Ext.JSON.decode(response.responseText);
-						
-						//Load Data in store
-						grid.getStore().removeAll();
-						grid.getStore().reload(freeback['root']);
-						grid.getView().refresh();
-
-					},  
-					failure : function(response, options) {  
-						Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
-					}  
-			});
-		}
-		
-	}// End deleteUser()
-
-	function disableUser(){
-
-				//得到選中的行
-		var record = grid.getSelectionModel().getSelection();
-		if(record.length==0){  
-			 Ext.MessageBox.show({   
-				title:"提示",   
-				msg:"請先選擇您要'刪除'的行!"   
-			 })  
-			return;  
-		}else{  
-			var ids = "";   
-			for(var i = 0; i < record.length; i++){   
-				ids += record[i].get("userId")   
-				if(i<record.length-1){   
-					ids = ids + ",";   
-				}   
-			}  
-			//AJAX Call Delete Function
-			//Grid load data Ajax
-			Ext.Ajax.timeout = 120000; // 120 seconds
-			Ext.Ajax.request({  //ajax request test  
-					url : '<%=contextPath%>/AjaxUserDisable.action',  
-					params : {  
-						query: ids,
-						start:'0',
-						limit:'10'
-					},
-					method : 'POST',
-					scope:this,
-					success : function(response, options) {
-						//parse Json data
-						var freeback = Ext.JSON.decode(response.responseText);
-						
-						//Load Data in store
-						grid.getStore().removeAll();
-						grid.getStore().reload(freeback['root']);
-						grid.getView().refresh();
-
-					},  
-					failure : function(response, options) {  
-						Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
-					}  
-			});
-		}
-	}// End deleteUser()
 });
 
 
