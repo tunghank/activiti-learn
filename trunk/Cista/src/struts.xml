@@ -406,7 +406,7 @@
              <result name="success" >/Report/FoundryWip.jsp</result>
          </action>
 
-         <action name="CreateFoundryWip" class="com.cista.report.action.FoundryWip" method="CreateFoundryWip">
+         <action name="QueryFoundryWip" class="com.cista.report.action.FoundryWip" method="QueryFoundryWip">
          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
              <result name="success">/Report/FoundryWip.jsp</result>

@@ -6,6 +6,7 @@ public class FoundryWipTo {
 	
 	private  String foundryWipUuid;
 	private  String vendorCode;
+	private  String vendor;
 	private  String vendorSiteNum;
 	private  String process;
 	private  String cistaPo;
@@ -250,6 +251,14 @@ public class FoundryWipTo {
 
 	public void setFoundryWipUuid(String foundryWipUuid) {
 		this.foundryWipUuid = foundryWipUuid;
+	}
+
+	public String getVendor() {
+		return vendor;
+	}
+
+	public void setVendor(String vendor) {
+		this.vendor = vendor;
 	}
 	
 	
