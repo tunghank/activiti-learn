@@ -78,8 +78,8 @@ Ext.onReady(function(){
 		title: 'Query Criteria',
 		labelAlign: 'left',
 		frame:true,
-		height:380,
-		width:400,
+		height:200,
+		width:300,
 		renderTo: "queryForm",
 		bodyPadding: 5,
 		autoScroll:true,
@@ -90,8 +90,8 @@ Ext.onReady(function(){
 		bodyStyle:'padding:5 5 5 5',//表單邊距
 		defaults:{//統一設置表單字段默認屬性
 			labelSeparator :'：',//分隔符
-			width : 380,//字段寬度
-			padding : 5,
+			width : 280,//字段寬度
+			padding : 3,
 			allowBlank : false,//是否允許為空
 			labelAlign : 'left',//標籤對齊方式
 			msgTarget :'side',   //在字段的右邊顯示一個提示信息
@@ -115,165 +115,22 @@ Ext.onReady(function(){
 						layout : 'anchor',
 						border: false,
 						items : [
-									{
-										xtype: 'radiogroup',
-										id:'companyTypeGrp',
-										name: 'companyTypeGrp',
-										fieldLabel: 'Role',
-										//arrange Radio Buttons into 2 columns
-										columns: 3,
-										itemId: 'userRole',
-										items: [
-											{
-												// 1
-												xtype: 'radiofield',
-												boxLabel: 'Cista',
-												name: 'companyType',
-												checked: true,
-												inputValue: '<%=CistaUtil.CISTA_ROLE%>'
-											},
-											{
-												// 2
-												xtype: 'radiofield',
-												boxLabel: 'Customer',
-												name: 'companyType',
-												inputValue: '<%=CistaUtil.CUSTOMER_ROLE%>'
-											},
-											{
-												// 3
-												xtype: 'radiofield',
-												boxLabel: 'Vendor',
-												name: 'companyType',
-												inputValue: '<%=CistaUtil.VENDOR_ROLE%>'
-											}
-										],            
-										listeners: {
-											change: function ( radio, newV, oldV, e ) {
-
-												if( newV['companyType'] == "1" ){
-													var company = Ext.getCmp('company');
-													company.allowBlank = true;
-													company.hide()
-
-												}else if (newV['companyType'] == "2"){
-													var company = Ext.getCmp('company');
-													company.allowBlank = false;
-													company.blankText = 'This should not be blank!'
-													company.setFieldLabel("Customer");
-													company.show()
-
-												}
-												else if (newV['companyType'] == "3"){
-													var company = Ext.getCmp('company');
-													company.allowBlank = false;
-													company.blankText = 'This should not be blank!'
-													company.setFieldLabel("Vendor");
-													company.show()
-												}
-											},
-											beforerender:function(me,eOpts){
-													var company = Ext.getCmp('company');
-													company.allowBlank = true;
-													company.hide()
-											}
-										}
-									},						
+					
 									{
 										xtype: "textfield",
-										id:'userId',
-										name: 'userId',
-										fieldLabel : 'User ID',
-										allowBlank : false,
-										blankText: 'This should not be blank!',
-										anchor:'100%'
-									},						
-									{
-										xtype: "textfield",
-										id:'email',
-										name: 'email',
-										fieldLabel : 'E-mail',
-										allowBlank : false,
-										blankText: 'This should not be blank!',
-										//驗證電子郵件格式的正則表達式
-										regex : /^([\w]+)(.[\w]+)*@([\w-]+\.){1,5}([A-Za-z]){2,4}$/,
-										vtype: 'email',
-										regexText:'E-mail格式錯誤',//驗證錯誤之後的提示信息,
-										anchor:'100%'
-									},						
-									{
-										xtype: "textfield",
-										id:'realName',
-										name: 'realName',
-										fieldLabel : 'Real Name',
-										allowBlank : false,
-										blankText: 'This should not be blank!',
-										anchor:'80%'
-									},						
-									{
-										xtype: "textfield",
-										id:'company',
-										name: 'company',
-										fieldLabel : 'Vendor',
-										allowBlank : true
-									},						
-									{
-										xtype: "textfield",
-										id:'password',
-										name: 'password',
-										fieldLabel : 'Password',
-										allowBlank : false,
-										inputType: 'password',
-										blankText: 'This should not be blank!'
-									},						
-									{
-										xtype: "textfield",
-										id:'confirmPassword',
-										name: 'confirmPassword',
-										fieldLabel : 'Confirm Password',
-										allowBlank : false,
-										inputType: 'password',
-										blankText: 'This should not be blank!'
-									},						
-									{
-										xtype: "textfield",
-										id:'phoneNum',
-										name: 'phoneNum',
-										fieldLabel : 'Phone Number',
-										allowBlank : true
-									},						
-									{
-										xtype: "textfield",
-										id:'department',
-										name: 'department',
-										fieldLabel : 'Department',
-										allowBlank : true
-									},						
-									{
-										xtype: "combobox",
-										id:'position',
-										name: 'position',
-										fieldLabel : 'Position',
+										id:'lot',
+										name: 'lot',
+										fieldLabel : 'Lot',
 										allowBlank : true,
-										store: position,
-										queryMode: 'local',
-										displayField: 'name',
-										valueField: 'val',
-										anchor:'60%'
-									},						
-									{
-										xtype: "checkbox",
-										id:'active',
-										name: 'active',
-										fieldLabel : 'Active'
-									},						
+										anchor:'90%'
+									},				
 									{
 										xtype: "textfield",
-										id:'editStatus',
-										name: 'editStatus',
-										fieldLabel : 'editStatus',
+										id:'cistaProject',
+										name: 'cistaProject',
+										fieldLabel : 'Cista Project',
 										allowBlank : true,
-										value :0,
-										hidden:true
+										anchor:'90%'
 									}
 
 								]
@@ -283,44 +140,7 @@ Ext.onReady(function(){
     });
 
 	function submit(){//提交表單
-		//Check Form Data
-		//1.0 List Form Items
-		var queryFormItems = queryForm.items;
-		var i = 0;
-		//1.1 Check Must have value
-		for(i = 0; i < queryFormItems.getAt(0).items.length; i++){
 
-
-			if( queryFormItems.getAt(0).items.getAt(i).xtype == "textfield" &&
-				queryFormItems.getAt(0).items.getAt(i).allowBlank == false && 
-				( typeof(queryFormItems.getAt(0).items.getAt(i).value) == 'undefined' 
-					|| queryFormItems.getAt(0).items.getAt(i).value == null
-				    || queryFormItems.getAt(0).items.getAt(i).value == "" )
-			   ){
-
-				Ext.MessageBox.alert('Message', 'Message : '+ "'" + queryFormItems.getAt(0).items.getAt(i).fieldLabel + "'" + " Can't be blank" );
-				return;
-				//alert(queryFormItems.getAt(0).items.getAt(i).fieldLabel + " " + queryFormItems.getAt(0).items.getAt(i).value  + " " + queryFormItems.getAt(0).items.getAt(i).xtype);
-			}
-			
-		}
-		//1.2 CHECK MAIL FORMAT
-		var email = Ext.getCmp('email');
-		if( !verifyAddress(email) ){
-			Ext.MessageBox.alert('Message', 'Message : '+ "'" + email.fieldLabel + "'" + " Wrong e-mail format!" );
-			return;
-		}
-		//1.3 CHECK Password
-		var password = Ext.getCmp('password');
-		var confirmPassword = Ext.getCmp('confirmPassword');
-
-		if( password.value.length < 6 ){
-			Ext.MessageBox.alert('Message', 'Message : '+ "'" + password.fieldLabel + "' length must >= 6 " );
-			return;
-		}else if (password.value != confirmPassword.value){
-			Ext.MessageBox.alert('Message', 'Message : '+ "'" + password.fieldLabel + "' must be same '" + confirmPassword.fieldLabel + "'" );
-			return;
-		}
 		
 	
 		//Submit & Reset Button Disable
@@ -331,64 +151,32 @@ Ext.onReady(function(){
 
 		Ext.Ajax.timeout = 120000; // 120 seconds
 		Ext.Ajax.request({  //ajax request test  
-                    url : '<%=contextPath%>/UserSave.action',  
-                    params : {  
-                        data: Ext.encode(queryForm.getValues())
-                    },
-                    method : 'POST',
-					scope:this,
-                    success : function(response, options) {
-						//parse Json data
-						var freeback = Ext.JSON.decode(response.responseText);
-						var message =  freeback.ajaxMessage;
-						var status  =  freeback.ajaxStatus;
-						queryFormSubmit.enable();
-						if( status == '<%=CistaUtil.AJAX_RSEPONSE_ERROR%>' ){//ERROR
-							Ext.MessageBox.alert('Success', 'ERROR : '+ message );
-						}else{//FINISH
-							Ext.MessageBox.alert('Success', 'FINISH : '+ message );
-							
-							//alert(queryForm.getForm().findField('userId').getValue());
-							//Grid load data Ajax
-							Ext.Ajax.request({  //ajax request test  
-									url : '<%=contextPath%>/AjaxUserSearch.action',  
-									params : {  
-										query: queryForm.getForm().findField('userId').getValue(),
-										start:'0',
-										limit:'10'
-									},
-									method : 'POST',
-									scope:this,
-									success : function(response, options) {
-										//parse Json data
-										var freeback = Ext.JSON.decode(response.responseText);
-										
-										//Load Data in store
-										grid.getStore().removeAll();
-										grid.getStore().loadData(freeback['root']);
-						
+				url : '<%=contextPath%>/QueryFoundryWip.action',  
+				params : {  
+					lot: queryForm.getForm().findField('lot').getValue(),
+					cistaProject: queryForm.getForm().findField('cistaProject').getValue(),
+					start:'0',
+					limit:'10'
+				},
+				method : 'POST',
+				scope:this,
+				success : function(response, options) {
+					//parse Json data
+					var freeback = Ext.JSON.decode(response.responseText);
+					
+					//Load Data in store
+					grid.getStore().removeAll();
+					grid.getStore().loadData(freeback['root'], true);
+					//grid.getStore().loadPage(1);
 
-									},  
-									failure : function(response, options) {  
-										Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
-									}  
-								});
-							
-							 queryForm.form.reset();
-							//Set Edit Status
-							//queryForm.getForm().findField('editStatus').setValue('0');
-							//User ID 設定為唯讀
-							queryForm.getForm().findField('userId').setReadOnly (false); 
-							//queryForm.getForm().findField('userId').setFieldStyle('color:#000000;background:#FFFFFF;');
-							queryForm.getForm().findField('userId').removeCls('x-item-disabled');
-						}
-						
+				},  
+				failure : function(response, options) {  
+					Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
+				}  
+			});
+		
+		 queryForm.form.reset();
 
-                    },  
-                    failure : function(response, options) {  
-                        Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
-                    }  
-                });
 
 	}
 	function reset(){//重置表單
@@ -404,11 +192,12 @@ Ext.onReady(function(){
 	var isEdit = false;   
 	//創建Model  
 	Ext.define(  
-			'User',  
+			'FoundryWip',  
 			{  
 				extend:'Ext.data.Model',  
 				fields:[  
-						{name:'vendorCode',mapping:'vendorCode'},  
+						{name:'vendorCode',mapping:'vendorCode'},
+						{name:'vendor',mapping:'vendor'},  
 						{name:'vendorSiteNum',mapping:'vendorSiteNum'},  
 						{name:'process',mapping:'process'},  
 					    {name:'cistaPo',mapping:'cistaPo'},  
@@ -443,12 +232,12 @@ Ext.onReady(function(){
 	var store = Ext.create(  
 			'Ext.data.Store',  
 			{  
-				model:'User',  
+				model:'FoundryWip',  
 				//設置分頁大小  
 				pageSize:10,  
 				proxy: {  
 					type: 'ajax',  
-					url : '<%=contextPath%>/AjaxUserSearchLike.action',  
+					url : '<%=contextPath%>/QueryFoundryWip.action',  
 					reader: {  
 						//數據格式為json  
 						type: 'json',  
@@ -457,9 +246,9 @@ Ext.onReady(function(){
 						totalProperty: 'total'  
 					}  
 				},
-				sorters:[{property:"userId",direction:"ASC"}],//按qq倒序
+				sorters:[{property:"cistaProject",direction:"ASC"}],//按qq倒序
 				//autoLoad:{params:{start:0,limit:10}}//自動加載，每次加載一頁
-				autoLoad:true  
+				autoLoad:false  
 			}  
 	); 
 
@@ -482,102 +271,160 @@ Ext.onReady(function(){
 			loadMask: true,   
 			//添加修改功能  
 			columns:[  
-					 {  
-						id:'gUserId',  
-						//表頭  
-						header:'User ID',  
-						width:100,  
-						//內容  
-						dataIndex:'userId',  
-						sortable:true
-					   
-					 },{  
-						 id:'gRealName',  
-						 header:'Name',  
-						 width:100,  
-						 dataIndex:'realName',  
+						{  
+						 id:'gVendor',  
+						 header:'Vendor',  
+						 width:50,  
+						 dataIndex:'vendor',  
 						 sortable:false
 					  
 						},{  
-						 id:'gCompany',  
-						 header:'Company',  
-						 width:80,  
-						 dataIndex:'company',  
+						 id:'gVendorSiteNum',  
+						 header:'Site',  
+						 width:60,  
+						 dataIndex:'vendorSiteNum',  
+						 sortable:false
+					  
+						},{  
+						 id:'gProcess',  
+						 header:'Process',  
+						 width:50,  
+						 dataIndex:'process',  
 						 sortable:false
 					  
 						},{
-						 id:'gDepartment',  
-						 header:'Department',  
+						 id:'gCistaPo',  
+						 header:'PO',  
+						 width:110,  
+						 dataIndex:'cistaPo',  
+						 sortable:false
+					  
+						},{  
+						 id:'gVendorProd',  
+						 header:'Vendor Product',  
+						 width:90,  
+						 dataIndex:'vendorProd',  
+						 sortable:false
+					  
+						},{  
+						 id:'gCistaProject',  
+						 header:'Cista Project',  
 						 width:80,  
-						 dataIndex:'department',  
+						 dataIndex:'cistaProject',  
 						 sortable:false
 					  
 						},{  
-						 id:'gCompanyType',  
-						 header:'Company Type',  
-						 width:100,  
-						 dataIndex:'companyType',  
-						 sortable:false,
-					     hidden:true
-					  
-						},{  
-						 id:'gPosition',  
-						 header:'Position',  
-						 width:100,  
-						 dataIndex:'position',  
+						 id:'gWaferLotId',  
+						 header:'Lot',  
+						 width:80,  
+						 dataIndex:'waferLotId',  
 						 sortable:false
 					  
 						},{  
-						 id:'gEmail',  
-						 header:'Email',  
-						 width:200,  
-						 dataIndex:'email',  
+						 id:'gWaferQty',  
+						 header:'Qty',  
+						 width:40,  
+						 dataIndex:'waferQty',  
 						 sortable:false
 					  
 						},{  
-						 id:'gPhoneNum',  
-						 header:'Phone',  
-						 width:100,  
-						 dataIndex:'phoneNum',  
-						 sortable:false
-					  
-						},{  
-						 id:'gCreateBy',  
-						 header:'Creator',  
+						 id:'gLotType',  
+						 header:'Lot Type',  
 						 width:60,  
-						 dataIndex:'createBy',  
+						 dataIndex:'lotType',  
 						 sortable:false
 					  
 						},{  
-							id:'gCdt',  
-							header:'Create Date',  
-							width:120,  
-							dataIndex:'cdt',  
+						 id:'gTotalLayer',  
+						 header:'Total Layer',  
+						 width:70,  
+						 dataIndex:'totalLayer',  
+						 sortable:false
+					  
+						},{  
+						 id:'gRemainLayer',  
+						 header:'Remain Layer',  
+						 width:80,  
+						 dataIndex:'remainLayer',  
+						 sortable:false
+					  
+						},{  
+						 id:'gLotStatus',  
+						 header:'Lot Status',  
+						 width:65,  
+						 dataIndex:'lotStatus',  
+						 sortable:false
+					  
+						},{  
+						 id:'gCurrStage',  
+						 header:'Curr Stage',  
+						 width:80,  
+						 dataIndex:'currStage',  
+						 sortable:false
+					  
+						},{  
+						 id:'gCurrHoldDay',  
+						 header:'Hold Days',  
+						 width:60,  
+						 dataIndex:'currHoldDay',  
+						 sortable:false
+					  
+						},{  
+						 id:'gCurrHoldDay',  
+						 header:'Hold Days',  
+						 width:60,  
+						 dataIndex:'currHoldDay',  
+						 sortable:false
+					  
+						},{  
+							id:'gWaferStart',  
+							header:'Wafer Start',  
+							width:80,  
+							dataIndex:'waferStart',  
 							//lazyRender: true,					  
 							renderer: function(value){   
-										return value ? Ext.Date.dateFormat(value, 'Y-m-d H:m:s') : '';   
+										return value ? Ext.Date.dateFormat(value, 'Y-m-d') : '';   
 									}
 						},{  
-						 id:'gUpdateBy',  
-						 header:'Update By',  
-						 width:60,  
-						 dataIndex:'updateBy',  
-						 sortable:false
-					  
-						},{  
-							id:'gUdt',  
-							header:'Update Date',  
-							width:120,  
-							dataIndex:'udt',  
-							//lazyRender: true,  
-														  
+							id:'gStgInDate',  
+							header:'Stg In Date',  
+							width:80,  
+							dataIndex:'stgInDate',  
+							//lazyRender: true,					  
 							renderer: function(value){   
-										return value ? Ext.Date.dateFormat(value, 'Y-m-d H:m:s') : '';   
+										return value ? Ext.Date.dateFormat(value, 'Y-m-d') : '';   
 									}
-						}  
+						},{  
+							id:'gSod',  
+							header:'Sod',  
+							width:80,  
+							dataIndex:'sod',  
+							//lazyRender: true,					  
+							renderer: function(value){   
+										return value ? Ext.Date.dateFormat(value, 'Y-m-d') : '';   
+									}
+						},{  
+							id:'gRsod',  
+							header:'Rsod',  
+							width:80,  
+							dataIndex:'rsod',  
+							//lazyRender: true,					  
+							renderer: function(value){   
+										return value ? Ext.Date.dateFormat(value, 'Y-m-d') : '';   
+									}
+						},{  
+							id:'gRptDate',  
+							header:'Report Date',  
+							width:120,  
+							dataIndex:'rptDate',  
+							//lazyRender: true,					  
+							renderer: function(value){   
+										return value ? Ext.Date.dateFormat(value, 'Y-m-d H:00:00') : '';   
+									}
+						}
 			],  
 			height:380,   
-			width:700,   
+			width:1000,   
 			title: 'Foundry Wip',   
 			renderTo: 'rptGrid',   
 			 
@@ -594,7 +441,7 @@ Ext.onReady(function(){
 			  
 		}  
 	)  
-	//store.loadPage(1);
+	store.loadPage(1);
 
 	//Grid Function
 	function updateUser(){
@@ -675,8 +522,8 @@ Ext.onReady(function(){
 
 	/** HTML Layout **/
 	#functionTitle  {position:absolute; visibility:visible; z-index:1; top:5px; left:5px;}
-	#queryForm  {position:absolute; visibility:visible; z-index:2; top:25px; left:5px; }
-	#rptGrid  {position:absolute; visibility:visible; z-index:3; top:53px; left:420px;}
+	#queryForm  {position:absolute; visibility:visible; z-index:2; top:20px; left:5px; }
+	#rptGrid  {position:absolute; visibility:visible; z-index:3; top:253px; left:5px;}
 
 </style>
 
