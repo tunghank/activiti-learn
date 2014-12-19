@@ -42,6 +42,10 @@ public class SMICWipParser extends Thread {
     
 	public SMICWipParser(String fileInUrlLocal , String fileOutUrlLocal, String fileErrorUrlLocal) {
 		
+		logger.debug(fileInUrlLocal);
+		logger.debug(fileOutUrlLocal);
+		logger.debug(fileErrorUrlLocal);
+		
     	File fileInLocal = new File(fileInUrlLocal);
         File fileOutLocal = new File(fileOutUrlLocal);
         File fileErrorLocal = new File(fileErrorUrlLocal);
@@ -63,6 +67,7 @@ public class SMICWipParser extends Thread {
     	
         try {
             
+        	logger.debug("File " + csvFile.getAbsolutePath() + "  " + csvFile.getName() );
             List<FoundryWipTo> wipToList = new ArrayList<FoundryWipTo>();
             FoundryWipDao foundryWipDao = new FoundryWipDao();
             //建立資料流
@@ -248,7 +253,7 @@ public class SMICWipParser extends Thread {
         Methods mod = new Methods();
 
         try {
-       	        	
+       	    logger.debug("fileInUrl " + fileInUrl.getPath());
             List fileList = mod.getFiles(fileInUrl);
             fileList =null!=fileList?fileList:new ArrayList();
 
@@ -262,13 +267,13 @@ public class SMICWipParser extends Thread {
                 	   	logger.info(file_name + " is Parser false");
                 	   	alert.setSubject(SystemContext.getConfig("config.himax.mail.subject") + " - " + file_name + " is Parser false");
                 	   	alert.sendNoFile("SMIC WIP Parser fail:" + excelFile);
-                        //mod.copyFile(excelFile, new File(fileErrorUrl + "\\" + file_name));
-                        //excelFile.delete();
+                        mod.copyFile(excelFile, new File(fileErrorUrl + "\\" + file_name));
+                        excelFile.delete();
                     } else {
 
                     	logger.info(file_name + " is Parser complete");
                         //mod.copyFile(excelFile, new File(fileOutUrl + "\\" + file_name));
-                        //excelFile.delete();
+                        excelFile.delete();
                     }
                 /*} else {
                     logger.info(file_name + " is not Bump's File");

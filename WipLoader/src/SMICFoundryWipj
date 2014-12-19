@@ -23,6 +23,6 @@ cd ${EXE_PATH}/
 echo "$SHELLNAME start on `date`"  >> $LOGPATH/$SHELLNAME.log
 
 
-${JAVA_RUN} -classpath ${CLASSPATH}:${EXE_CLASSPATH} om.cista.wip.loader.SMICWipParser /JOB/java/WIP/SMIC /JOB/java/WIP/SMIC /JOB/java/WIP/SMIC
+${JAVA_RUN} -classpath ${CLASSPATH}:${EXE_CLASSPATH} com.cista.wip.loader.SMICWipParser /JOB/java/WIP/SMIC/REPORT/ /JOB/java/WIP/SMIC/REPORT/ /JOB/java/WIP/SMIC/ERROR/
 
 echo "$SHELLNAME end on `date`"  >> $LOGPATH/$SHELLNAME.log
