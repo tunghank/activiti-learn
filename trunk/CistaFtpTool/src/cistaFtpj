@@ -1,0 +1,28 @@
+#!/bin/sh
+
+PATH=$PATH:/usr/bin
+LOGPATH=/JOB/log
+SHELLNAME=cistaFtpj
+EXE_PATH="/JOB/java/CistaFtpTool"
+
+#### For Java Config ####
+JAVA_HOME=/usr/java/jdk1.5.0_22
+export JAVA_HOME
+PATH=$JAVA_HOME/bin:$PATH
+export PATH
+CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JAVA_HOME/jre/lib/rt.jar
+export CLASSPATH
+MEM_ARGS="-Xms64m -Xmx128m"
+JAVA_EXE="bin/java"
+JAVA_RUN="${JAVA_HOME}/${JAVA_EXE} ${MEM_ARGS} "
+
+EXE_CLASSPATH="./CistaFtpTool.jar:./lib/commons-logging-1.1.1.jar:./lib/commons-net-2.0.jar:./lib/jakarta-oro-2.0.8.jar:./lib/log4j-1.2.15.jar:"
+
+cd ${EXE_PATH}/
+
+echo "$SHELLNAME start on `date`"  >> $LOGPATH/$SHELLNAME.log
+
+
+${JAVA_RUN} -classpath ${CLASSPATH}:${EXE_CLASSPATH} com.cista.ftp.edaFTPGet ftp.smics.com u697c03 8!qRvPw9 /WIP /JOB/java/WIP/SMIC
+
+echo "$SHELLNAME end on `date`"  >> $LOGPATH/$SHELLNAME.log
