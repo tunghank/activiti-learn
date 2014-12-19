@@ -26,8 +26,8 @@ public class JobProcessorCOF extends ImportProcessor {
             }
             
             logger.info("Bump Process start ...");
-            SMICWipParser smicWipParser =  new SMICWipParser();
-            smicWipParser.GetSmicWipFiles();
+            //SMICWipParser smicWipParser =  new SMICWipParser();
+            //smicWipParser.GetSmicWipFiles();
             
             logger.info("Process End ...");
             long endTime = System.currentTimeMillis();

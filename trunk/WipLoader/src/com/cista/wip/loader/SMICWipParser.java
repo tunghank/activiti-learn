@@ -36,11 +36,20 @@ public class SMICWipParser extends Thread {
     PreparedStatement pstmtMT;
     Methods mod = new Methods();
     
-    File fileInUrl = new File("D:\\WIP\\RAW\\");
-    File fileOutUrl = new File("D:\\WIP\\BACKUP\\");
-    File fileErrorUrl = new File("D:\\WIP\\ERROR\\");
+    private File fileInUrl;
+    private File fileOutUrl;
+    private File fileErrorUrl;
     
-	public SMICWipParser() {
+	public SMICWipParser(String fileInUrlLocal , String fileOutUrlLocal, String fileErrorUrlLocal) {
+		
+    	File fileInLocal = new File(fileInUrlLocal);
+        File fileOutLocal = new File(fileOutUrlLocal);
+        File fileErrorLocal = new File(fileErrorUrlLocal);
+    	
+    	this.fileInUrl = fileInLocal;
+    	this.fileOutUrl = fileOutLocal;
+    	this.fileErrorUrl = fileErrorLocal;
+    	
 		// TODO Auto-generated constructor stub
 		alert.setSmtpIP(SystemContext.getConfig("config.himax.mail.ip"));
 		alert.setSenderName(SystemContext.getConfig("config.himax.mail.sender.name"));
@@ -239,7 +248,7 @@ public class SMICWipParser extends Thread {
         Methods mod = new Methods();
 
         try {
-
+       	        	
             List fileList = mod.getFiles(fileInUrl);
             fileList =null!=fileList?fileList:new ArrayList();
 
@@ -289,7 +298,7 @@ public class SMICWipParser extends Thread {
     }
 
     public static void main(String[] args) {
-    	SMICWipParser app = new SMICWipParser();
+    	SMICWipParser app = new SMICWipParser(args[0], args[1], args[2]);
     	app.GetSmicWipFiles();
     }
 
