@@ -15,6 +15,7 @@ import org.apache.struts2.ServletActionContext;
 
 import com.cista.report.dao.FoundryWipDao;
 import com.cista.system.to.ExtJSGridTo;
+import com.cista.report.to.FoundryWipQueryTo;
 import com.cista.report.to.FoundryWipTo;
 import com.cista.system.util.BaseAction;
 import com.cista.system.util.CistaUtil;
@@ -61,8 +62,16 @@ public class FoundryWip extends BaseAction{
 	        int iStart;//分頁。。。每頁開始數據
 	        int iLimit;//分頁。。。每一頁數據
 	        
-	        String start = request.getParameter("start");
-            String limit = request.getParameter("limit");
+			String query = request.getParameter("query");
+			query = null != query ? query : "";
+			logger.debug("query " + query);
+
+			Gson gson = new Gson();
+			FoundryWipQueryTo queryTo = gson.fromJson(query, FoundryWipQueryTo.class);
+			
+	        
+	        String start = queryTo.getStart();
+            String limit = queryTo.getLimit();
             iStart = Integer.parseInt(start);
             iLimit = Integer.parseInt(limit);
             
@@ -70,12 +79,18 @@ public class FoundryWip extends BaseAction{
             logger.debug("limit: " + limit);
 			
             
-			String lot = request.getParameter("lot"); 
+			String lot = queryTo.getLot();
 			lot = null != lot ? lot : "";
 			logger.debug("lot " + lot);
+			lot = lot.replaceAll("\\'", "");
+			lot = lot.trim();
+			logger.debug("lot " + lot);
 			
-			String cistaProject = request.getParameter("cistaProject"); 
+			String cistaProject = queryTo.getCistaProject();
 			cistaProject = null != cistaProject ? cistaProject : "";
+			logger.debug("cistaProject " + cistaProject);
+			cistaProject = cistaProject.replaceAll("\\'", "");
+			cistaProject = cistaProject.trim();
 			logger.debug("cistaProject " + cistaProject);
 			
 			String vendorCode = "10001";
@@ -109,7 +124,6 @@ public class FoundryWip extends BaseAction{
 				extJSGridTo.setTotal(total);
 				extJSGridTo.setRoot(resultList);
 				
-				Gson gson = new Gson();
 				String jsonData = gson.toJson(extJSGridTo);
 				//logger.debug(jsonData);
 				

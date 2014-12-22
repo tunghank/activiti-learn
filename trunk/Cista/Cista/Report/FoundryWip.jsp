@@ -142,21 +142,29 @@ Ext.onReady(function(){
 	function submit(){//提交表單
 
 		
-	
+		grid.getStore().removeAll();
 		//Submit & Reset Button Disable
 		//1.0 List Form Button
 		var queryFormSubmit =Ext.getCmp('queryFormSubmit'); 
-		queryFormSubmit.disable();
+		//queryFormSubmit.disable();
 		
+		var lot = queryForm.getForm().findField('lot').getValue();
+		var cistaProject = queryForm.getForm().findField('cistaProject').getValue();
 
+		var query = 
+		{
+            "query": {
+                "start":'0',
+                "limit":'10',
+                "project":cistaProject,
+                "lot":lot
+            }
+        };   
 		Ext.Ajax.timeout = 120000; // 120 seconds
 		Ext.Ajax.request({  //ajax request test  
 				url : '<%=contextPath%>/QueryFoundryWip.action',  
-				params : {  
-					lot: queryForm.getForm().findField('lot').getValue(),
-					cistaProject: queryForm.getForm().findField('cistaProject').getValue(),
-					start:'0',
-					limit:'10'
+				params : {
+					query:Ext.JSON.encode(query)
 				},
 				method : 'POST',
 				scope:this,
@@ -167,14 +175,14 @@ Ext.onReady(function(){
 					//Load Data in store
 					grid.getStore().removeAll();
 					grid.getStore().loadData(freeback['root'], true);
-					//grid.getStore().loadPage(1);
+					grid.getStore().loadPage(1, "load");
 
 				},  
 				failure : function(response, options) {  
 					Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
 				}  
 			});
-		
+
 		 queryForm.form.reset();
 
 
@@ -234,7 +242,11 @@ Ext.onReady(function(){
 			{  
 				model:'FoundryWip',  
 				//設置分頁大小  
-				pageSize:10,  
+				pageSize:10,
+				// allow the grid to interact with the paging scroller by buffering
+				//buffered: true,
+				// never purge any data, we prefetch all up front
+				//purgePageCount: 0,
 				proxy: {  
 					type: 'ajax',  
 					url : '<%=contextPath%>/QueryFoundryWip.action',  
@@ -441,7 +453,7 @@ Ext.onReady(function(){
 			  
 		}  
 	)  
-	store.loadPage(1);
+	//store.loadPage(1);
 
 	//Grid Function
 	function updateUser(){
