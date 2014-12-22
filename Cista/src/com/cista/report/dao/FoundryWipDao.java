@@ -38,10 +38,10 @@ public class FoundryWipDao extends BaseDao{
 					sql = sql + " AND A.VENDOR_CODE = '" + vendorCode + "'";
 				}
 				if(lot != null && !lot.equals("") ){
-					sql = sql + " AND A.WAFER_LOT_ID = '" + lot + "'";
+					sql = sql + " AND A.WAFER_LOT_ID Like '%" + lot + "%'";
 				}
 				if(cistaProject != null && !cistaProject.equals("") ){
-					sql = sql + " AND A.CISTA_PROJECT = '" + cistaProject + "'";
+					sql = sql + " AND A.CISTA_PROJECT Like '%" + cistaProject + "%'";
 				}
 				
 				sql = sql + " ORDER BY CISTA_PROJECT, WAFER_LOT_ID" ;
