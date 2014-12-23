@@ -7,7 +7,9 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
@@ -69,7 +71,16 @@ public class FoundryWip extends BaseAction{
 			Gson gson = new Gson();
 			FoundryWipQueryTo queryTo = gson.fromJson(query, FoundryWipQueryTo.class);
 			
-	        
+			logger.debug("queryTo " + queryTo.toString());
+	        		
+			String[] mcArray = gson.fromJson(query, String[].class);
+			
+			logger.debug("mcArray Size " + mcArray.length );
+
+			logger.debug("query " + mcArray.toString());
+
+			
+			
 	        String start = queryTo.getStart();
             String limit = queryTo.getLimit();
             iStart = Integer.parseInt(start);
