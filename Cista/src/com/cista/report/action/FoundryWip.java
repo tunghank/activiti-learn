@@ -22,8 +22,11 @@ import com.cista.report.to.FoundryWipTo;
 import com.cista.system.util.BaseAction;
 import com.cista.system.util.CistaUtil;
 import com.google.gson.Gson;
-
-
+import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 //JExcel
 import jxl.Workbook;
 import jxl.biff.DisplayFormat;
@@ -68,18 +71,18 @@ public class FoundryWip extends BaseAction{
 			query = null != query ? query : "";
 			logger.debug("query " + query);
 
-			Gson gson = new Gson();
-			FoundryWipQueryTo queryTo = gson.fromJson(query, FoundryWipQueryTo.class);
-			
-			logger.debug("queryTo " + queryTo.toString());
-	        		
-			String[] mcArray = gson.fromJson(query, String[].class);
-			
-			logger.debug("mcArray Size " + mcArray.length );
+			Gson gson = new Gson();		
 
-			logger.debug("query " + mcArray.toString());
-
+	        // 創建一個JsonParser  
+	        JsonParser parser = new JsonParser();  
+	        JsonElement jsonEl = parser.parse(query);            
+	        JsonObject jsonObj = null;  
+	        jsonObj = jsonEl.getAsJsonObject();//轉換成Json對象
+	        
+	        JsonElement queryEl =jsonObj.get("query");//query 節點
 			
+			FoundryWipQueryTo queryTo = gson.fromJson(queryEl.toString(), FoundryWipQueryTo.class);
+			logger.debug("queryTo " + queryTo.toString());		
 			
 	        String start = queryTo.getStart();
             String limit = queryTo.getLimit();
