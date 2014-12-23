@@ -153,11 +153,11 @@ Ext.onReady(function(){
 
 		var query = 
 		{
-            "query": {
-                "start":'0',
-                "limit":'10',
-                "project":cistaProject,
-                "lot":lot
+            query: {
+                start:'0',
+                limit:'10',
+                cistaProject:cistaProject,
+                lot:lot
             }
         };   
 		Ext.Ajax.timeout = 120000; // 120 seconds
