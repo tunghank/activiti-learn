@@ -50,6 +50,7 @@ Ext.require(
            
 );
 
+
 Ext.onReady(function(){
     Ext.QuickTips.init();
 
@@ -151,7 +152,7 @@ Ext.onReady(function(){
 		var lot = queryForm.getForm().findField('lot').getValue();
 		var cistaProject = queryForm.getForm().findField('cistaProject').getValue();
 
-		var query = 
+		var queryS = 
 		{
             query: {
                 start:'0',
@@ -159,12 +160,15 @@ Ext.onReady(function(){
                 cistaProject:cistaProject,
                 lot:lot
             }
-        };   
+        };
+
+		alert("queryS " + queryS.query.start );
+
 		Ext.Ajax.timeout = 120000; // 120 seconds
 		Ext.Ajax.request({  //ajax request test  
 				url : '<%=contextPath%>/QueryFoundryWip.action',  
 				params : {
-					query:Ext.JSON.encode(query)
+					query:Ext.JSON.encode(queryS)
 				},
 				method : 'POST',
 				scope:this,
@@ -174,9 +178,27 @@ Ext.onReady(function(){
 					
 					//Load Data in store
 					grid.getStore().removeAll();
+					//grid.getStore().pageSize = 10;
+					//grid.getStore().load({params:{start:0,limit:10}})
+					//grid.getStore().loadMask.hide();
 					grid.getStore().loadData(freeback['root'], true);
-					grid.getStore().loadPage(1, "load");
-
+					alert(freeback['total']);
+					alert(grid.getStore().count());
+			
+					//grid.getStore().currentPage = 1;
+					//grid.show();
+					//grid.getStore().loadPage(1, "load");
+					
+					grid.getStore().totalCount = freeback['total'];
+					grid.getDockedComponent("botPagingtoolbar").onLoad();
+					//grid.getDockedComponent("botPagingtoolbar").moveFirst();
+					//grid.getDockedComponent("botPagingtoolbar").doRefresh();
+					/*
+					store.getProxy().extraParams.someParameter1 = 'some value';
+					store.getProxy().extraParams.someParameter2 = 'another value';
+					pagingtb.doRefresh(); // or .moveFirst() if you want the grid to 
+                      // move to the first page after load
+					*/
 				},  
 				failure : function(response, options) {  
 					Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
@@ -185,8 +207,11 @@ Ext.onReady(function(){
 
 		 queryForm.form.reset();
 
-
 	}
+
+
+
+
 	function reset(){//重置表單
 		queryForm.form.reset();
 	}
@@ -247,7 +272,7 @@ Ext.onReady(function(){
 				//buffered: true,
 				// never purge any data, we prefetch all up front
 				//purgePageCount: 0,
-				proxy: {  
+				/*proxy: {  
 					type: 'ajax',  
 					url : '<%=contextPath%>/QueryFoundryWip.action',  
 					reader: {  
@@ -257,7 +282,7 @@ Ext.onReady(function(){
 						//獲取數據總數  
 						totalProperty: 'total'  
 					}  
-				},
+				},*/
 				sorters:[{property:"cistaProject",direction:"ASC"}],//按qq倒序
 				//autoLoad:{params:{start:0,limit:10}}//自動加載，每次加載一頁
 				autoLoad:false  
@@ -307,7 +332,7 @@ Ext.onReady(function(){
 						},{
 						 id:'gCistaPo',  
 						 header:'PO',  
-						 width:110,  
+						 width:130,  
 						 dataIndex:'cistaPo',  
 						 sortable:false
 					  
@@ -438,23 +463,70 @@ Ext.onReady(function(){
 			height:380,   
 			width:1000,   
 			title: 'Foundry Wip',   
-			renderTo: 'rptGrid',   
-			 
+			renderTo: 'rptGrid',
+	
 			dockedItems:[  
 						{   
-							 dock: 'bottom',   
-							 xtype: 'pagingtoolbar',   
+							 xtype: 'pagingtoolbar',
+							 dock: 'bottom',
+							 itemId: 'botPagingtoolbar',
+							 pageSize: 10,
 							 store: store,   
 							 displayInfo: true,   
 							 displayMsg: '顯示 {0} - {1} 條，共計 {2} 條',   
-							 emptyMsg: '沒有數據'   
+							 emptyMsg: 'No Data',
+							 moveNext : function () {
+								var me = this,
+									total = me.getPageData().pageCount,
+									next = me.store.currentPage + 1;
+									alert("next " + next + " total " + total);
+									var query = 
+									{
+										query: {
+											start:( me.store.currentPage * 10 ),
+											limit:'10',
+											cistaProject:'S0101',
+											lot:''
+										}
+									};
+									me.store.getProxy().url = '<%=contextPath%>/QueryFoundryWip.action';
+									me.store.getProxy().extraParams.query = Ext.JSON.encode(query);
+
+									
+								if (next <= total) {
+									if (me.fireEvent('beforechange', me, next) !== false) {
+										me.store.nextPage();
+									}
+								}
+
+							 },
+							 listeners: {
+
+									/*beforechange: function() {
+										//You can change "val1" to a function 
+										//call for a more dynamic value update
+										alert("next " + store.currentPage );
+										var query = 
+										{
+											query: {
+												start:next,
+												limit:'10',
+												cistaProject:'S0101',
+												lot:''
+											}
+										};
+										store.getProxy().extraParams.query = Ext.JSON.encode(query);
+										//grid.getStore().setBaseParam( 'cistaProject', "S0101"); 
+										//grid.getStore().setBaseParam( 'lot', "DP" );
+									}*/
+
+							 }
 						}
 			]  
 			  
 		}  
 	)  
 	//store.loadPage(1);
-
 	//Grid Function
 	function updateUser(){
 		//得到選中的行
@@ -492,9 +564,69 @@ Ext.onReady(function(){
  
 	}//End updateUser()
 
-
 });
 
+/*Ext.define('Override.toolbar.Paging', {
+    override : 'Ext.toolbar.Paging',
+
+    moveNext : function(){
+        var me = this,
+            total = me.getPageData().pageCount,
+            next = me.store.currentPage + 1;
+			alert("next " + next + " total " + total);
+			var query = 
+			{
+				query: {
+					start:( me.store.currentPage * 10 ),
+					limit:'10',
+					cistaProject:'S0101',
+					lot:''
+				}
+			};
+			me.store.getProxy().extraParams.query = Ext.JSON.encode(query);
+
+			
+        if (next <= total) {
+            if (me.fireEvent('beforechange', me, next) !== false) {
+                me.store.nextPage();
+            }
+        }
+
+    },
+    movePrevious : function(){
+		
+        var me = this,
+            total = me.getPageData().pageCount,
+            next = me.store.currentPage - 1;
+			alert("next " + next + " total " + total);
+			var query = 
+			{
+				query: {
+					start:( me.store.currentPage * 10 ),
+					limit:'10',
+					cistaProject:'S0101',
+					lot:''
+				}
+			};
+			me.store.getProxy().extraParams.query = Ext.JSON.encode(query);
+
+			
+        if (next <= total) {
+            if (me.fireEvent('beforechange', me, next) !== false) {
+                me.store.previousPage();
+            }
+        }
+
+    },
+    moveLast : function(){
+        var me = this,
+            last = me.getPageData().pageCount;
+
+        if (me.fireEvent('beforechange', me, last) !== false) {
+            me.store.loadPage(last);
+        }
+    }
+});*/
 
 </script>
 <style type="text/css">
