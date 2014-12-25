@@ -109,20 +109,20 @@ public class FoundryWip extends BaseAction{
 			
 			String vendorCode = "10001";
 			
-			FoundryWipDao foundryWipDao = new FoundryWipDao();		
-	
+			FoundryWipDao foundryWipDao = new FoundryWipDao();
 			List<FoundryWipTo> wipList = foundryWipDao.getFountryWip(vendorCode, lot, cistaProject);
 			
 			
 			//logger.debug("userList Size " + userList.size());
+			
 			//分頁
 			if( wipList!= null){
 				total=wipList.size();
 				logger.debug("total " + total);
 				
 				int end=iStart+iLimit;
-				if(end>total){//不能總數
-					end=total;
+				if(end > total){//不能總數
+					end = total;
 				}		
 				
 				List<FoundryWipTo> resultList = new ArrayList<FoundryWipTo>();
