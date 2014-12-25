@@ -152,7 +152,7 @@ Ext.onReady(function(){
 		var lot = queryForm.getForm().findField('lot').getValue();
 		var cistaProject = queryForm.getForm().findField('cistaProject').getValue();
 
-		var queryS = 
+		var query = 
 		{
             query: {
                 start:'0',
@@ -162,13 +162,13 @@ Ext.onReady(function(){
             }
         };
 
-		alert("queryS " + queryS.query.start );
+		//alert("queryS " + queryS.query.start );
 
 		Ext.Ajax.timeout = 120000; // 120 seconds
 		Ext.Ajax.request({  //ajax request test  
 				url : '<%=contextPath%>/QueryFoundryWip.action',  
 				params : {
-					query:Ext.JSON.encode(queryS)
+					query:Ext.JSON.encode(query)
 				},
 				method : 'POST',
 				scope:this,
@@ -182,14 +182,22 @@ Ext.onReady(function(){
 					//grid.getStore().load({params:{start:0,limit:10}})
 					//grid.getStore().loadMask.hide();
 					grid.getStore().loadData(freeback['root'], true);
-					alert(freeback['total']);
+					//alert(freeback['total']);
 					alert(grid.getStore().count());
 			
 					//grid.getStore().currentPage = 1;
 					//grid.show();
 					//grid.getStore().loadPage(1, "load");
-					
+					/*grid.getStore().load({
+						params: {
+							page: 1,
+							limit: 10
+						}
+					});*/
+
+
 					grid.getStore().totalCount = freeback['total'];
+					grid.getStore().currentPage = 1;
 					grid.getDockedComponent("botPagingtoolbar").onLoad();
 					//grid.getDockedComponent("botPagingtoolbar").moveFirst();
 					//grid.getDockedComponent("botPagingtoolbar").doRefresh();
@@ -272,7 +280,7 @@ Ext.onReady(function(){
 				//buffered: true,
 				// never purge any data, we prefetch all up front
 				//purgePageCount: 0,
-				/*proxy: {  
+				proxy: {  
 					type: 'ajax',  
 					url : '<%=contextPath%>/QueryFoundryWip.action',  
 					reader: {  
@@ -282,7 +290,7 @@ Ext.onReady(function(){
 						//獲取數據總數  
 						totalProperty: 'total'  
 					}  
-				},*/
+				},
 				sorters:[{property:"cistaProject",direction:"ASC"}],//按qq倒序
 				//autoLoad:{params:{start:0,limit:10}}//自動加載，每次加載一頁
 				autoLoad:false  
@@ -489,7 +497,6 @@ Ext.onReady(function(){
 											lot:''
 										}
 									};
-									me.store.getProxy().url = '<%=contextPath%>/QueryFoundryWip.action';
 									me.store.getProxy().extraParams.query = Ext.JSON.encode(query);
 
 									
