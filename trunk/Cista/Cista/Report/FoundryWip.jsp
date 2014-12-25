@@ -32,7 +32,9 @@
 <meta http-equiv="expires" content="0">  
 
 <script type="text/javascript">
-
+var cistaProject;
+var lot;
+var limit=10;
 //下面兩行代碼必須要，不然會報404錯誤  
 Ext.Loader.setConfig({enabled:true});  
 //我的searchGrid和ext4在同一目錄下，所以引用時要到根目錄去"../"  
@@ -149,14 +151,14 @@ Ext.onReady(function(){
 		var queryFormSubmit =Ext.getCmp('queryFormSubmit'); 
 		//queryFormSubmit.disable();
 		
-		var lot = queryForm.getForm().findField('lot').getValue();
-		var cistaProject = queryForm.getForm().findField('cistaProject').getValue();
+		lot = queryForm.getForm().findField('lot').getValue();
+		cistaProject = queryForm.getForm().findField('cistaProject').getValue();
 
 		var query = 
 		{
             query: {
                 start:'0',
-                limit:'10',
+                limit:limit,
                 cistaProject:cistaProject,
                 lot:lot
             }
@@ -178,35 +180,14 @@ Ext.onReady(function(){
 					
 					//Load Data in store
 					grid.getStore().removeAll();
-					//grid.getStore().pageSize = 10;
-					//grid.getStore().load({params:{start:0,limit:10}})
-					//grid.getStore().loadMask.hide();
 					grid.getStore().loadData(freeback['root'], true);
 					//alert(freeback['total']);
-					alert(grid.getStore().count());
+					//alert(grid.getStore().count());
 			
-					//grid.getStore().currentPage = 1;
-					//grid.show();
-					//grid.getStore().loadPage(1, "load");
-					/*grid.getStore().load({
-						params: {
-							page: 1,
-							limit: 10
-						}
-					});*/
-
-
 					grid.getStore().totalCount = freeback['total'];
 					grid.getStore().currentPage = 1;
 					grid.getDockedComponent("botPagingtoolbar").onLoad();
-					//grid.getDockedComponent("botPagingtoolbar").moveFirst();
-					//grid.getDockedComponent("botPagingtoolbar").doRefresh();
-					/*
-					store.getProxy().extraParams.someParameter1 = 'some value';
-					store.getProxy().extraParams.someParameter2 = 'another value';
-					pagingtb.doRefresh(); // or .moveFirst() if you want the grid to 
-                      // move to the first page after load
-					*/
+
 				},  
 				failure : function(response, options) {  
 					Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
@@ -483,18 +464,43 @@ Ext.onReady(function(){
 							 displayInfo: true,   
 							 displayMsg: '顯示 {0} - {1} 條，共計 {2} 條',   
 							 emptyMsg: 'No Data',
+							 moveFirst : function () {
+								var me = this,
+									total = me.getPageData().pageCount,
+									next = 1;
+
+									var query = 
+									{
+										query: {
+											start:0,
+											limit:limit,
+											cistaProject:cistaProject,
+											lot:lot
+										}
+									};
+									me.store.getProxy().extraParams.query = Ext.JSON.encode(query);
+
+									
+								if (next <= total) {
+									if (me.fireEvent('beforechange', me, next) !== false) {
+										me.store.currentPage = next;
+										me.store.load();
+									}
+								}
+
+							 },
 							 moveNext : function () {
 								var me = this,
 									total = me.getPageData().pageCount,
 									next = me.store.currentPage + 1;
-									alert("next " + next + " total " + total);
+
 									var query = 
 									{
 										query: {
 											start:( me.store.currentPage * 10 ),
-											limit:'10',
-											cistaProject:'S0101',
-											lot:''
+											limit:limit,
+											cistaProject:cistaProject,
+											lot:lot
 										}
 									};
 									me.store.getProxy().extraParams.query = Ext.JSON.encode(query);
@@ -507,25 +513,111 @@ Ext.onReady(function(){
 								}
 
 							 },
-							 listeners: {
+							 movePrevious : function () {
+								var me = this,
+									total = me.getPageData().pageCount,
+									next = me.store.currentPage - 1;
 
-									/*beforechange: function() {
-										//You can change "val1" to a function 
-										//call for a more dynamic value update
-										alert("next " + store.currentPage );
-										var query = 
-										{
-											query: {
-												start:next,
-												limit:'10',
-												cistaProject:'S0101',
-												lot:''
-											}
-										};
-										store.getProxy().extraParams.query = Ext.JSON.encode(query);
-										//grid.getStore().setBaseParam( 'cistaProject', "S0101"); 
-										//grid.getStore().setBaseParam( 'lot', "DP" );
-									}*/
+									var query = 
+									{
+										query: {
+											start:( (next - 1) * 10 ),
+											limit:limit,
+											cistaProject:cistaProject,
+											lot:lot
+										}
+									};
+									me.store.getProxy().extraParams.query = Ext.JSON.encode(query);
+
+									
+								if (next >= 0) {
+									if (me.fireEvent('beforechange', me, next) !== false) {
+										me.store.previousPage();
+									}
+								}
+
+							 },
+							 moveLast : function () {
+								var me = this,
+									total = me.getPageData().pageCount,
+									next = total;
+									var query = 
+									{
+										query: {
+											start:( (total - 1) * 10 ),
+											limit:limit,
+											cistaProject:cistaProject,
+											lot:lot
+										}
+									};
+									me.store.getProxy().extraParams.query = Ext.JSON.encode(query);
+
+									
+								if (next >= 0) {
+									if (me.fireEvent('beforechange', me, next) !== false) {
+										me.store.currentPage = next;
+										me.store.load();
+									}
+								}
+
+							 },
+							 doRefresh : function () {
+								var me = this,
+									total = me.getPageData().pageCount,
+									next = 1;
+									var query = 
+									{
+										query: {
+											start:0,
+											limit:limit,
+											cistaProject:cistaProject,
+											lot:lot
+										}
+									};
+									me.store.getProxy().extraParams.query = Ext.JSON.encode(query);
+
+									
+								if (next >= 0) {
+									if (me.fireEvent('beforechange', me, next) !== false) {
+										me.store.currentPage = next;
+										me.store.load();
+									}
+								}
+
+							 },
+							onPagingKeyDown: function(field, e) {
+								 var me = this,
+									total = me.getPageData().pageCount,
+									next = me.store.currentPage;
+								alert('you have onPagingKeyDown ' + me.store.currentPage);
+							}, 
+							 /*onPagingKeyDown : function(){
+								alert('hello');
+								var me = this,
+									total = me.getPageData().pageCount,
+									next = me.store.currentPage;
+									alert('me.store.currentPage ' + me.store.currentPage);
+									alert('me.store.afterPageText ' + me.store.afterPageText);
+									var query = 
+									{
+										query: {
+											start:( (next-1) * 10 ),
+											limit:limit,
+											cistaProject:cistaProject,
+											lot:lot
+										}
+									};
+									me.store.getProxy().extraParams.query = Ext.JSON.encode(query);
+
+									
+								if (next <= total && next >= 0 ) {
+									//if (me.fireEvent('beforechange', me, next) !== false) {
+										me.store.currentPage = next;
+										me.store.load();
+									//}
+								}
+							 },*/
+							 listeners: {
 
 							 }
 						}
@@ -545,18 +637,7 @@ Ext.onReady(function(){
 			 })  
 			return;  
 		}else{  
-			/*var ids = "";   
-			for(var i = 0; i < record.length; i++){   
-				ids += record[i].get("userId")   
-				if(i<record.length-1){   
-					ids = ids + ",";   
-				}   
-			}  
-			Ext.MessageBox.show({   
-					title:"所選ID列表",   
-					msg:ids   
-				}  
-			)*/
+
 		} 
 
 
@@ -573,67 +654,6 @@ Ext.onReady(function(){
 
 });
 
-/*Ext.define('Override.toolbar.Paging', {
-    override : 'Ext.toolbar.Paging',
-
-    moveNext : function(){
-        var me = this,
-            total = me.getPageData().pageCount,
-            next = me.store.currentPage + 1;
-			alert("next " + next + " total " + total);
-			var query = 
-			{
-				query: {
-					start:( me.store.currentPage * 10 ),
-					limit:'10',
-					cistaProject:'S0101',
-					lot:''
-				}
-			};
-			me.store.getProxy().extraParams.query = Ext.JSON.encode(query);
-
-			
-        if (next <= total) {
-            if (me.fireEvent('beforechange', me, next) !== false) {
-                me.store.nextPage();
-            }
-        }
-
-    },
-    movePrevious : function(){
-		
-        var me = this,
-            total = me.getPageData().pageCount,
-            next = me.store.currentPage - 1;
-			alert("next " + next + " total " + total);
-			var query = 
-			{
-				query: {
-					start:( me.store.currentPage * 10 ),
-					limit:'10',
-					cistaProject:'S0101',
-					lot:''
-				}
-			};
-			me.store.getProxy().extraParams.query = Ext.JSON.encode(query);
-
-			
-        if (next <= total) {
-            if (me.fireEvent('beforechange', me, next) !== false) {
-                me.store.previousPage();
-            }
-        }
-
-    },
-    moveLast : function(){
-        var me = this,
-            last = me.getPageData().pageCount;
-
-        if (me.fireEvent('beforechange', me, last) !== false) {
-            me.store.loadPage(last);
-        }
-    }
-});*/
 
 </script>
 <style type="text/css">
