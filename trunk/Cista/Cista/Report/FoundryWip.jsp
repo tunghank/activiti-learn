@@ -585,38 +585,62 @@ Ext.onReady(function(){
 								}
 
 							 },
-							onPagingKeyDown: function(field, e) {
-								 var me = this,
-									total = me.getPageData().pageCount,
-									next = me.store.currentPage;
-								alert('you have onPagingKeyDown ' + me.store.currentPage);
-							}, 
-							 /*onPagingKeyDown : function(){
-								alert('hello');
-								var me = this,
-									total = me.getPageData().pageCount,
-									next = me.store.currentPage;
-									alert('me.store.currentPage ' + me.store.currentPage);
-									alert('me.store.afterPageText ' + me.store.afterPageText);
-									var query = 
-									{
-										query: {
-											start:( (next-1) * 10 ),
-											limit:limit,
-											cistaProject:cistaProject,
-											lot:lot
-										}
-									};
-									me.store.getProxy().extraParams.query = Ext.JSON.encode(query);
-
+							//Hank Modify
+							onPagingKeyDown : function(j, h) {
+								var d = this, b = h.getKey(), c = d.getPageData(), a = h.shiftKey
+										? 10
+										: 1, g;
+								if (b == h.RETURN) {
+									h.stopEvent();
+									g = d.readPageFromInput(c);
+									if (g !== false) {
+										g = Math.min(Math.max(1, g), c.pageCount);
+										if (d.fireEvent("beforechange", d, g) !== false) {
 									
-								if (next <= total && next >= 0 ) {
-									//if (me.fireEvent('beforechange', me, next) !== false) {
-										me.store.currentPage = next;
-										me.store.load();
-									//}
+										//Hank Modify Start
+
+										var total = d.getPageData().pageCount;
+										var query = 
+										{
+											query: {
+												start:( (g - 1) * 10 ),
+												limit:limit,
+												cistaProject:cistaProject,
+												lot:lot
+											}
+										};
+										d.store.getProxy().extraParams.query = Ext.JSON.encode(query);
+										d.store.currentPage = g;
+										d.store.load();
+
+										//Hank Modify End
+										//d.store.loadPage(g)
+
+										}
+									}
+								} else {
+									if (b == h.HOME || b == h.END) {
+										h.stopEvent();
+										g = b == h.HOME ? 1 : c.pageCount;
+										j.setValue(g)
+									} else {
+										if (b == h.UP || b == h.PAGE_UP || b == h.DOWN
+												|| b == h.PAGE_DOWN) {
+											h.stopEvent();
+											g = d.readPageFromInput(c);
+											if (g) {
+												if (b == h.DOWN || b == h.PAGE_DOWN) {
+													a *= -1
+												}
+												g += a;
+												if (g >= 1 && g <= c.pageCount) {
+													j.setValue(g)
+												}
+											}
+										}
+									}
 								}
-							 },*/
+							},
 							 listeners: {
 
 							 }
