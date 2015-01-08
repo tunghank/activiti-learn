@@ -29,8 +29,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
-<meta http-equiv="expires" content="0">  
-
+<meta http-equiv="expires" content="0">
+<script type="text/javascript" src="<%=contextPath%>/js/extjs42/exporterExcel.js"></script>
 <script type="text/javascript">
 var cistaProject;
 var lot;
@@ -38,7 +38,7 @@ var limit=10;
 //下面兩行代碼必須要，不然會報404錯誤  
 Ext.Loader.setConfig({enabled:true});  
 //我的searchGrid和ext4在同一目錄下，所以引用時要到根目錄去"../"  
-Ext.Loader.setPath('Ext.ux','<%=contextPath%>/js/extjs42/examples/ux');  
+Ext.Loader.setPath('Ext.ux','<%=contextPath%>/js/extjs42/examples/ux');
 //預加載  
 Ext.require(  
         [  
@@ -47,7 +47,8 @@ Ext.require(
             'Ext.util.*',  
             'Ext.data.*',  
             //注意引用  
-            'Ext.ux.form.SearchField'  
+            'Ext.ux.form.SearchField',
+			'Ext.form.action.StandardSubmit'
          ]  
            
 );
@@ -60,19 +61,6 @@ Ext.onReady(function(){
         return value ? value.dateFormat('Y/m/d') : '';
     };
 
-	/*
-	* POSITION
-	*/
-    var position = Ext.create('Ext.data.Store', {
-    fields: ['name', 'val'],
-    data : [
-        {"name":"Engineer", "val":"Engineer"},
-        {"name":"Leader", "val":"Leader"},
-        {"name":"Manager", "val":"Manager"},
-		{"name":"VP", "val":"VP"}
-
-		]
-	});
 
 	//User Information
 	//Form
@@ -287,8 +275,11 @@ Ext.onReady(function(){
 					text:'Save To Excel',
 					border: 2,
 					scale: 'small',
-					iconCls: 'save'/*,
-					handler:updateUser*/
+					iconCls: 'save',
+					handler: function(b, e) {
+						downloadExcel()
+						//b.up('grid').downloadExcelXml();
+					}
 				}
 			],  
 			  
@@ -396,13 +387,6 @@ Ext.onReady(function(){
 						 sortable:false
 					  
 						},{  
-						 id:'gCurrHoldDay',  
-						 header:'Hold Days',  
-						 width:60,  
-						 dataIndex:'currHoldDay',  
-						 sortable:false
-					  
-						},{  
 							id:'gWaferStart',  
 							header:'Wafer Start',  
 							width:80,  
@@ -422,7 +406,7 @@ Ext.onReady(function(){
 									}
 						},{  
 							id:'gSod',  
-							header:'Sod',  
+							header:'SOD',  
 							width:80,  
 							dataIndex:'sod',  
 							//lazyRender: true,					  
@@ -431,7 +415,7 @@ Ext.onReady(function(){
 									}
 						},{  
 							id:'gRsod',  
-							header:'Rsod',  
+							header:'RSOD',  
 							width:80,  
 							dataIndex:'rsod',  
 							//lazyRender: true,					  
@@ -649,32 +633,80 @@ Ext.onReady(function(){
 			  
 		}  
 	)  
+
+
+	var tempForm = new  Ext.form.Panel({
+        id: 'tempForm',
+		title: 'tempForm',
+		items: [{
+                    xtype: 'hiddenfield',
+                    name: 'cistaProject'
+                },{
+                    xtype: 'hiddenfield',
+                    name: 'lot'
+                }]
+		
+    });
+
+
+
 	//store.loadPage(1);
 	//Grid Function
-	function updateUser(){
-		//得到選中的行
-		var record = grid.getSelectionModel().getSelection();
-		if(record.length==0){  
-			 Ext.MessageBox.show({   
-				title:"提示",   
-				msg:"請先選擇您要操作的行!"   
-			 })  
-			return;  
-		}else{  
+	function downloadExcel(){
 
-		} 
+		var title = "FoundryWip";
+		var fileName;
+		fileName = title + "-" + Ext.Date.format(new Date(), 'Y-m-d Hi') + '.xls',
+		alert("cistaProject:" + cistaProject + " lot:" + lot);
+		alert("fileName:" + fileName);
 
+		tempForm.getForm().findField('cistaProject').setValue(cistaProject);
+		tempForm.getForm().findField('lot').setValue(lot);
 
-
-		queryForm.loadRecord(record[0]); 		
-		//Set Edit Status
-		queryForm.getForm().findField('editStatus').setValue('1');
-		//User ID 設定為唯讀
-		queryForm.getForm().findField('userId').setReadOnly (true); 
-		//queryForm.getForm().findField('userId').setFieldStyle('color:#0000CC;background:#E1E1E1;');
-		queryForm.getForm().findField('userId').addCls('x-item-disabled');
- 
-	}//End updateUser()
+		tempForm.submit({
+			url: '<%=contextPath%>/FoundryWipExcel.action?filename=' + escape(fileName),
+			//waitMsg: 'Loading...',
+			method: 'POST',
+			standardSubmit: true,
+			success: function (form, action) {
+				Ext.MessageBox.alert('SUCCESS', 'SUCCESS' + action.response.responseText);  
+			},
+			failure: function(form, action) {
+				if (action.result.status == true) {
+					console.log('success!');
+				}
+			}
+		});
+		alert("pppppp");
+		/*var title = "FoundryWip";
+		title = title + "-" + Ext.Date.format(new Date(), 'Y-m-d Hi') + '.xls',
+		alert("cistaProject:" + cistaProject + " lot:" + lot);
+		alert("title:" + title);
+            
+            var form = this.up('uploadForm');
+			alert("form:" + form);
+            if (form) {
+                form.destroy();
+            }
+            form = this.up('window').add({
+                xtype: 'form',
+                itemId: 'uploadForm',
+                hidden: true,
+                standardSubmit: true,
+				url: '<%=contextPath%>/FoundryWipExcel.action?filename=' + escape(title + ".xls"),
+                items: [{
+                    xtype: 'hiddenfield',
+                    name: 'cistaProject',
+                    value: cistaProject
+                },{
+                    xtype: 'hiddenfield',
+                    name: 'lot',
+                    value: lot
+                }]
+            });
+			alert("pppppp");
+            form.getForm().submit();*/
+	}//End downloadExcel()
 
 });
 
