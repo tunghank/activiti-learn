@@ -657,8 +657,6 @@ Ext.onReady(function(){
 		var title = "FoundryWip";
 		var fileName;
 		fileName = title + "-" + Ext.Date.format(new Date(), 'Y-m-d Hi') + '.xls',
-		alert("cistaProject:" + cistaProject + " lot:" + lot);
-		alert("fileName:" + fileName);
 
 		tempForm.getForm().findField('cistaProject').setValue(cistaProject);
 		tempForm.getForm().findField('lot').setValue(lot);
@@ -677,7 +675,6 @@ Ext.onReady(function(){
 				}
 			}
 		});
-		alert("pppppp");
 		/*var title = "FoundryWip";
 		title = title + "-" + Ext.Date.format(new Date(), 'Y-m-d Hi') + '.xls',
 		alert("cistaProject:" + cistaProject + " lot:" + lot);
