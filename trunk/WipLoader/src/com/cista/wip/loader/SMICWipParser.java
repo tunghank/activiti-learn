@@ -151,10 +151,13 @@ public class SMICWipParser extends Thread {
             			//Hold day
             			//Today -  Date stgInDate =  df.parse(tmpStr[6]);
             			Date tDate = Calendar.getInstance().getTime();
-            			Date stgInDate =  df.parse(tmpStr[6]);
-            			long diff = ( tDate.getTime() - stgInDate.getTime() ) / (1000 * 60 * 60 * 24) ;
-            			wipTo.setCurrHoldDay( Double.parseDouble( String.valueOf(diff)  ) );
-            			logger.debug( "Current Hold Day : " + wipTo.getCurrHoldDay() );
+            			if( !tmpStr[6].equals("") ){
+	            			Date stgInDate =  df.parse(tmpStr[6]);
+	            			long diff = ( tDate.getTime() - stgInDate.getTime() ) / (1000 * 60 * 60 * 24) ;
+	            			wipTo.setCurrHoldDay( Double.parseDouble( String.valueOf(diff)  ) );
+	            			logger.debug( "Current Hold Day : " + wipTo.getCurrHoldDay() );
+            			}
+            			
             		}
 
             		wipTo.setHoldCode("");
