@@ -65,6 +65,7 @@ Ext.onReady(function(){
 	/*
 	* Project
 	*/
+
     var project = Ext.create('Ext.data.Store', {
     fields: ['name', 'val'],
     data : [
