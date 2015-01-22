@@ -3,6 +3,7 @@ package com.cista.report.action;
 
 import java.io.File;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,6 +13,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts2.ServletActionContext;
 
+import com.cista.system.to.ExtJSGridTo;
 import com.cista.system.util.BaseAction;
 import com.cista.report.dao.ERPInventoryDao;
 import com.cista.report.dao.FgReceiveBinDao;
@@ -34,6 +36,10 @@ import com.cista.report.to.StandardCostTo;
 import com.cista.report.to.StockHistoryTo;
 import com.cista.report.to.UnitCostTo;
 import com.cista.system.util.CistaUtil;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 //JExcel
 import jxl.Workbook;
@@ -61,6 +67,67 @@ public class InventoryReport extends BaseAction{
 	private String project;
 	private String edate;
 
+	
+	public String GetProjects() throws Exception{
+		
+		try {
+			request= ServletActionContext.getRequest();
+			Gson gson = new Gson();		
+			
+			StandardCostDao standardCostDao = new StandardCostDao();
+			List<StandardCostTo> projectList = standardCostDao.getProductFormStandCost();
+			
+			
+			//logger.debug("userList Size " + userList.size());
+			
+			//分頁
+			if( projectList!= null){
+				int total;//分頁。。。數據總數 
+				total=projectList.size();
+				//logger.debug(resultList.toString());
+				
+				ExtJSGridTo extJSGridTo = new ExtJSGridTo();
+				extJSGridTo.setTotal(total);
+				extJSGridTo.setRoot(projectList);
+				
+				String jsonData = gson.toJson(extJSGridTo);
+				//logger.debug(jsonData);
+				
+				// 1.5 Set AJAX response
+				CistaUtil.ajaxResponseData(response, jsonData);
+			}else{
+				CistaUtil.ajaxResponseData(response, "");
+			}
+
+		} catch (Exception e) {
+			this.addActionMessage("ERROR");
+			e.printStackTrace();
+			logger.error(e.toString());
+			addActionMessage(e.toString());
+          	//AJAX
+          	try{
+  		    	response.setContentType("text/html; charset=UTF-8");
+  				PrintWriter out = response.getWriter();
+  				String returnResult = "ERROR" ;
+
+  				logger.debug(returnResult);
+  				logger.debug("Error");
+  				out.print(returnResult);
+  				out.close();
+          	}catch(Exception ex){
+          		ex.printStackTrace();
+                logger.error(ex.toString());
+                return NONE;
+          	}
+
+		}
+		
+   		return NONE;
+		
+	}
+	
+	
+	
 	public String WeeklyInventoryPre() throws Exception{
 			
 		request= ServletActionContext.getRequest();
@@ -362,6 +429,7 @@ public class InventoryReport extends BaseAction{
         		inventorySheet.addCell(new Number(4, 4+i, foundry, cellFormat));
         		
     			if( inventoryList != null ){
+    				cp=0; cf=0; csp=0; ft=0;
     				logger.debug("inventoryList Size " + inventoryList.size() );
             		logger.debug("inventoryList " + inventoryList.toString());
             		for(int j=0; j<inventoryList.size(); j ++ ){
@@ -465,6 +533,8 @@ public class InventoryReport extends BaseAction{
     			
     			product = standardCostTo.getProduct();
     			project = standardCostTo.getProject();
+    			logger.debug("product " + product);
+    			logger.debug("project " + project);
     			
     			List<InventoryTo> inventoryList = erpInventoryDao.getInventoryByProduct(tMonth, sdate, edate, product);
     			unitCostTo = unitCostDao.getUnitCostByProduct(product);
@@ -589,7 +659,10 @@ public class InventoryReport extends BaseAction{
             			}
             		}
 
+    			}else{
+    				cp=0; cf=0; csp=0; ft=0;
     			}
+
     			
 
     					
@@ -614,7 +687,9 @@ public class InventoryReport extends BaseAction{
     			// 未來加工費
     			//Future Amount 清空0
         		fFoundryCost=0; fCpCost=0 ; fCfCost=0;fCspCost=0;fFtCost=0;fAmountTotal=0 ;
-        		
+        		logger.debug("foundry " +foundry);
+        		logger.debug("unitCostTo.getCp() " +unitCostTo.getCp());
+        		logger.debug("cp " +cp);
     			fCpCost = (foundry+cp)*unitCostTo.getCp();
     			fCfCost = (foundry+cp+cf)*unitCostTo.getCf();
     			fCspCost = (foundry+cp+cf+csp)*unitCostTo.getCsp();
@@ -628,8 +703,13 @@ public class InventoryReport extends BaseAction{
     			tAmountTotal = fAmountTotal + amountTotal;
     			//Expected Yield
     			expectedYield = 0;
-    			expectedYield = productYieldTo.getCspYield() * productYieldTo.getFtYield();
-    			summaryExpectedYield = summaryExpectedYield  + expectedYield;
+    			if(fgCost >0 ){
+	    			expectedYield = productYieldTo.getCspYield() * productYieldTo.getFtYield();
+	    			summaryExpectedYield = summaryExpectedYield  + expectedYield;
+    			}else{
+    				expectedYield=0;
+    				summaryExpectedYield=0;
+    			}
     			//Good Die
     			goodDie = 0;
     			double tmpGoodDie = ( (foundry+cp+cf+csp) * standardCostTo.getGrossDie() * expectedYield ) + 

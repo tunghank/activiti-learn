@@ -385,7 +385,13 @@
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
              <result name="success">/Report/WeeklyInventory.jsp</result>
          </action>
-         
+
+         <action name="GetProjects" class="com.cista.report.action.InventoryReport" method="GetProjects">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success">/Report/WeeklyInventory.jsp</result>
+         </action>
+                  
          <!-- 2. Purchase PO -->
          <action name="PurchasePoPre" class="com.cista.report.action.PurchasePo" method="PurchasePoPre">
          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
