@@ -65,12 +65,41 @@ Ext.onReady(function(){
 	/*
 	* Project
 	*/
-    var project = Ext.create('Ext.data.Store', {
-    fields: ['name', 'val'],
-    data : [
-			{"name":"S0201", "val":"S0201"}
-		]
-	});
+	//創建Model  
+	Ext.define(  
+			'project',  
+			{  
+				extend:'Ext.data.Model',  
+				fields:[  
+						{name:'name',mapping:'project'},
+						{name:'val',mapping:'project'}
+				]  
+			}  
+	)
+
+	  
+	//創建數據源  
+	var project = Ext.create(  
+			'Ext.data.Store',  
+			{  
+				model:'project',  
+				proxy: {  
+					type: 'ajax',  
+					url : '<%=contextPath%>/GetProjects.action',  
+					reader: {  
+						//數據格式為json  
+						type: 'json',  
+						root: 'root',
+						//獲取數據總數  
+						totalProperty: 'total'
+					}  
+				},
+				sorters:[{property:"project",direction:"ASC"}],//按qq倒序
+				autoLoad:false  
+			}  
+	); 
+
+	project.load();
 
 	//User Information
 	//Form
