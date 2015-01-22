@@ -24,7 +24,7 @@
 <html>
 <head>
 
-<TITLE>Assembly Yield Report</TITLE>
+<TITLE>Inventory Report</TITLE>
 <jsp:include page="/common/normalcheck.jsp" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="pragma" content="no-cache">
@@ -318,7 +318,7 @@ Ext.onReady(function(){
 		<div align="left">
 			<table width="100%" border="0" cellspacing="0" cellpadding="0" align="left" class="OrangeLine">
 				<tr>
-					<td class="Title">Assembly Yield Report</td>
+					<td class="Title">Inventory Report</td>
 				</tr>
 			</table>
 		</div>
