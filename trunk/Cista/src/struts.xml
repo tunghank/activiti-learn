@@ -423,6 +423,16 @@
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
              <result name="success">/Report/FoundryWip.jsp</result>
          </action> 
+         
+         <!-- 3. Assembly Yield Wip -->
+         <action name="AssemblyYieldPre" class="com.cista.report.action.AssemblyYield" method="AssemblyYieldPre">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success" >/Report/AssemblyYield.jsp</result>
+         </action>
+
+
+         
 		<!-- NTLM -->
          <!-- <action name="NtlmTest" class="com.cista.system.ldap.action.NtlmTestAction" method="ntlmTest"> -->
          	 <!-- <interceptor-ref name="LoginInterceptor"></interceptor-ref> -->
