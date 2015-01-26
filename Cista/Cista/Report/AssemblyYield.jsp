@@ -212,14 +212,25 @@ Ext.onReady(function(){
 			}
 			
 		}
+		project = queryForm.getForm().findField('project').getValue();
+		edate = queryForm.getForm().findField('edate').getValue();
 
-
+		var query = 
+		{
+            query: {
+                project:project,
+                edate:edate
+            }
+        };
 
 		queryForm.submit({
-			url: '<%=contextPath%>/WeeklyInventory.action',
+			url: '<%=contextPath%>/AssemblyYield.action',
 			//waitMsg: 'Loading...',
 			method: 'POST',
-			standardSubmit: true,
+			params : {
+				query:Ext.JSON.encode(query)
+			},
+			//standardSubmit: true,
 			success: function (form, action) {
 				Ext.MessageBox.alert('SUCCESS', 'SUCCESS' + action.response.responseText);  
 			},
@@ -229,6 +240,7 @@ Ext.onReady(function(){
 				}
 			}
 		});
+
 
 	}
 

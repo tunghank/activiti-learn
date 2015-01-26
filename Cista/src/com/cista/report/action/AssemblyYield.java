@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,12 +17,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts2.ServletActionContext;
 
 
-import com.cista.report.dao.FoundryWipDao;
+import com.cista.report.dao.AssemblyYieldDao;
+import com.cista.report.dao.StandardCostDao;
 
 import com.cista.system.to.ExtJSGridTo;
 
-import com.cista.report.to.FoundryWipQueryTo;
-import com.cista.report.to.FoundryWipTo;
+import com.cista.report.to.AssemblyYieldIssueTo;
+import com.cista.report.to.AssemblyYieldQueryTo;
+import com.cista.report.to.AssemblyYieldReceiveTo;
+import com.cista.report.to.StandardCostTo;
 
 
 import com.cista.system.util.BaseAction;
@@ -59,8 +63,6 @@ public class AssemblyYield extends BaseAction{
 	
 
 	private static final long serialVersionUID = 1L;
-	private String project;
-	private String edate;
 	
 	public String AssemblyYieldPre() throws Exception{
 			
@@ -69,21 +71,126 @@ public class AssemblyYield extends BaseAction{
 		return SUCCESS;
 	}
 
-	public String getProject() {
-		return project;
-	}
+	public String AssemblyYield() throws Exception{
+		
+		try {
+			request= ServletActionContext.getRequest();
+			//for paging        
+	        int total;//分頁。。。數據總數       
+	        int iStart;//分頁。。。每頁開始數據
+	        int iLimit;//分頁。。。每一頁數據
+	        SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+	        SimpleDateFormat df2 = new SimpleDateFormat("yyyyMMdd");
+	        
+			String query = request.getParameter("query");
+			query = null != query ? query : "";
+			logger.debug("query " + query);
+			
+			Gson gson = new Gson();		
 
-	public void setProject(String project) {
-		this.project = project;
-	}
+	        // 創建一個JsonParser  
+	        JsonParser parser = new JsonParser();  
+	        JsonElement jsonEl = parser.parse(query);            
+	        JsonObject jsonObj = null;  
+	        jsonObj = jsonEl.getAsJsonObject();//轉換成Json對象
+	        
+	        JsonElement queryEl =jsonObj.get("query");//query 節點
+			
+	        AssemblyYieldQueryTo queryTo = gson.fromJson(queryEl.toString(), AssemblyYieldQueryTo.class);
+			logger.debug("queryTo " + queryTo.toString());		
+			
+	        String project = queryTo.getProject();
+	        project = null != project ? project : "";
+	        
+            String edate = queryTo.getEdate();
+            edate = null != edate ? edate : "";
+            if(!edate.equals("")){
+            	Date dEdate = df1.parse(edate);
+            	edate = df2.format(dEdate);
+            }
+            
+            logger.debug("project: " + project);
+            logger.debug("edate: " + edate);
+			
+			
+			AssemblyYieldDao assemblyYieldDao = new AssemblyYieldDao();
+			StandardCostDao standardCostDao = new StandardCostDao();
+			List<StandardCostTo> standardCostList = standardCostDao.getStandardCostByProject(project);
+			
+			
+			//logger.debug("userList Size " + userList.size());
+			
+			//分頁
+			String product;
+			if( standardCostList!= null){
+				
+				for(int i=0;i < standardCostList.size(); i ++){
+					StandardCostTo standardCostTo = standardCostList.get(i);
+					product = standardCostTo.getProduct();
+					List<AssemblyYieldIssueTo> issueList = assemblyYieldDao.getAssemblyPOIssuedQty(edate, product);
+					logger.debug(product + " issueList size " + issueList.size() );
+					List<AssemblyYieldReceiveTo> receiveList =  assemblyYieldDao.getAssemblyReceiveQty(edate, product);
+					logger.debug(product + " receiveList size " + receiveList.size() );
+				}
+				
+				
+				
+/*				total=wipList.size();
+				logger.debug("total " + total);
+				
+				int end=iStart+iLimit;
+				if(end > total){//不能總數
+					end = total;
+				}		
+				
+				List<FoundryWipTo> resultList = new ArrayList<FoundryWipTo>();
+				for(int i=iStart;i<end;i++){//只加載當前頁面數據
+					//logger.debug(userList.get(i).toString());
+					resultList.add(wipList.get(i));
+				}
+				
+				
+				//logger.debug(resultList.toString());
+				
+				ExtJSGridTo extJSGridTo = new ExtJSGridTo();
+				extJSGridTo.setTotal(total);
+				extJSGridTo.setRoot(resultList);
+				
+				String jsonData = gson.toJson(extJSGridTo);
+				//logger.debug(jsonData);
+				
+				// 1.5 Set AJAX response
+				CistaUtil.ajaxResponseData(response, jsonData);*/
+			}else{
+				CistaUtil.ajaxResponseData(response, "");
+			}
 
-	public String getEdate() {
-		return edate;
-	}
+		} catch (Exception e) {
+			this.addActionMessage("ERROR");
+			e.printStackTrace();
+			logger.error(e.toString());
+			addActionMessage(e.toString());
+          	//AJAX
+          	try{
+  		    	response.setContentType("text/html; charset=UTF-8");
+  				PrintWriter out = response.getWriter();
+  				String returnResult = "ERROR" ;
 
-	public void setEdate(String edate) {
-		this.edate = edate;
+  				logger.debug(returnResult);
+  				logger.debug("Error");
+  				out.print(returnResult);
+  				out.close();
+          	}catch(Exception ex){
+          		ex.printStackTrace();
+                logger.error(ex.toString());
+                return NONE;
+          	}
+
+		}
+		
+   		return NONE;
 	}
+	
 	
    
 }
