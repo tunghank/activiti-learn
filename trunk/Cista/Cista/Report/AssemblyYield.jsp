@@ -32,7 +32,8 @@
 <meta http-equiv="expires" content="0">  
 
 <script type="text/javascript">
-
+var project;
+var edate;
 //下面兩行代碼必須要，不然會報404錯誤  
 Ext.Loader.setConfig({enabled:true});  
 //我的searchGrid和ext4在同一目錄下，所以引用時要到根目錄去"../"  
@@ -232,7 +233,6 @@ Ext.onReady(function(){
 				method : 'POST',
 				scope:this,
 				success : function(response, options) {
-						alert('ppppppppp');
 					//parse Json data
 					var freeback = Ext.JSON.decode(response.responseText);
 					
@@ -245,7 +245,7 @@ Ext.onReady(function(){
 					grid.getStore().totalCount = freeback['total'];
 					grid.getStore().currentPage = 1;
 					grid.getDockedComponent("botPagingtoolbar").onLoad();
-
+					Ext.getCmp('btnSaveToExcel').enable();
 				},  
 				failure : function(response, options) {  
 					Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
@@ -318,11 +318,13 @@ Ext.onReady(function(){
 		  
 			tbar:[ 
 				{  
-					xtype:'button',  
+					xtype:'button',
+					id:'btnSaveToExcel',
 					text:'Save To Excel',
 					border: 2,
 					scale: 'small',
 					iconCls: 'save',
+					disabled : true,
 					handler: function(b, e) {
 						downloadExcel()
 						//b.up('grid').downloadExcelXml();
@@ -338,7 +340,7 @@ Ext.onReady(function(){
 						{  
 						 id:'gProduct',  
 						 header:'Product',  
-						 width:50,  
+						 width:60,  
 						 dataIndex:'product',  
 						 sortable:false
 					  
@@ -351,8 +353,8 @@ Ext.onReady(function(){
 					  
 						},{  
 						 id:'gIssueQty',  
-						 header:'Issue Qty',  
-						 width:70,  
+						 header:'PO Issue Qty',  
+						 width:80,  
 						 dataIndex:'issueQty',  
 						 sortable:false
 					  
@@ -386,8 +388,8 @@ Ext.onReady(function(){
 					  
 						}
 			],  
-			height:380,   
-			width:1000,   
+			height:350,   
+			width:600,   
 			title: 'Assembly Yield',   
 			renderTo: 'rptGrid',
 	
@@ -416,10 +418,10 @@ Ext.onReady(function(){
 		title: 'tempForm',
 		items: [{
                     xtype: 'hiddenfield',
-                    name: 'cistaProject'
+                    name: 'project'
                 },{
                     xtype: 'hiddenfield',
-                    name: 'lot'
+                    name: 'edate'
                 }]
 		
     });
@@ -430,15 +432,16 @@ Ext.onReady(function(){
 	//Grid Function
 	function downloadExcel(){
 
-		var title = "FoundryWip";
+
+		var title = "AssemblyYield";
 		var fileName;
 		fileName = title + "-" + Ext.Date.format(new Date(), 'Y-m-d Hi') + '.xls',
-
-		tempForm.getForm().findField('cistaProject').setValue(cistaProject);
-		tempForm.getForm().findField('lot').setValue(lot);
+		
+		tempForm.getForm().findField('project').setValue(project);
+		tempForm.getForm().findField('edate').setValue(Ext.Date.format(edate, 'Y-m-d'));
 
 		tempForm.submit({
-			url: '<%=contextPath%>/FoundryWipExcel.action?filename=' + escape(fileName),
+			url: '<%=contextPath%>/AssemblyYieldExcel.action?filename=' + escape(fileName),
 			//waitMsg: 'Loading...',
 			method: 'POST',
 			standardSubmit: true,
@@ -451,34 +454,7 @@ Ext.onReady(function(){
 				}
 			}
 		});
-		/*var title = "FoundryWip";
-		title = title + "-" + Ext.Date.format(new Date(), 'Y-m-d Hi') + '.xls',
-		alert("cistaProject:" + cistaProject + " lot:" + lot);
-		alert("title:" + title);
-            
-            var form = this.up('uploadForm');
-			alert("form:" + form);
-            if (form) {
-                form.destroy();
-            }
-            form = this.up('window').add({
-                xtype: 'form',
-                itemId: 'uploadForm',
-                hidden: true,
-                standardSubmit: true,
-				url: '<%=contextPath%>/FoundryWipExcel.action?filename=' + escape(title + ".xls"),
-                items: [{
-                    xtype: 'hiddenfield',
-                    name: 'cistaProject',
-                    value: cistaProject
-                },{
-                    xtype: 'hiddenfield',
-                    name: 'lot',
-                    value: lot
-                }]
-            });
-			alert("pppppp");
-            form.getForm().submit();*/
+
 	}//End downloadExcel()
 
 });

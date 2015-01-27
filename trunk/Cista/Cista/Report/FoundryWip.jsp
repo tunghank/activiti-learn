@@ -175,7 +175,7 @@ Ext.onReady(function(){
 					grid.getStore().totalCount = freeback['total'];
 					grid.getStore().currentPage = 1;
 					grid.getDockedComponent("botPagingtoolbar").onLoad();
-
+					Ext.getCmp('btnSaveToExcel').enable();
 				},  
 				failure : function(response, options) {  
 					Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
@@ -271,11 +271,13 @@ Ext.onReady(function(){
 		  
 			tbar:[ 
 				{  
-					xtype:'button',  
+					xtype:'button',
+					id:'btnSaveToExcel',
 					text:'Save To Excel',
 					border: 2,
 					scale: 'small',
 					iconCls: 'save',
+					disabled : true,
 					handler: function(b, e) {
 						downloadExcel()
 						//b.up('grid').downloadExcelXml();
