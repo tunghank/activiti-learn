@@ -223,14 +223,225 @@ Ext.onReady(function(){
             }
         };
 
-		queryForm.submit({
-			url: '<%=contextPath%>/AssemblyYield.action',
+		Ext.Ajax.timeout = 120000; // 120 seconds
+		Ext.Ajax.request({  //ajax request test  
+				url : '<%=contextPath%>/AssemblyYieldReport.action',  
+				params : {
+					query:Ext.JSON.encode(query)
+				},
+				method : 'POST',
+				scope:this,
+				success : function(response, options) {
+						alert('ppppppppp');
+					//parse Json data
+					var freeback = Ext.JSON.decode(response.responseText);
+					
+					//Load Data in store
+					grid.getStore().removeAll();
+					grid.getStore().loadData(freeback['root'], true);
+					//alert(freeback['total']);
+					//alert(grid.getStore().count());
+			
+					grid.getStore().totalCount = freeback['total'];
+					grid.getStore().currentPage = 1;
+					grid.getDockedComponent("botPagingtoolbar").onLoad();
+
+				},  
+				failure : function(response, options) {  
+					Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
+				}  
+			});
+
+		 queryForm.form.reset();
+
+	}
+
+	function reset(){//重置表單
+		queryForm.form.reset();
+	}
+
+
+	/*************************
+	* Assembly Yield Grid
+	**************************/
+
+
+	var isEdit = false;   
+	//創建Model  
+	Ext.define(  
+			'AssemblyYield',  
+			{  
+				extend:'Ext.data.Model',  
+				fields:[  
+						{name:'product',mapping:'product'},
+						{name:'grossDie',mapping:'grossDie'},  
+						{name:'issueQty',mapping:'issueQty'},  
+						{name:'unit',mapping:'unit'},  
+					    {name:'issueDieQty',mapping:'issueDieQty'},  
+						{name:'receiveDieQty',mapping:'receiveDieQty'},
+						{name:'strAssemblyYield',mapping:'strAssemblyYield'}
+				]  
+			}  
+	)
+
+	  
+	//創建數據源  
+	var store = Ext.create(  
+			'Ext.data.Store',  
+			{  
+				model:'AssemblyYield',  
+				//設置分頁大小  
+				pageSize:10,
+				// allow the grid to interact with the paging scroller by buffering
+				//buffered: true,
+				// never purge any data, we prefetch all up front
+				//purgePageCount: 0,
+				proxy: {  
+					type: 'ajax',  
+					url : '<%=contextPath%>/AssemblyYieldReport.action',  
+					reader: {  
+						//數據格式為json  
+						type: 'json',  
+						root: 'root',  
+						//獲取數據總數  
+						totalProperty: 'total'  
+					}  
+				},
+				sorters:[{property:"product",direction:"ASC"}],//按qq倒序
+				//autoLoad:{params:{start:0,limit:10}}//自動加載，每次加載一頁
+				autoLoad:false  
+			}  
+	); 
+
+	//創建grid  
+	var grid = Ext.create('Ext.grid.Panel',{  
+		  
+			tbar:[ 
+				{  
+					xtype:'button',  
+					text:'Save To Excel',
+					border: 2,
+					scale: 'small',
+					iconCls: 'save',
+					handler: function(b, e) {
+						downloadExcel()
+						//b.up('grid').downloadExcelXml();
+					}
+				}
+			],  
+			  
+			store:store,  
+			columnLines: true,   
+			loadMask: true,   
+			//添加修改功能  
+			columns:[  
+						{  
+						 id:'gProduct',  
+						 header:'Product',  
+						 width:50,  
+						 dataIndex:'product',  
+						 sortable:false
+					  
+						},{  
+						 id:'gGrossDie',  
+						 header:'Gross Die',  
+						 width:60,  
+						 dataIndex:'grossDie',  
+						 sortable:false
+					  
+						},{  
+						 id:'gIssueQty',  
+						 header:'Issue Qty',  
+						 width:70,  
+						 dataIndex:'issueQty',  
+						 sortable:false
+					  
+						},{
+						 id:'gUnit',  
+						 header:'Unit',  
+						 width:50,  
+						 dataIndex:'unit',  
+						 sortable:false
+					  
+						},{  
+						 id:'gIssueDieQty',  
+						 header:'Issue Die Qty',  
+						 width:100,  
+						 dataIndex:'issueDieQty',  
+						 sortable:false
+					  
+						},{  
+						 id:'gReceiveDieQty',  
+						 header:'Receive Die Qty',  
+						 width:100,  
+						 dataIndex:'receiveDieQty',  
+						 sortable:false
+					  
+						},{  
+						 id:'gStrAssemblyYield',  
+						 header:'Assembly Yield',  
+						 width:100,  
+						 dataIndex:'strAssemblyYield',  
+						 sortable:false
+					  
+						}
+			],  
+			height:380,   
+			width:1000,   
+			title: 'Assembly Yield',   
+			renderTo: 'rptGrid',
+	
+			dockedItems:[  
+						{   
+							 xtype: 'pagingtoolbar',
+							 dock: 'bottom',
+							 itemId: 'botPagingtoolbar',
+							 pageSize: 10,
+							 store: store,   
+							 displayInfo: true,   
+							 displayMsg: '顯示 {0} - {1} 條，共計 {2} 條',   
+							 emptyMsg: 'No Data',
+							 listeners: {
+
+							 }
+						}
+			]  
+			  
+		}  
+	)  
+
+
+	var tempForm = new  Ext.form.Panel({
+        id: 'tempForm',
+		title: 'tempForm',
+		items: [{
+                    xtype: 'hiddenfield',
+                    name: 'cistaProject'
+                },{
+                    xtype: 'hiddenfield',
+                    name: 'lot'
+                }]
+		
+    });
+
+
+
+	//store.loadPage(1);
+	//Grid Function
+	function downloadExcel(){
+
+		var title = "FoundryWip";
+		var fileName;
+		fileName = title + "-" + Ext.Date.format(new Date(), 'Y-m-d Hi') + '.xls',
+
+		tempForm.getForm().findField('cistaProject').setValue(cistaProject);
+		tempForm.getForm().findField('lot').setValue(lot);
+
+		tempForm.submit({
+			url: '<%=contextPath%>/FoundryWipExcel.action?filename=' + escape(fileName),
 			//waitMsg: 'Loading...',
 			method: 'POST',
-			params : {
-				query:Ext.JSON.encode(query)
-			},
-			//standardSubmit: true,
+			standardSubmit: true,
 			success: function (form, action) {
 				Ext.MessageBox.alert('SUCCESS', 'SUCCESS' + action.response.responseText);  
 			},
@@ -240,15 +451,35 @@ Ext.onReady(function(){
 				}
 			}
 		});
-
-
-	}
-
-	function reset(){//重置表單
-		queryForm.form.reset();
-	}
-
-
+		/*var title = "FoundryWip";
+		title = title + "-" + Ext.Date.format(new Date(), 'Y-m-d Hi') + '.xls',
+		alert("cistaProject:" + cistaProject + " lot:" + lot);
+		alert("title:" + title);
+            
+            var form = this.up('uploadForm');
+			alert("form:" + form);
+            if (form) {
+                form.destroy();
+            }
+            form = this.up('window').add({
+                xtype: 'form',
+                itemId: 'uploadForm',
+                hidden: true,
+                standardSubmit: true,
+				url: '<%=contextPath%>/FoundryWipExcel.action?filename=' + escape(title + ".xls"),
+                items: [{
+                    xtype: 'hiddenfield',
+                    name: 'cistaProject',
+                    value: cistaProject
+                },{
+                    xtype: 'hiddenfield',
+                    name: 'lot',
+                    value: lot
+                }]
+            });
+			alert("pppppp");
+            form.getForm().submit();*/
+	}//End downloadExcel()
 
 });
 
@@ -292,7 +523,7 @@ Ext.onReady(function(){
 	/** HTML Layout **/
 	#functionTitle  {position:absolute; visibility:visible; z-index:1; top:5px; left:5px;}
 	#queryForm  {position:absolute; visibility:visible; z-index:3; top:20px; left:5px;}
-	#ProgressBar  {position:absolute; visibility:visible; z-index:3; top:320px; left:200px;}
+	#rptGrid  {position:absolute; visibility:visible; z-index:3; top:233px; left:8px;}
 </style>
 <link rel="stylesheet" type="text/css" href="../js/extjs42/examples/ux/css/ItemSelector.css" />
 </head>
@@ -316,8 +547,7 @@ Ext.onReady(function(){
 </table>
 </div>
 <div id="queryForm" ></div>
-
-<div id='ProgressBar'></div>
+<div id="rptGrid" ></div>
 
 </body>
 </html>
