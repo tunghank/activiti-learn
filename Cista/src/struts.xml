@@ -442,6 +442,20 @@
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
              <result name="success" >/Report/AssemblyYield.jsp</result>
          </action>
+         
+         <!-- 3. FT Yield Wip -->
+         <action name="FTYieldPre" class="com.cista.report.action.FTYield" method="FTYieldPre">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success" >/Report/FTYield.jsp</result>
+         </action>
+         
+         <action name="FTYieldReport" class="com.cista.report.action.FTYield" method="FTYieldReport">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success" >/Report/FTYield.jsp</result>
+         </action>
+         
 		<!-- NTLM -->
          <!-- <action name="NtlmTest" class="com.cista.system.ldap.action.NtlmTestAction" method="ntlmTest"> -->
          	 <!-- <interceptor-ref name="LoginInterceptor"></interceptor-ref> -->
