@@ -195,7 +195,7 @@ Ext.onReady(function(){
 
 
 	/*************************
-	* User Information Grid
+	* Foundry Wip Grid
 	**************************/
 
 

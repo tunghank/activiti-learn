@@ -6,8 +6,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 
-import com.cista.report.to.AssemblyYieldIssueTo;
-import com.cista.report.to.AssemblyYieldReceiveTo;
+import com.cista.report.to.AssemblyYield.AssemblyYieldIssueTo;
+import com.cista.report.to.AssemblyYield.AssemblyYieldReceiveTo;
 import com.cista.system.util.CistaERPBaseDao;
 
 

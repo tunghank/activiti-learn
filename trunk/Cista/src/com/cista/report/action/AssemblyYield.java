@@ -1,35 +1,32 @@
 package com.cista.report.action;
 
 
-import java.io.File;
-import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
+import net.sf.json.util.NewBeanInstanceStrategy;
+
 import org.apache.struts2.ServletActionContext;
-
-
-import com.cista.report.dao.AssemblyYieldDao;
+//Dao
 import com.cista.report.dao.StandardCostDao;
-
+import com.cista.report.dao.AssemblyYieldDao;
+//To
 import com.cista.system.to.ExtJSGridTo;
-
-import com.cista.report.to.AssemblyYieldIssueTo;
-import com.cista.report.to.AssemblyYieldQueryTo;
-import com.cista.report.to.AssemblyYieldReceiveTo;
 import com.cista.report.to.StandardCostTo;
-
-
+import com.cista.report.to.AssemblyYield.AssemblyYieldIssueTo;
+import com.cista.report.to.AssemblyYield.AssemblyYieldQueryTo;
+import com.cista.report.to.AssemblyYield.AssemblyYieldReceiveTo;
+import com.cista.report.to.AssemblyYield.AssemblyYieldTo;
+//Base
 import com.cista.system.util.BaseAction;
 import com.cista.system.util.CistaUtil;
+//Json
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonElement;
@@ -37,27 +34,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.sun.java_cup.internal.internal_error;
-//JExcel
-import jxl.CellView;
-import jxl.Workbook;
-import jxl.biff.DisplayFormat;
-import jxl.format.Alignment;
-import jxl.format.Border;
-import jxl.format.BorderLineStyle;
-import jxl.format.Colour;
-import jxl.format.UnderlineStyle;
-import jxl.format.VerticalAlignment;
-import jxl.write.DateFormat;
-import jxl.write.DateTime;
-import jxl.write.Label;
-import jxl.write.Number;
-import jxl.write.NumberFormat;
-import jxl.write.NumberFormats;
-import jxl.write.WritableCell;
-import jxl.write.WritableCellFormat;
-import jxl.write.WritableFont;
-import jxl.write.WritableSheet;
-import jxl.write.WritableWorkbook;
+
 
 public class AssemblyYield extends BaseAction{
 	
@@ -71,14 +48,14 @@ public class AssemblyYield extends BaseAction{
 		return SUCCESS;
 	}
 
-	public String AssemblyYield() throws Exception{
+	public String AssemblyYieldReport() throws Exception{
 		
 		try {
-			request= ServletActionContext.getRequest();
+
 			//for paging        
 	        int total;//分頁。。。數據總數       
-	        int iStart;//分頁。。。每頁開始數據
-	        int iLimit;//分頁。。。每一頁數據
+	        int iStart=0;//分頁。。。每頁開始數據
+	        int iLimit=10;//分頁。。。每一頁數據
 	        SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 	        SimpleDateFormat df2 = new SimpleDateFormat("yyyyMMdd");
 	        
@@ -95,9 +72,8 @@ public class AssemblyYield extends BaseAction{
 	        jsonObj = jsonEl.getAsJsonObject();//轉換成Json對象
 	        
 	        JsonElement queryEl =jsonObj.get("query");//query 節點
-			
-	        AssemblyYieldQueryTo queryTo = gson.fromJson(queryEl.toString(), AssemblyYieldQueryTo.class);
-			logger.debug("queryTo " + queryTo.toString());		
+			AssemblyYieldQueryTo queryTo = gson.fromJson(queryEl.toString(), AssemblyYieldQueryTo.class);
+	
 			
 	        String project = queryTo.getProject();
 	        project = null != project ? project : "";
@@ -108,34 +84,77 @@ public class AssemblyYield extends BaseAction{
             	Date dEdate = df1.parse(edate);
             	edate = df2.format(dEdate);
             }
-            
-            logger.debug("project: " + project);
-            logger.debug("edate: " + edate);
+
 			
 			
 			AssemblyYieldDao assemblyYieldDao = new AssemblyYieldDao();
 			StandardCostDao standardCostDao = new StandardCostDao();
 			List<StandardCostTo> standardCostList = standardCostDao.getStandardCostByProject(project);
-			
-			
-			//logger.debug("userList Size " + userList.size());
-			
+			List<AssemblyYieldTo> assemblyYieldList = new ArrayList<AssemblyYieldTo>();
 			//分頁
 			String product;
+			
 			if( standardCostList!= null){
 				
 				for(int i=0;i < standardCostList.size(); i ++){
 					StandardCostTo standardCostTo = standardCostList.get(i);
+					AssemblyYieldTo assemblyYieldTo = new AssemblyYieldTo();
 					product = standardCostTo.getProduct();
+					assemblyYieldTo.setProduct(product);
+					
+					
 					List<AssemblyYieldIssueTo> issueList = assemblyYieldDao.getAssemblyPOIssuedQty(edate, product);
-					logger.debug(product + " issueList size " + issueList.size() );
+					long issueQty =0, grossDie=0, issueDieQty=0;
+					String unit="";
+					if( issueList != null){
+						for(int j=0; j< issueList.size(); j++){
+							AssemblyYieldIssueTo issueTo = issueList.get(j);
+							grossDie = issueTo.getGrossDie();
+							issueQty = issueQty + issueTo.getIssueQty();
+							issueDieQty = issueDieQty + issueTo.getIssueDieQty();
+							unit = issueTo.getUnit();
+						}
+						logger.debug(product + " issueList size " + issueList.size() );
+					}
+					
 					List<AssemblyYieldReceiveTo> receiveList =  assemblyYieldDao.getAssemblyReceiveQty(edate, product);
-					logger.debug(product + " receiveList size " + receiveList.size() );
+					long receiveDieQty=0;
+					if( receiveList != null){
+						for(int k=0; k< receiveList.size(); k++){
+							AssemblyYieldReceiveTo receiveTo = receiveList.get(k);
+							receiveDieQty = receiveDieQty + receiveTo.getReceiveQty();
+						}
+						logger.debug(product + " receiveList size " + receiveList.size() );
+					}
+					double assemblyYield=0.0;
+					String strAssemblyYield="";
+					if( receiveList != null & issueList != null){
+						 /**
+						  * 提供（相對）精確的除法運算。當發生除不盡的情況時，由scale參數指
+						  * 定精度，以後的數字四捨五入。
+						  * @param v1 被除數
+						  * @param v2 除數
+						  * @param scale 表示表示需要精確到小數點以後幾位。
+						  * @return 兩個參數的商
+						 */
+						BigDecimal b1 = new BigDecimal(Double.toString(receiveDieQty));
+						BigDecimal b2 = new BigDecimal(Double.toString(issueDieQty));
+						assemblyYield = b1.divide(b2,4,BigDecimal.ROUND_HALF_UP).doubleValue();
+						
+						strAssemblyYield = String.valueOf(assemblyYield * 100) + "%";
+					}
+					
+					assemblyYieldTo.setAssemblyYield(assemblyYield);
+					assemblyYieldTo.setGrossDie(grossDie);
+					assemblyYieldTo.setIssueDieQty(issueDieQty);
+					assemblyYieldTo.setIssueQty(issueQty);
+					assemblyYieldTo.setUnit(unit);
+					assemblyYieldTo.setReceiveDieQty(receiveDieQty);
+					assemblyYieldTo.setStrAssemblyYield(strAssemblyYield);
+					assemblyYieldList.add(assemblyYieldTo);
 				}
-				
-				
-				
-/*				total=wipList.size();
+
+				total=assemblyYieldList.size();
 				logger.debug("total " + total);
 				
 				int end=iStart+iLimit;
@@ -143,14 +162,11 @@ public class AssemblyYield extends BaseAction{
 					end = total;
 				}		
 				
-				List<FoundryWipTo> resultList = new ArrayList<FoundryWipTo>();
+				List<AssemblyYieldTo> resultList = new ArrayList<AssemblyYieldTo>();
 				for(int i=iStart;i<end;i++){//只加載當前頁面數據
 					//logger.debug(userList.get(i).toString());
-					resultList.add(wipList.get(i));
+					resultList.add(assemblyYieldList.get(i));
 				}
-				
-				
-				//logger.debug(resultList.toString());
 				
 				ExtJSGridTo extJSGridTo = new ExtJSGridTo();
 				extJSGridTo.setTotal(total);
@@ -160,7 +176,7 @@ public class AssemblyYield extends BaseAction{
 				//logger.debug(jsonData);
 				
 				// 1.5 Set AJAX response
-				CistaUtil.ajaxResponseData(response, jsonData);*/
+				CistaUtil.ajaxResponseData(response, jsonData);
 			}else{
 				CistaUtil.ajaxResponseData(response, "");
 			}

@@ -431,7 +431,7 @@
              <result name="success" >/Report/AssemblyYield.jsp</result>
          </action>
          
-         <action name="AssemblyYield" class="com.cista.report.action.AssemblyYield" method="AssemblyYield">
+         <action name="AssemblyYieldReport" class="com.cista.report.action.AssemblyYield" method="AssemblyYieldReport">
          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
              <result name="success" >/Report/AssemblyYield.jsp</result>

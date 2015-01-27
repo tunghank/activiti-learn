@@ -1,4 +1,4 @@
-package com.cista.report.to;
+package com.cista.report.to.AssemblyYield;
 
 import java.util.Date;
 
