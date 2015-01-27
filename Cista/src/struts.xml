@@ -437,7 +437,11 @@
              <result name="success" >/Report/AssemblyYield.jsp</result>
          </action>
 
-         
+         <action name="AssemblyYieldExcel" class="com.cista.report.action.AssemblyYield" method="AssemblyYieldExcel">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success" >/Report/AssemblyYield.jsp</result>
+         </action>
 		<!-- NTLM -->
          <!-- <action name="NtlmTest" class="com.cista.system.ldap.action.NtlmTestAction" method="ntlmTest"> -->
          	 <!-- <interceptor-ref name="LoginInterceptor"></interceptor-ref> -->
