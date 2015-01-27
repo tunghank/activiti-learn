@@ -34,6 +34,10 @@
 <script type="text/javascript">
 var project;
 var edate;
+var ga;
+var gb;
+var gc;
+var gd;
 //下面兩行代碼必須要，不然會報404錯誤  
 Ext.Loader.setConfig({enabled:true});  
 //我的searchGrid和ext4在同一目錄下，所以引用時要到根目錄去"../"  
@@ -176,6 +180,45 @@ Ext.onReady(function(){
 										//value:Ext.Date.getFirstDateOfMonth(Ext.Date.DAY),
 										value: Ext.Date.add (Ext.Date.getFirstDateOfMonth(new Date() ), Ext.Date.DAY, -1),
 										anchor:'80%'
+									},
+									{
+										xtype: 'checkboxgroup',
+										id:'gradeGrp',
+										name: 'gradeGrp',
+										fieldLabel: 'Grade',
+										labelWidth: 50,
+										labelAlign: 'right',
+										itemId: 'gradeGrp',
+										items: [
+											{
+												//A
+												boxLabel: 'A',
+												name: 'grade',
+												checked: true,
+												inputValue: 'GA'
+											},
+											{
+												//B
+												boxLabel: 'B',
+												name: 'grade',
+												inputValue: 'GB'
+											},
+											{
+												//C
+												boxLabel: 'C',
+												name: 'grade',
+												inputValue: 'GC'
+											},
+											{
+												//D
+												boxLabel: 'D',
+												name: 'grade',
+												inputValue: 'GD'
+											}
+										],            
+										listeners: {
+
+										}
 									}
 
 								]
@@ -215,12 +258,20 @@ Ext.onReady(function(){
 		}
 		project = queryForm.getForm().findField('project').getValue();
 		edate = queryForm.getForm().findField('edate').getValue();
+		ga = queryForm.getForm().findField('gradeGrp').items.items[0].getValue();
+		gb = queryForm.getForm().findField('gradeGrp').items.items[1].getValue();
+		gc = queryForm.getForm().findField('gradeGrp').items.items[2].getValue();
+		gd = queryForm.getForm().findField('gradeGrp').items.items[3].getValue();
 
 		var query = 
 		{
             query: {
                 project:project,
-                edate:edate
+                edate:edate,
+				ga:ga,
+				gb:gb,
+				gc:gc,
+				gd:gd
             }
         };
 
@@ -252,7 +303,7 @@ Ext.onReady(function(){
 				}  
 			});
 
-		 queryForm.form.reset();
+		 //queryForm.form.reset();
 
 	}
 

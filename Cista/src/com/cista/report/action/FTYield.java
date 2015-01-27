@@ -109,7 +109,12 @@ public class FTYield extends BaseAction{
             	edate = df2.format(dEdate);
             }
 
-            List<FTYieldTo> ftYieldList = this.FTYieldDatas(edate, project);
+            Boolean ga = queryTo.getGa();
+            Boolean gb = queryTo.getGb();
+            Boolean gc = queryTo.getGc();
+            Boolean gd = queryTo.getGd();
+            
+            List<FTYieldTo> ftYieldList = this.FTYieldDatas(edate, project, ga, gb, gc, gd);
 			if(ftYieldList != null){
 
 				total=ftYieldList.size();
@@ -165,7 +170,7 @@ public class FTYield extends BaseAction{
    		return NONE;
 	}
 	
-	private List<FTYieldTo> FTYieldDatas(String edate, String project) throws Exception{
+	private List<FTYieldTo> FTYieldDatas(String edate, String project, Boolean ga , Boolean gb, Boolean gc, Boolean gd) throws Exception{
 		try {
 			FTYieldDao ftYieldDao = new FTYieldDao();
 			StandardCostDao standardCostDao = new StandardCostDao();
@@ -197,19 +202,31 @@ public class FTYield extends BaseAction{
 					}
 					
 					List<FTYieldReceiveTo> receiveList =  ftYieldDao.getFtReceiveQty(edate, product);
-					long receiveDieQty=0, ga=0, gb=0, gc=0, gd=0;
+					long receiveDieQty=0, gaQty=0, gbQty=0, gcQty=0, gdQty=0;
 					if( receiveList != null){
 						for(int k=0; k< receiveList.size(); k++){
 							FTYieldReceiveTo receiveTo = receiveList.get(k);
-							logger.debug(receiveTo.getPo() + "|" + receiveTo.getLot()+ "|" +receiveTo.getGa());
-							ga = ga + receiveTo.getGa();
-							gb = gb + receiveTo.getGb();
-							gc = gc + receiveTo.getGc();
-							gd = gd + receiveTo.getGd();
+							//logger.debug(receiveTo.getPo() + "|" + receiveTo.getLot()+ "|" +receiveTo.getGa());
+							gaQty = gaQty + receiveTo.getGa();
+							gbQty = gbQty + receiveTo.getGb();
+							gcQty = gcQty + receiveTo.getGc();
+							gdQty = gdQty + receiveTo.getGd();
 							
-							receiveDieQty =  ga;
 						}
-						logger.debug(product + " GA receiveDieQty " + receiveDieQty );
+						
+						if(ga){
+							receiveDieQty =  receiveDieQty + gaQty;
+						}
+						if(gb){
+							receiveDieQty =  receiveDieQty + gbQty;
+						}
+						if(gc){
+							receiveDieQty =  receiveDieQty + gcQty;
+						}
+						if(gd){
+							receiveDieQty =  receiveDieQty + gdQty;
+						}
+						logger.debug(product + " receiveDieQty " + receiveDieQty );
 						logger.debug(product + " receiveList size " + receiveList.size() );
 					}
 					double ftYield=0.0;
