@@ -456,6 +456,12 @@
              <result name="success" >/Report/FTYield.jsp</result>
          </action>
          
+         <action name="FTYieldExcel" class="com.cista.report.action.FTYield" method="FTYieldExcel">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success" >/Report/FTYield.jsp</result>
+         </action>
+         
 		<!-- NTLM -->
          <!-- <action name="NtlmTest" class="com.cista.system.ldap.action.NtlmTestAction" method="ntlmTest"> -->
          	 <!-- <interceptor-ref name="LoginInterceptor"></interceptor-ref> -->

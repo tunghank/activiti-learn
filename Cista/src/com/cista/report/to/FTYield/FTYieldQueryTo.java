@@ -10,6 +10,7 @@ public class FTYieldQueryTo {
 	private  Boolean gb;
 	private  Boolean gc;
 	private  Boolean gd;
+	private  String grade;
 	
 	public FTYieldQueryTo() {
 
@@ -61,6 +62,14 @@ public class FTYieldQueryTo {
 
 	public void setGd(Boolean gd) {
 		this.gd = gd;
+	}
+
+	public String getGrade() {
+		return grade;
+	}
+
+	public void setGrade(String grade) {
+		this.grade = grade;
 	}
 
 
