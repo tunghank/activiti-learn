@@ -217,11 +217,11 @@ public class AssemblyYield extends BaseAction{
 						  * @param scale 表示表示需要精確到小數點以後幾位。
 						  * @return 兩個參數的商
 						 */
-						BigDecimal b1 = new BigDecimal(Double.toString(receiveDieQty));
+						BigDecimal b1 = new BigDecimal(Double.toString(receiveDieQty * 100));
 						BigDecimal b2 = new BigDecimal(Double.toString(issueDieQty));
-						assemblyYield = b1.divide(b2,4,BigDecimal.ROUND_HALF_UP).doubleValue();
+						assemblyYield = b1.divide(b2,2,BigDecimal.ROUND_HALF_UP).doubleValue();
 						
-						strAssemblyYield = String.valueOf(assemblyYield * 100) + "%";
+						strAssemblyYield = String.valueOf(assemblyYield) + "%";
 					}
 					
 					assemblyYieldTo.setAssemblyYield(assemblyYield);

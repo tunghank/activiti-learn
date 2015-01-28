@@ -63,7 +63,7 @@ public class FTYield extends BaseAction{
 	private static final long serialVersionUID = 1L;
 	private String project;
 	private String edate;
-	
+	private String grade;
 	
 	public String FTYieldPre() throws Exception{
 			
@@ -109,12 +109,12 @@ public class FTYield extends BaseAction{
             	edate = df2.format(dEdate);
             }
 
-            Boolean ga = queryTo.getGa();
-            Boolean gb = queryTo.getGb();
-            Boolean gc = queryTo.getGc();
-            Boolean gd = queryTo.getGd();
+            String grade = queryTo.getGrade();
+            grade = null != grade ? grade : "";
+            logger.debug("grade " + grade);
+
             
-            List<FTYieldTo> ftYieldList = this.FTYieldDatas(edate, project, ga, gb, gc, gd);
+            List<FTYieldTo> ftYieldList = this.FTYieldDatas(edate, project, grade);
 			if(ftYieldList != null){
 
 				total=ftYieldList.size();
@@ -170,7 +170,7 @@ public class FTYield extends BaseAction{
    		return NONE;
 	}
 	
-	private List<FTYieldTo> FTYieldDatas(String edate, String project, Boolean ga , Boolean gb, Boolean gc, Boolean gd) throws Exception{
+	private List<FTYieldTo> FTYieldDatas(String edate, String project, String grade) throws Exception{
 		try {
 			FTYieldDao ftYieldDao = new FTYieldDao();
 			StandardCostDao standardCostDao = new StandardCostDao();
@@ -214,17 +214,17 @@ public class FTYield extends BaseAction{
 							
 						}
 						
-						if(ga){
+						if(grade.equals("1")){
 							receiveDieQty =  receiveDieQty + gaQty;
 						}
-						if(gb){
-							receiveDieQty =  receiveDieQty + gbQty;
+						if(grade.equals("2")){
+							receiveDieQty =  receiveDieQty + gaQty + gbQty;
 						}
-						if(gc){
-							receiveDieQty =  receiveDieQty + gcQty;
+						if(grade.equals("3")){
+							receiveDieQty =  receiveDieQty + gaQty + gbQty + gcQty;
 						}
-						if(gd){
-							receiveDieQty =  receiveDieQty + gdQty;
+						if(grade.equals("4")){
+							receiveDieQty =  receiveDieQty + gaQty + gbQty + gcQty + gdQty;
 						}
 						logger.debug(product + " receiveDieQty " + receiveDieQty );
 						logger.debug(product + " receiveList size " + receiveList.size() );
@@ -240,11 +240,11 @@ public class FTYield extends BaseAction{
 						  * @param scale 表示表示需要精確到小數點以後幾位。
 						  * @return 兩個參數的商
 						 */
-						BigDecimal b1 = new BigDecimal(Double.toString(receiveDieQty));
+						BigDecimal b1 = new BigDecimal(Double.toString(receiveDieQty* 100));
 						BigDecimal b2 = new BigDecimal(Double.toString(issueDieQty));
-						ftYield = b1.divide(b2,4,BigDecimal.ROUND_HALF_UP).doubleValue();
-						
-						strFtYield = String.valueOf(ftYield * 100) + "%";
+						ftYield = b1.divide(b2, 2, BigDecimal.ROUND_HALF_UP).doubleValue();
+						logger.debug("ftYield " + ftYield);
+						strFtYield = String.valueOf(ftYield) + "%";
 					}
 					
 					ftYieldTo.setFtYield(ftYield);
@@ -270,7 +270,7 @@ public class FTYield extends BaseAction{
 	}
 	
 	
-/*	public String AssemblyYieldExcel() throws Exception{
+	public String FTYieldExcel() throws Exception{
 		try {
 			request= ServletActionContext.getRequest();
 			response= ServletActionContext.getResponse();
@@ -293,9 +293,16 @@ public class FTYield extends BaseAction{
             	edate = df2.format(dEdate);
             }
 			
-            List<AssemblyYieldTo> assemblyYieldList = this.AssemblyYieldDatas(edate, project);
-			if(assemblyYieldList != null){
-				createExcel(response, filename, assemblyYieldList);
+            
+            String grade = this.grade;
+            grade = null != grade ? grade : "";
+            logger.debug("grade " + grade);
+
+            
+            List<FTYieldTo> ftYieldList = this.FTYieldDatas(edate, project, grade);
+
+			if(ftYieldList != null){
+				createExcel(response, filename, ftYieldList, grade);
 			}
 	        
 	        
@@ -310,7 +317,7 @@ public class FTYield extends BaseAction{
 		
 	}
 
-	 private void createExcel(HttpServletResponse response , String excelFile, List<AssemblyYieldTo> assemblyYieldList) {
+	 private void createExcel(HttpServletResponse response , String excelFile, List<FTYieldTo> ftYieldList, String grade) {
 
 	        try {
 
@@ -413,57 +420,62 @@ public class FTYield extends BaseAction{
 	            USCurrencyFormat4.setBackground(Colour.WHITE);
 	            USCurrencyFormat4.setFont(f);
 	            
-	            WritableSheet assemblyYieldSheet = outWorkbook.createSheet("Assembly Yield", 0);
+	            WritableSheet ftYieldSheet = outWorkbook.createSheet("Assembly Yield", 0);
 	            
 	            CellView autoSizeCellView = new CellView();
 	            autoSizeCellView.setAutosize(true);
 	                   
-	            
+				String gradeTxt="";
+				if(grade.equals("1")){
+					gradeTxt = "(Grade A)";
+				}else if (grade.equals("2")){
+					gradeTxt = "(Grade A + B)";
+				}else if (grade.equals("3")){
+					gradeTxt = "(Grade A + B + C)";
+				}else if (grade.equals("4")){
+					gradeTxt = "(Grade A + B + C + D)";
+				}
 	            
 	            //Header
-	            assemblyYieldSheet.addCell(new Label(0, 1, "Assembly Yield ", headerF2ormat));
+	            ftYieldSheet.addCell(new Label(0, 1, "FT Yield ", headerF2ormat));
 	            //Write to Cell
 	            //Product
-	            assemblyYieldSheet.addCell(new Label(0, 2, "Product", headerFormat));
+	            ftYieldSheet.addCell(new Label(0, 2, "Product", headerFormat));
 	            //Gross Die
-	            assemblyYieldSheet.addCell(new Label(1, 2, "Gross Die", headerFormat));
+	            ftYieldSheet.addCell(new Label(1, 2, "Gross Die", headerFormat));
 	            //PO Issue Qty
-	            assemblyYieldSheet.addCell(new Label(2, 2, "PO Issue Qty", headerFormat));	            
+	            ftYieldSheet.addCell(new Label(2, 2, "PO Issue Qty", headerFormat));	            
 	            //Unit
-	            assemblyYieldSheet.addCell(new Label(3, 2, "Unit", headerFormat));
-	            //Issue Die Qty
-	            assemblyYieldSheet.addCell(new Label(4, 2, "Issue Die Qty", headerFormat));
+	            ftYieldSheet.addCell(new Label(3, 2, "Unit", headerFormat));
 	            //Receive Die Qty
-	            assemblyYieldSheet.addCell(new Label(5, 2, "Receive Die Qty", headerFormat));	            	            
+	            ftYieldSheet.addCell(new Label(4, 2, "Receive Die Qty", headerFormat));	            	            
 	            //Assembly Yield
-	            assemblyYieldSheet.addCell(new Label(6, 2, "Assembly Yield", headerFormat));
+	            ftYieldSheet.addCell(new Label(5, 2, "FT Yield " + gradeTxt, headerFormat));
 
 	            //2.0 DATA
 
-				for(int i =0; i< assemblyYieldList.size(); i ++){
+				for(int i =0; i< ftYieldList.size(); i ++){
 	    			
-					AssemblyYieldTo yieldTo = assemblyYieldList.get(i);
+					FTYieldTo yieldTo = ftYieldList.get(i);
 		            //Write to Cell
 	                //Product
-					assemblyYieldSheet.addCell(new Label(0, 3+i, yieldTo.getProduct(), cellFormat));
+					ftYieldSheet.addCell(new Label(0, 3+i, yieldTo.getProduct(), cellFormat));
 		            //Gross Die
-					assemblyYieldSheet.addCell(new Number(1, 3+i, yieldTo.getGrossDie(), cellFormat));
+					ftYieldSheet.addCell(new Number(1, 3+i, yieldTo.getGrossDie(), cellFormat));
 		            //PO Issue Qty
-					assemblyYieldSheet.addCell(new Number(2, 3+i, yieldTo.getIssueQty(), cellFormat));            
+					ftYieldSheet.addCell(new Number(2, 3+i, yieldTo.getIssueDieQty(), cellFormat));            
 	                //Unit
-					assemblyYieldSheet.addCell(new Label(3, 3+i, yieldTo.getUnit(), cellFormat));
-		            //Issue Die Qty
-					assemblyYieldSheet.addCell(new Number(4, 3+i, yieldTo.getIssueDieQty(), cellFormat)); 
+					ftYieldSheet.addCell(new Label(3, 3+i, yieldTo.getUnit(), cellFormat));
 		            //Receive Die Qty
-					assemblyYieldSheet.addCell(new Number(5, 3+i, yieldTo.getReceiveDieQty(), cellFormat));            	            
-	                //Assembly Yield
-					assemblyYieldSheet.addCell(new Label(6, 3+i, yieldTo.getStrAssemblyYield(), cellFormat));
+					ftYieldSheet.addCell(new Number(4, 3+i, yieldTo.getReceiveDieQty(), cellFormat));            	            
+	                //FT Yield
+					ftYieldSheet.addCell(new Label(5, 3+i, yieldTo.getStrFtYield(), cellFormat));
 					
 				}
 				
 				//行高自動擴展
 				for(int r=0; r<=18; r++){
-					assemblyYieldSheet.setColumnView(r, autoSizeCellView);//行高自動擴展
+					ftYieldSheet.setColumnView(r, autoSizeCellView);//行高自動擴展
 				}
 
 				
@@ -481,10 +493,7 @@ public class FTYield extends BaseAction{
 				return;
 	        }
 	    }
-	
-	
-	
-	*/
+
 	
 	public String getProject() {
 		return project;
@@ -500,6 +509,14 @@ public class FTYield extends BaseAction{
 
 	public void setEdate(String edate) {
 		this.edate = edate;
+	}
+
+	public String getGrade() {
+		return grade;
+	}
+
+	public void setGrade(String grade) {
+		this.grade = grade;
 	}
 	
 	

@@ -34,10 +34,7 @@
 <script type="text/javascript">
 var project;
 var edate;
-var ga;
-var gb;
-var gc;
-var gd;
+var grade = 1;
 //下面兩行代碼必須要，不然會報404錯誤  
 Ext.Loader.setConfig({enabled:true});  
 //我的searchGrid和ext4在同一目錄下，所以引用時要到根目錄去"../"  
@@ -53,7 +50,8 @@ Ext.require(
             'Ext.ux.form.SearchField',
 			'Ext.form.Panel',
 			'Ext.ux.form.MultiSelect',
-			'Ext.ux.form.ItemSelector'
+			'Ext.ux.form.ItemSelector',
+			'Ext.slider.Tip'
          ]  
            
 );
@@ -115,7 +113,7 @@ Ext.onReady(function(){
 		title: 'Query Criteria',
 		labelAlign: 'left',
 		frame:true,
-		height:150,
+		height:180,
 		width:300,
 		renderTo: "queryForm",
 		bodyPadding: 1,
@@ -182,43 +180,31 @@ Ext.onReady(function(){
 										anchor:'80%'
 									},
 									{
-										xtype: 'checkboxgroup',
-										id:'gradeGrp',
-										name: 'gradeGrp',
+										xtype:'slider',
+										cls: 'sliderStyle',
+										id:'grade',
+										itemId: 'grade',
 										fieldLabel: 'Grade',
+										name: 'grade',
 										labelWidth: 50,
 										labelAlign: 'right',
-										itemId: 'gradeGrp',
-										items: [
-											{
-												//A
-												boxLabel: 'A',
-												name: 'grade',
-												checked: true,
-												inputValue: 'GA'
-											},
-											{
-												//B
-												boxLabel: 'B',
-												name: 'grade',
-												inputValue: 'GB'
-											},
-											{
-												//C
-												boxLabel: 'C',
-												name: 'grade',
-												inputValue: 'GC'
-											},
-											{
-												//D
-												boxLabel: 'D',
-												name: 'grade',
-												inputValue: 'GD'
-											}
-										],            
+										value: 1,
+										increment: 1,
+										minValue: 1,
+										maxValue: 4,
+										useTips: true,
+										tipText: function(thumb){
+											var grades = ['','GA','GB','GC','GD'];
+											var value = Ext.String.format(grades[thumb.value]);
+											return value;
+										},
 										listeners: {
-
-										}
+												changecomplete: function( slider, newValue, thumb, eOpts ){
+													//alert(newValue);
+													grade = newValue;
+												}
+										},
+										anchor:'80%'
 									}
 
 								]
@@ -258,20 +244,13 @@ Ext.onReady(function(){
 		}
 		project = queryForm.getForm().findField('project').getValue();
 		edate = queryForm.getForm().findField('edate').getValue();
-		ga = queryForm.getForm().findField('gradeGrp').items.items[0].getValue();
-		gb = queryForm.getForm().findField('gradeGrp').items.items[1].getValue();
-		gc = queryForm.getForm().findField('gradeGrp').items.items[2].getValue();
-		gd = queryForm.getForm().findField('gradeGrp').items.items[3].getValue();
 
 		var query = 
 		{
             query: {
                 project:project,
                 edate:edate,
-				ga:ga,
-				gb:gb,
-				gc:gc,
-				gd:gd
+				grade:grade
             }
         };
 
@@ -296,6 +275,24 @@ Ext.onReady(function(){
 					grid.getStore().totalCount = freeback['total'];
 					grid.getStore().currentPage = 1;
 					grid.getDockedComponent("botPagingtoolbar").onLoad();
+					var gradeTxt="";
+					var gradeWidth=100;
+					if(grade == 1){
+						gradeTxt = "(Grade A)";
+						gradeWidth=105;
+					}else if (grade == 2){
+						gradeTxt = "(Grade A + B)";
+						gradeWidth=125;
+					}else if (grade == 3){
+						gradeTxt = "(Grade A + B + C)";
+						gradeWidth=145;
+					}else if (grade == 4){
+						gradeTxt = "(Grade A + B + C + D)";
+						gradeWidth=165;
+					}
+					grid.columns[5].setText('FT Yield '+ gradeTxt );
+					grid.columns[5].setWidth(gradeWidth);
+					
 					Ext.getCmp('btnSaveToExcel').enable();
 				},  
 				failure : function(response, options) {  
@@ -465,6 +462,9 @@ Ext.onReady(function(){
                 },{
                     xtype: 'hiddenfield',
                     name: 'edate'
+                },{
+                    xtype: 'hiddenfield',
+                    name: 'grade'
                 }]
 		
     });
@@ -482,9 +482,10 @@ Ext.onReady(function(){
 		
 		tempForm.getForm().findField('project').setValue(project);
 		tempForm.getForm().findField('edate').setValue(Ext.Date.format(edate, 'Y-m-d'));
+		tempForm.getForm().findField('grade').setValue(grade);
 
 		tempForm.submit({
-			url: '<%=contextPath%>/AssemblyYieldExcel.action?filename=' + escape(fileName),
+			url: '<%=contextPath%>/FTYieldExcel.action?filename=' + escape(fileName),
 			//waitMsg: 'Loading...',
 			method: 'POST',
 			standardSubmit: true,
