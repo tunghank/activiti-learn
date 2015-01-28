@@ -252,7 +252,7 @@ Ext.onReady(function(){
 				}  
 			});
 
-		 queryForm.form.reset();
+		 //queryForm.form.reset();
 
 	}
 
