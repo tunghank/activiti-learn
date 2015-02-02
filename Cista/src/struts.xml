@@ -346,7 +346,13 @@
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
              <result name="success"></result>
          </action>
-                  
+
+         <action name="ShowAllFunctionTree" class="com.cista.system.tree.action.AllFunctionTreeAction" method="ShowAllFunctionTree">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success"></result>
+         </action>
+         
          <!-- Smart Search -->
          <action name="SmartSearch" class="com.cista.system.ajax.action.SmartSearchAction" method="smartSearch">
          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>

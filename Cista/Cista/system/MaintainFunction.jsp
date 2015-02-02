@@ -47,7 +47,8 @@ Ext.require(
             'Ext.ux.form.SearchField',
 			'Ext.form.Panel',
 			'Ext.ux.form.MultiSelect',
-			'Ext.ux.form.ItemSelector'
+			'Ext.ux.form.ItemSelector',
+			'Ext.grid.plugin.CellEditing'
          ]  
            
 );
@@ -60,184 +61,16 @@ Ext.onReady(function(){
         return value ? value.dateFormat('Y/m/d') : '';
     };
 
-
-	/*************************
-	*User Information Grid
-	**************************/
-
-	var isEdit = false;   
-	//創建Model  
-	Ext.define(  
-			'Role',  
-			{  
-				extend:'Ext.data.Model',  
-				fields:[  
-						{name:'roleId',mapping:'roleId'},  
-						{name:'roleName',mapping:'roleName'},  
-						{name:'cdt',mapping:'cdt',type:'date',dataFormat:'Y-m-d'}
-				]  
-			}  
-	)
-	  
-	//創建數據源  
-	var store = Ext.create(  
-			'Ext.data.Store',  
-			{  
-				model:'Role',  
-				//設置分頁大小  
-				pageSize:10,  
-				proxy: {  
-					type: 'ajax',  
-					url : '<%=contextPath%>/AjaxRoleSearchLike.action',  
-					reader: {  
-						//數據格式為json  
-						type: 'json',  
-						root: 'root',  
-						//獲取數據總數  
-						totalProperty: 'total'  
-					}  
-				},
-				sorters:[{property:"userId",direction:"ASC"}],//按qq倒序
-				//autoLoad:{params:{start:0,limit:10}}//自動加載，每次加載一頁
-				autoLoad:true  
-			}  
-	); 
-
-	//創建多選框  
-	var checkBox = Ext.create('Ext.selection.CheckboxModel');   
-	var cellEditing = Ext.create('Ext.grid.plugin.CellEditing',  
-			{  
-				//表示「雙擊」才可以修改內容（取值只能為「1」或「2」）  
-				clicksToEdit:2  
-			}  
-	  
-	); 
-
-	//創建grid  
-	var roleListGrid = Ext.create('Ext.grid.Panel',{  
-		  	id:"roleListGrid", 
-			store:store,  
-			//添加到grid  
-			/*selModel: { selType: 'checkboxmodel' ,
-						mode: "single",//multi,simple,single；默认为多选multi
-						},   //選擇框*/
-			//表示可以選擇行  
-			disableSelection: false,  
-			columnLines: true,   
-			loadMask: true,   
-			//添加修改功能  
-			plugins: [cellEditing] ,  
-			columns:[  
-					 {  
-						id:'gRoleId',  
-						//表頭  
-						header:'Role ID',  
-						width:280,  
-						//內容  
-						dataIndex:'roleId',  
-						sortable:true,
-						hidden:true
-					   
-					 },{  
-						 id:'gRoleName',  
-						 header:'Role Name',  
-						 width:100,  
-						 dataIndex:'roleName',  
-						 sortable:false
-					  
-						},{  
-							id:'gCdt',  
-							header:'Create Date',  
-							width:120,  
-							dataIndex:'cdt',  
-							//lazyRender: true,					  
-							renderer: function(value){   
-										return value ? Ext.Date.dateFormat(value, 'Y-m-d H:m:s') : '';   
-									}
-						}
-			],  
-			height:335,   
-			width:370,   
-			title: 'Role List',   
-			renderTo: 'roleGrid',
-			dockedItems:[  					   
-						   
-						 //添加搜索控件  
-						 {  
-							 dock: 'top',   
-							 xtype: 'toolbar',   
-							 items: {   
-								 width: 250,   
-								 fieldLabel: 'Search Role:',   
-								 labelWidth: 80,   
-								 xtype: 'searchfield',   
-								 store: store   
-							}  
-						 },{   
-							 dock: 'bottom',   
-							 xtype: 'pagingtoolbar',   
-							 store: store,   
-							 displayInfo: true,   
-							 displayMsg: '顯示 {0} - {1} 條，共計 {2} 條',   
-							 emptyMsg: '沒有數據'   
-						}
-			],
-			listeners: {
-				itemclick: function(dv, record, item, index, e) {
-					showRoleTree(record.get('roleId'), record.get('roleName'));      
-				}
-			}
-			  
-		}  
-	)  
-	store.loadPage(1);
-
-    /*
-     * Ext.ux.form.ItemSelector Example Code
-     */
-
-	//創建Model  
-	Ext.define(  
-			'Role',  
-			{  
-				extend:'Ext.data.Model',  
-				fields:[  
-						{name:'roleId',mapping:'roleId'},  
-						{name:'roleName',mapping:'roleName'}
-				]  
-			}  
-	)
-
-	//創建數據源  
-	var roleDs = Ext.create(  
-			'Ext.data.Store',  
-			{  
-				model:'Role',  
-				proxy: {  
-					type: 'ajax',  
-					url : '<%=contextPath%>/AjaxRoleList.action',  
-					reader: {  
-						//數據格式為json  
-						type: 'json' 
-					}  
-				},
-				sorters:[{property:"roleId",direction:"ASC"}],
-				autoLoad:true  
-			}  
-	); 
-
-
-
 	//Tree
 
     Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 	//EXTJS4.0
 	var treeStore = new Ext.data.TreeStore ({
 		expanded: true, 
-		/*proxy: {
+		proxy: {
 			type: 'ajax',
-			url: '<%=contextPath%>/ShowRoleFunctionTree.action'
-		},*/
+			url: '<%=contextPath%>/ShowAllFunctionTree.action'
+		},
 		sorters: [{
 			property: 'id',
 			direction: 'ASC'
@@ -250,9 +83,10 @@ Ext.onReady(function(){
 		}]
 	}); 
 
-	var roleFunctionTree =  new Ext.tree.TreePanel({
+
+	var functionTree =  new Ext.tree.TreePanel({
 		id: 'tree-panel',
-		title: 'Role Function Tree',
+		title: 'Function Tree',
 		autoScroll: true,
 		animate:true,
 		enableDD:false,
@@ -261,168 +95,118 @@ Ext.onReady(function(){
 		lines: false,
 		singleExpand: false,
 		useArrows: true,	
-		height:435,   
+		height:570,   
 		width:400,  
-		renderTo: 'roleFunctionTreeList',
+		renderTo: 'functionTreeList',
 		store: treeStore,
-		listeners:{
-            checkchange:function (node,checked,eOpts){
-                //選中事件
-                setChildChecked(node,checked);
-                setParentChecked(node,checked);
-            }
+		viewConfig: {  
+            plugins: {  
+                ptype: 'treeviewdragdrop'  
+            },  
+            listeners: {  
+                drop: function(node, data, dropRec, dropPosition) {  
+                    store.sync();  
+                }  
+            }  
         },
-        dockedItems: [{
-			dock: 'bottom',
-            xtype: 'toolbar',
-            items: {
-                text: 'Save checked function',
-				border: 2,
-                scale: 'small',
-				iconCls: 'save',
-                handler: function(){
-					//得到Grid選中的行
-					var gridRecord = roleListGrid.getSelectionModel().getSelection();
-					if(gridRecord.length==0){  
-						 Ext.MessageBox.show({   
-							title:"提示",   
-							msg:"請先選擇'Role' !!!!",
-							icon: Ext.MessageBox.ERROR
-						 })  
-						return;  
-					}
-
-					var roleName = gridRecord[0].get('roleName');
-					var roleUid = gridRecord[0].get('roleId');
-
-					//alert(roleUid + " " + roleName );
-
-                    var records = roleFunctionTree.getView().getChecked();
-                    var names = [];
-
-					var datar = new Array();
-					for (var i = 0; i < records.length; i++) {
-							datar.push(records[i].data);
-					}
-					var jsonDataEncode = Ext.encode(datar);
-
-					//alert(jsonDataEncode );
-
-					Ext.Ajax.timeout = 120000; // 120 seconds				
-					Ext.Ajax.request({  //ajax request test  
-								url : '<%=contextPath%>/AjaxSaveRoleFunctionList.action',
-								params : {
-									roleUid: roleUid,
-									data: jsonDataEncode
-								},
-								method : 'POST',
-								scope:this,
-								success : function(response, options) {
-									//parse Json data
-									var freeback = Ext.JSON.decode(response.responseText);
-									var message =  freeback.ajaxMessage;
-									var status  =  freeback.ajaxStatus;
-
-									if( status == '<%=CistaUtil.AJAX_RSEPONSE_ERROR%>' ){//ERROR
-										Ext.MessageBox.alert('Success', 'ERROR : '+  message );
-									}else{//FINISH
-										Ext.MessageBox.alert('Success', 'FINISH : '+ roleName + "'s Role Function " + message );										
-									}
-									
-								},  
-								failure : function(response, options) {  
-									Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
-								}  
-					});//End Ext.Ajax.request
-
-
-
-                }
-            }
-        }]
+		listeners: {'cellcontextmenu' : tree_event},
+      
 
 	});
 	
-	setTimeout(function(){roleFunctionTree.expandAll();},0);
-	roleFunctionTree.getRootNode().expand(true);
-	roleFunctionTree.expandAll();
+	setTimeout(function(){functionTree.expandAll();},0);
+	functionTree.getRootNode().expand(true);
+	functionTree.expandAll();
+
+	//Node增刪
+			//定義右擊功能表
+		var rightClickMenu = Ext.create('Ext.menu.Menu' ,{
+			items: [{
+				id:'add',
+		        text: '增加節點'
+		    },{
+		    	id: 'del',
+		        text: '刪除節點'
+		    }],
+		    listeners: {'click': menuClick }
+		});
+		
+		//保存點擊的節點
+		var clickNode ;	
+		
+		//節點菜單事件
+		 function menuClick (menu, item, e, eOpts ) {
+		 	if(item.id == 'add'){
+		 		Ext.MessageBox.prompt('', '輸入節點名:', function (btn,text){ 
+			 		if(text == null || text == ''){
+			 			return false;
+			 		}
+			 		var tmpNode = treeStore.getNodeById(clickNode.get('id'));
+			 		if(tmpNode.isLeaf()){ //如果是葉節點，需要改變leaf屬性，再添加節點
+			 			changeNodeLeafStatus(tmpNode );
+						var nowNode =  treeStore.getNodeById(idSeq);
+						//往該節點添加子節點
+		 				nowNode.appendChild( {
+		 					id: ++idSeq,
+	                        text: text,
+	                        leaf:true
+	                    } ) ;
+			 		}
+			 		//如果不是葉節點，直接添加
+					else{
+			 			tmpNode.appendChild( {
+		 					id: ++idSeq,
+	                        text: text,
+	                        leaf:true
+	                    } ) ;
+			 		}
+		 		});
+		 	}
+		 	else if(item.id == 'del'){
+		 		var parentNode = clickNode.parentNode;
+		 		clickNode.remove();
+		 		//刪除後沒有子節點了，那麼父節點就需要改變leaf屬性
+		 		if(!parentNode.hasChildNodes()){ 
+		 			changeNodeLeafStatus(parentNode);
+		 		}
+		 		
+		 	}
+		}
+		
+		//要改變狀態的節點，必須是葉節點 (leaf= true) 且沒有子節點
+   		function changeNodeLeafStatus( node ){
+   			if(node.isRoot() || node.hasChildNodes() ) {
+   				return false;
+   			}
+   			var nodeText = node.get('text');
+   			var isLeaf = node.isLeaf();
+   			var parentNode = node.parentNode;
+   			//取得點擊節點的相鄰下一個節點，以便刪除之後插入時做標識，知道從哪裡插入
+ 			var nextSibling = node.nextSibling;
+   			//刪除節點
+ 			node.destroy();
+   			//創建一個一樣的節點
+ 			parentNode.insertBefore({
+				 id: ++idSeq,
+				 text: nodeText,
+         		 leaf: !isLeaf
+			} , nextSibling);
+   		}
+		
+		function tree_event( obj, td, cellIndex, record, tr, rowIndex, e, eOpts)
+   		{
+   			record.leaf = false;
+			clickNode = record;
+   			e.preventDefault();
+   			rightClickMenu.showAt(e.getXY());
+   		}
+
+
+
 	//END Tree
 
-	/*****************************************
-	* Tree checked
-	******************************************/
-
-	function setChildChecked(node,checked){
-
-		node.expand();
-		node.set({checked:checked});
-		if(node.hasChildNodes()){
-			node.eachChild(function(child) {
-				setChildChecked(child,checked);
-			});
-		}
-	}
-
-	function setParentChecked(node,checked){
-        node.set({checked:checked});
-        var parentNode = node.parentNode;
-        if(parentNode !=null){
-            var flag = false;
-            parentNode.eachChild(function(child) {
-                if(child.data.checked == true){
-                    flag = true;
-                }
-            });
-            if(checked == false){
-                if(!flag){
-                    setParentChecked(parentNode,checked);
-                }
-            }else{
-                if(flag){
-                    setParentChecked(parentNode,checked);
-                }
-            }
-         }
-    }
 
 
-	function showRoleTree(roleUid, roleName){
-
-		roleFunctionTree.setTitle( "  " + roleName + "  Function List" );
-		Ext.Ajax.timeout = 120000; // 120 seconds				
-		Ext.Ajax.request({  //ajax request test  
-					url : '<%=contextPath%>/ShowRoleFunctionTree.action',
-					params : {
-						roleUid: roleUid
-					},
-					method : 'POST',
-					scope:this,
-					success : function(response, options) {
-						//parse Json data
-						var freeback = Ext.JSON.decode(response.responseText);
-						
-						//Load Data in Tree store
-						roleFunctionTree.getRootNode().removeAll();
-						roleFunctionTree.getRootNode().appendChild(freeback);
-						
-						roleFunctionTree.getRootNode().expand(true);
-						
-						/*var message =  freeback.ajaxMessage;
-						var status  =  freeback.ajaxStatus;
-
-						if( status == '<%=CistaUtil.AJAX_RSEPONSE_ERROR%>' ){//ERROR
-							Ext.MessageBox.alert('Success', 'ERROR : '+  message );
-						}else{//FINISH
-							Ext.MessageBox.alert('Success', 'FINISH : '+ roleName + "'s Role Function " + message );										
-						}*/
-						
-					},  
-					failure : function(response, options) {  
-						Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
-					}  
-		});//End Ext.Ajax.request
-
-	}// End showRole()
 
 
 });
@@ -465,9 +249,7 @@ Ext.onReady(function(){
 	.valid-text{background:#EEEEEE;color:#BC6618;}
 
 	/** HTML Layout **/
-	#functionTitle  {position:absolute; visibility:visible; z-index:1; top:5px; left:5px;}
-	#roleGrid  {position:absolute; visibility:visible; z-index:3; top:45px; left:5px;}
-	#roleFunctionTreeList  {position:absolute; visibility:visible; z-index:2; top:45px; left:420px;}
+	#functionTreeList  {position:absolute; visibility:visible; z-index:2; top:45px; left:10px;}
 </style>
 <link rel="stylesheet" type="text/css" href="../js/extjs42/examples/ux/css/ItemSelector.css" />
 </head>
@@ -491,6 +273,6 @@ Ext.onReady(function(){
 </table>
 </div>
 <div id="roleGrid" ></div>
-<div id="roleFunctionTreeList" ></div>	
+<div id="functionTreeList" ></div>	
 </body>
 </html>
