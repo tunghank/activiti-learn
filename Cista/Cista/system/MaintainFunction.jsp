@@ -99,7 +99,7 @@ Ext.onReady(function(){
 		width:400,  
 		renderTo: 'functionTreeList',
 		store: treeStore,
-		viewConfig: {  
+		/*viewConfig: {  
             plugins: {  
                 ptype: 'treeviewdragdrop'  
             },  
@@ -108,8 +108,8 @@ Ext.onReady(function(){
                     store.sync();  
                 }  
             }  
-        },
-		listeners: {'cellcontextmenu' : tree_event},
+        },*/
+		listeners: {'cellcontextmenu' : tree_event}
       
 
 	});
@@ -119,89 +119,95 @@ Ext.onReady(function(){
 	functionTree.expandAll();
 
 	//Node增刪
-			//定義右擊功能表
-		var rightClickMenu = Ext.create('Ext.menu.Menu' ,{
-			items: [{
-				id:'add',
-		        text: '增加節點'
-		    },{
-		    	id: 'del',
-		        text: '刪除節點'
-		    }],
-		    listeners: {'click': menuClick }
-		});
-		
-		//保存點擊的節點
-		var clickNode ;	
-		
-		//節點菜單事件
-		 function menuClick (menu, item, e, eOpts ) {
-		 	if(item.id == 'add'){
-		 		Ext.MessageBox.prompt('', '輸入節點名:', function (btn,text){ 
-			 		if(text == null || text == ''){
-			 			return false;
-			 		}
-			 		var tmpNode = treeStore.getNodeById(clickNode.get('id'));
-			 		if(tmpNode.isLeaf()){ //如果是葉節點，需要改變leaf屬性，再添加節點
-			 			changeNodeLeafStatus(tmpNode );
-						var nowNode =  treeStore.getNodeById(idSeq);
-						//往該節點添加子節點
-		 				nowNode.appendChild( {
-		 					id: ++idSeq,
-	                        text: text,
-	                        leaf:true
-	                    } ) ;
-			 		}
-			 		//如果不是葉節點，直接添加
-					else{
-			 			tmpNode.appendChild( {
-		 					id: ++idSeq,
-	                        text: text,
-	                        leaf:true
-	                    } ) ;
-			 		}
-		 		});
-		 	}
-		 	else if(item.id == 'del'){
-		 		var parentNode = clickNode.parentNode;
-		 		clickNode.remove();
-		 		//刪除後沒有子節點了，那麼父節點就需要改變leaf屬性
-		 		if(!parentNode.hasChildNodes()){ 
-		 			changeNodeLeafStatus(parentNode);
+	//定義右擊功能表
+	var rightClickMenu = Ext.create('Ext.menu.Menu' ,{
+		items: [{
+			id:'add',
+	        text: '增加節點'
+	    },{
+	    	id: 'del',
+	        text: '刪除節點'
+	    }],
+	    listeners: {'click': menuClick }
+	});
+	
+	//保存點擊的節點
+	var clickNode ;	
+	
+	//節點菜單事件
+	 function menuClick (menu, item, e, eOpts ) {
+	 	if(item.id == 'add'){
+	 		Ext.MessageBox.prompt('', '輸入節點名:', function (btn,text){ 
+		 		if(text == null || text == ''){
+		 			return false;
 		 		}
-		 		
-		 	}
-		}
-		
-		//要改變狀態的節點，必須是葉節點 (leaf= true) 且沒有子節點
-   		function changeNodeLeafStatus( node ){
-   			if(node.isRoot() || node.hasChildNodes() ) {
-   				return false;
-   			}
-   			var nodeText = node.get('text');
-   			var isLeaf = node.isLeaf();
-   			var parentNode = node.parentNode;
-   			//取得點擊節點的相鄰下一個節點，以便刪除之後插入時做標識，知道從哪裡插入
- 			var nextSibling = node.nextSibling;
-   			//刪除節點
- 			node.destroy();
-   			//創建一個一樣的節點
- 			parentNode.insertBefore({
-				 id: ++idSeq,
-				 text: nodeText,
-         		 leaf: !isLeaf
-			} , nextSibling);
+		 		var tmpNode = treeStore.getNodeById(clickNode.get('id'));
+		 		//if(tmpNode.isLeaf()){ //如果是葉節點，需要改變leaf屬性，再添加節點
+				if(tmpNode.data.cls == "folder"){ //如果是葉節點，需要改變leaf屬性，再添加節點
+					alert('Leaf');
+		 			changeNodeLeafStatus(tmpNode );
+					var nowNode =  treeStore.getNodeById(clickNode.get('id'));
+					alert("nowNode " + nowNode);
+					//往該節點添加子節點
+	 				nowNode.appendChild( {
+	 					id: 1000,
+						parentId:clickNode.get('id'),
+						text:text,
+						cls: 'file',
+						hrefTarget: 'mainFrame',
+	                    leaf: true
+	                } ) ;
+		 		}
+		 		//如果不是葉節點，直接添加
+				else{
+					alert('No Leaf');
+		 			tmpNode.appendChild( {
+	 					//id: ++idSeq,
+						id:1000,
+	                    text: text,
+	                    leaf:true
+	                } ) ;
+		 		}
+	 		});
+	 	}
+	 	else if(item.id == 'del'){
+	 		var parentNode = clickNode.parentNode;
+	 		clickNode.remove();
+	 		//刪除後沒有子節點了，那麼父節點就需要改變leaf屬性
+	 		if(!parentNode.hasChildNodes()){ 
+	 			changeNodeLeafStatus(parentNode);
+	 		}
+	 		
+	 	}
+	}
+	
+	//要改變狀態的節點，必須是葉節點 (leaf= true) 且沒有子節點
+   	function changeNodeLeafStatus( node ){
+   		if(node.isRoot() || node.hasChildNodes() ) {
+   			return false;
    		}
-		
-		function tree_event( obj, td, cellIndex, record, tr, rowIndex, e, eOpts)
-   		{
-   			record.leaf = false;
-			clickNode = record;
-   			e.preventDefault();
-   			rightClickMenu.showAt(e.getXY());
-   		}
-
-
+   		var nodeText = node.get('text');
+   		var isLeaf = node.isLeaf();
+   		var parentNode = node.parentNode;
+   		//取得點擊節點的相鄰下一個節點，以便刪除之後插入時做標識，知道從哪裡插入
+ 		var nextSibling = node.nextSibling;
+   		//刪除節點
+ 		node.destroy();
+   		//創建一個一樣的節點
+ 		parentNode.insertBefore({
+			 id: ++idSeq,
+			 text: nodeText,
+     		 leaf: !isLeaf
+		} , nextSibling);
+   	}
+	
+	function tree_event( obj, td, cellIndex, record, tr, rowIndex, e, eOpts)
+   	{
+   		record.leaf = false;
+		clickNode = record;
+   		e.preventDefault();
+   		rightClickMenu.showAt(e.getXY());
+   	}
 
 	//END Tree
 
