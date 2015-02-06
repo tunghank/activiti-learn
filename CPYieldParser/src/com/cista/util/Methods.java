@@ -1,4 +1,4 @@
-package com.cista.util.loader;
+package com.cista.util;
 
 import java.io.File;
 import java.util.Vector;
