@@ -1,6 +1,9 @@
 package com.cista.cpYield.to;
 
 import java.util.Date;
+import java.util.List;
+
+import com.cista.cpYield.to.cpYieldLotBinTo;
 
 public class cpYieldLotTo {
 	
@@ -16,6 +19,8 @@ public class cpYieldLotTo {
 	private  Integer failDie;
 	private  Integer totelDie;
 	private  Date cdt;
+	private  List<cpYieldLotBinTo> cpYieldLotBins;
+	
 	
 	public cpYieldLotTo() {
 
@@ -115,6 +120,14 @@ public class cpYieldLotTo {
 
 	public void setCdt(Date cdt) {
 		this.cdt = cdt;
+	}
+
+	public List<cpYieldLotBinTo> getCpYieldLotBins() {
+		return cpYieldLotBins;
+	}
+
+	public void setCpYieldLotBins(List<cpYieldLotBinTo> cpYieldLotBins) {
+		this.cpYieldLotBins = cpYieldLotBins;
 	}
 
 
