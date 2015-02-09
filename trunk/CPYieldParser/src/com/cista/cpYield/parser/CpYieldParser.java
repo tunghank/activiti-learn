@@ -111,6 +111,7 @@ public class CpYieldParser extends Thread {
             
             //1.2 確認有資料開使處理
             if( lineDataList !=null ){
+            	CpYieldParserDao cpYieldParserDao = new CpYieldParserDao();
             	
             	CpYieldLotTo cpYieldLotTo = new CpYieldLotTo();
             	
@@ -126,6 +127,7 @@ public class CpYieldParser extends Thread {
                 String cpLot = arrayWafer[0].trim();
                 String waferId = arrayWafer[1].trim();
                 String machineId = arrayWafer[2].trim();
+                Integer cpTestTimes = cpYieldParserDao.getMaxCpTestTimes(cpLot, waferId);
                 
             	String xMaxCoor = lineDataList.get(2).split("=")[1].trim();
             	String yMaxCoor = lineDataList.get(3).split("=")[1].trim();
@@ -223,7 +225,7 @@ public class CpYieldParser extends Thread {
             	
             	//1.5 Set data in To 
             	cpYieldLotTo.setCpYieldUuid(cpYieldUuid);
-            	cpYieldLotTo.setCpTestTimes(1);
+            	cpYieldLotTo.setCpTestTimes(cpTestTimes);
             	cpYieldLotTo.setCpLot(cpLot);
             	cpYieldLotTo.setWaferId(waferId);
             	cpYieldLotTo.setMachineId(machineId);
@@ -239,7 +241,6 @@ public class CpYieldParser extends Thread {
             	fIn.close();
                 br.close();
             	//1.6 DataBasse
-                CpYieldParserDao cpYieldParserDao = new CpYieldParserDao();
                 //1.6.1 Insert CP Lot Table
                 cpYieldParserDao.insertCpYieldLot(cpYieldLotTo);
                 cpYieldParserDao.insertCpYieldLotBin(cpYieldLotBins);

@@ -12,6 +12,7 @@ import com.cista.cpYield.to.CpYieldLotBinTo;
 import com.cista.cpYield.to.CpYieldLotTo;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 
 public class CpYieldParserDao extends BaseDao {
@@ -90,4 +91,30 @@ public class CpYieldParserDao extends BaseDao {
     	int result [] = sjt.batchUpdate(sql, batch);
     	return result;
 	}
+	
+	public Integer getMaxCpTestTimes(String cpLot, String waferId) throws DataAccessException{
+		
+		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();
+		String sql  = "SELECT MAX(A.CP_TEST_TIMES) CP_TEST_TIMES, A.CP_LOT, A.WAFER_ID " +
+					" FROM CP_YIELD_LOT A " +
+					" WHERE 1=1 " +
+					" AND A.CP_LOT = ? " +
+					" AND A.WAFER_ID = ? " +
+					" GROUP BY A.CP_LOT, A.WAFER_ID";
+		
+		logger.debug("sql " + sql);
+		
+    	ParameterizedBeanPropertyRowMapper<CpYieldLotTo> rowMapper = 
+    		new ParameterizedBeanPropertyRowMapper<CpYieldLotTo>();
+    	rowMapper.setMappedClass(CpYieldLotTo.class);
+
+    	List<CpYieldLotTo> result = sjt.query(sql,rowMapper, new Object[] {cpLot, waferId} );
+		
+		if (result != null && result.size() > 0) {
+			return result.get(0).getCpTestTimes() + 1;
+		} else {
+			return 0;
+		}	
+	}
+	
 }
