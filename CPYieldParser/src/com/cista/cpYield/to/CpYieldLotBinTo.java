@@ -2,16 +2,16 @@ package com.cista.cpYield.to;
 
 import java.util.Date;
 
-public class cpYieldLotBinTo {
+public class CpYieldLotBinTo {
 	
 	private  String cpYieldBinUuid;
 	private  String cpYieldUuid;
 	private  String bin;
 	private  Integer die;
 	private  String percentage;
-	private  Date cdt;
 
-	public cpYieldLotBinTo() {
+
+	public CpYieldLotBinTo() {
 
 	}
 
@@ -55,14 +55,5 @@ public class cpYieldLotBinTo {
 		this.percentage = percentage;
 	}
 
-	public Date getCdt() {
-		return cdt;
-	}
 
-	public void setCdt(Date cdt) {
-		this.cdt = cdt;
-	}
-
-	
-	
 }
