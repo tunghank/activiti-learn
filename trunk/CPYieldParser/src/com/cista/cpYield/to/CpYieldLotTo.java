@@ -3,9 +3,9 @@ package com.cista.cpYield.to;
 import java.util.Date;
 import java.util.List;
 
-import com.cista.cpYield.to.cpYieldLotBinTo;
+import com.cista.cpYield.to.CpYieldLotBinTo;
 
-public class cpYieldLotTo {
+public class CpYieldLotTo {
 	
 	private  String cpYieldUuid;
 	private  Integer cpTestTimes;
@@ -19,10 +19,15 @@ public class cpYieldLotTo {
 	private  Integer failDie;
 	private  Integer totelDie;
 	private  Date cdt;
-	private  List<cpYieldLotBinTo> cpYieldLotBins;
+	private  String fileName;
+	private  String fileMimeType;
+	private  String ftpFlag;
+	private  Date ftpSendTime;
+	
+	private  List<CpYieldLotBinTo> cpYieldLotBins;
 	
 	
-	public cpYieldLotTo() {
+	public CpYieldLotTo() {
 
 	}
 
@@ -122,12 +127,44 @@ public class cpYieldLotTo {
 		this.cdt = cdt;
 	}
 
-	public List<cpYieldLotBinTo> getCpYieldLotBins() {
+	public List<CpYieldLotBinTo> getCpYieldLotBins() {
 		return cpYieldLotBins;
 	}
 
-	public void setCpYieldLotBins(List<cpYieldLotBinTo> cpYieldLotBins) {
+	public void setCpYieldLotBins(List<CpYieldLotBinTo> cpYieldLotBins) {
 		this.cpYieldLotBins = cpYieldLotBins;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getFileMimeType() {
+		return fileMimeType;
+	}
+
+	public void setFileMimeType(String fileMimeType) {
+		this.fileMimeType = fileMimeType;
+	}
+
+	public String getFtpFlag() {
+		return ftpFlag;
+	}
+
+	public void setFtpFlag(String ftpFlag) {
+		this.ftpFlag = ftpFlag;
+	}
+
+	public Date getFtpSendTime() {
+		return ftpSendTime;
+	}
+
+	public void setFtpSendTime(Date ftpSendTime) {
+		this.ftpSendTime = ftpSendTime;
 	}
 
 

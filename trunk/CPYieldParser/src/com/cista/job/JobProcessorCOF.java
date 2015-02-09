@@ -1,6 +1,6 @@
 package com.cista.job;
 
-import com.cista.wip.loader.SMICWipParser;
+import com.cista.cpYield.parser.CpYieldParser;
 
 public class JobProcessorCOF extends ImportProcessor {
     private static Integer lock = 0;
