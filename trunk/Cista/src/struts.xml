@@ -430,7 +430,7 @@
              <result name="success">/Report/FoundryWip.jsp</result>
          </action> 
          
-         <!-- 3. Assembly Yield Wip -->
+         <!-- 4. Assembly Yield Wip -->
          <action name="AssemblyYieldPre" class="com.cista.report.action.AssemblyYield" method="AssemblyYieldPre">
          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
@@ -449,7 +449,7 @@
              <result name="success" >/Report/AssemblyYield.jsp</result>
          </action>
          
-         <!-- 3. FT Yield Wip -->
+         <!-- 5. FT Yield Wip -->
          <action name="FTYieldPre" class="com.cista.report.action.FTYield" method="FTYieldPre">
          	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
@@ -467,6 +467,18 @@
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
              <result name="success" >/Report/FTYield.jsp</result>
          </action>
+        
+         
+         <!-- ### CP Yield Back To SMIC ### -->
+         <action name="CpYieldBackToSMICPre" class="com.cista.cpYield.action.CpYieldBackToSMIC" method="CpYieldBackToSMICPre">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success" >/CpYield/CpYieldBackToSMIC.jsp</result>
+         </action>
+         
+         
+         
+         
          
 		<!-- NTLM -->
          <!-- <action name="NtlmTest" class="com.cista.system.ldap.action.NtlmTestAction" method="ntlmTest"> -->
