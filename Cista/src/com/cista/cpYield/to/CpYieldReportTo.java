@@ -1,12 +1,15 @@
 package com.cista.cpYield.to;
 
 import java.util.Date;
-import java.util.List;
 
-import com.cista.cpYield.to.CpYieldLotBinTo;
 
-public class CpYieldReportTo {
+public class CpYieldReportTo extends com.cista.system.util.BaseObject 
+implements	java.io.Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private  String cpYieldUuid;
 	private  Integer cpTestTimes;
 	private  String cpLot;

@@ -475,7 +475,12 @@
          	 <interceptor-ref name="defaultStack" ></interceptor-ref>
              <result name="success" >/CpYield/CpYieldBackToSMIC.jsp</result>
          </action>
-         
+
+         <action name="QueryCpYieldBackToSMIC" class="com.cista.cpYield.action.CpYieldBackToSMIC" method="QueryCpYieldBackToSMIC">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success" >/CpYield/CpYieldBackToSMIC.jsp</result>
+         </action>         
          
          
          
