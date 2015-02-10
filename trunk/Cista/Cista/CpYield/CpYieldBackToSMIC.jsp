@@ -156,7 +156,7 @@ Ext.onReady(function(){
 
 		Ext.Ajax.timeout = 120000; // 120 seconds
 		Ext.Ajax.request({  //ajax request test  
-				url : '<%=contextPath%>/QueryFoundryWip.action',  
+				url : '<%=contextPath%>/QueryCpYieldBackToSMIC.action',  
 				params : {
 					query:Ext.JSON.encode(query)
 				},
@@ -247,7 +247,7 @@ Ext.onReady(function(){
 				//purgePageCount: 0,
 				proxy: {  
 					type: 'ajax',  
-					url : '<%=contextPath%>/QueryFoundryWip.action',  
+					url : '<%=contextPath%>/QueryCpYieldBackToSMIC.action',  
 					reader: {  
 						//數據格式為json  
 						type: 'json',  
@@ -292,11 +292,12 @@ Ext.onReady(function(){
 			//添加修改功能  
 			columns:[  
 						{  
-						 id:'gCpYieldUuid',  
+						 id:'gCpYieldUuid',
 						 header:'CpYieldUuid',  
 						 width:50,  
 						 dataIndex:'cpYieldUuid',  
-						 sortable:false
+						 sortable:false,
+						 hidden:true
 					  
 						},{  
 						 id:'gCpLot',  
@@ -308,35 +309,35 @@ Ext.onReady(function(){
 						},{  
 						 id:'gWaferId',  
 						 header:'Wafer Id',  
-						 width:55,  
+						 width:53,  
 						 dataIndex:'waferId',  
 						 sortable:false
 					  
 						},{
 						 id:'gMachineId',  
 						 header:'Machine Id',  
-						 width:65,  
+						 width:63,  
 						 dataIndex:'machineId',  
 						 sortable:false
 					  
 						},{  
 						 id:'gCpTestTimes',  
 						 header:'Times',  
-						 width:40,  
+						 width:38,  
 						 dataIndex:'cpTestTimes',  
 						 sortable:false
 					  
 						},{  
 						 id:'gXMaxCoor',  
 						 header:'X Max Coor',  
-						 width:65,  
+						 width:62,  
 						 dataIndex:'xMaxCoor',  
 						 sortable:false
 					  
 						},{  
 						 id:'gYMaxCoor',  
 						 header:'Y Max Coor',  
-						 width:65,  
+						 width:62,  
 						 dataIndex:'yMaxCoor',  
 						 sortable:false
 					  
@@ -357,30 +358,94 @@ Ext.onReady(function(){
 						},{  
 						 id:'gFailDie',  
 						 header:'Fail Die',  
-						 width:50,  
+						 width:45,  
 						 dataIndex:'failDie',  
 						 sortable:false
 					  
 						},{  
 						 id:'gTotelDie',  
 						 header:'Totel Die',  
-						 width:70,  
+						 width:52,  
 						 dataIndex:'totelDie',  
 						 sortable:false
 					  
-						}/*,{  
+						},{  
+						 id:'gBin0',  
+						 header:'Bin0',  
+						 width:45,  
+						 dataIndex:'bin0',  
+						 sortable:false
+					  
+						},{  
+						 id:'gBin3',  
+						 header:'Bin3',  
+						 width:45,  
+						 dataIndex:'bin3',  
+						 sortable:false
+					  
+						},{  
+						 id:'gBin5',  
+						 header:'Bin5',  
+						 width:45,  
+						 dataIndex:'bin5',  
+						 sortable:false
+					  
+						},{  
+						 id:'gBin10',  
+						 header:'Bin10',  
+						 width:45,  
+						 dataIndex:'bin10',  
+						 sortable:false
+					  
+						},{  
+						 id:'gBin88',  
+						 header:'Bin88',  
+						 width:45,  
+						 dataIndex:'bin88',  
+						 sortable:false
+					  
+						},{  
+						 id:'gBin100',  
+						 header:'Bin100',  
+						 width:48,  
+						 dataIndex:'bin100',  
+						 sortable:false
+					  
+						},{  
+						 id:'gBin101',  
+						 header:'Bin101',  
+						 width:48,  
+						 dataIndex:'bin101',  
+						 sortable:false
+					  
+						},{  
+						 id:'gBin121',  
+						 header:'Bin121',  
+						 width:48,  
+						 dataIndex:'bin121',  
+						 sortable:false
+					  
+						},{  
+						 id:'gBin211',  
+						 header:'Bin211',  
+						 width:48,  
+						 dataIndex:'bin0',  
+						 sortable:false
+					  
+						},{  
 							id:'gCdt',  
 							header:'Create Date',  
 							width:80,  
 							dataIndex:'cdt',  
-							//lazyRender: true,					  
+							//lazyRender: true,
+							hidden:true,
 							renderer: function(value){   
 										return value ? Ext.Date.dateFormat(value, 'Y-m-d') : '';   
 									}
-						}*/,{  
+						},{  
 						 id:'gFileName',  
 						 header:'File Name',  
-						 width:65,  
+						 width:85,  
 						 dataIndex:'fileName',  
 						 sortable:false
 					  
@@ -389,69 +454,6 @@ Ext.onReady(function(){
 						 header:'Ftp Flag',  
 						 width:50,  
 						 dataIndex:'ftpFlag',  
-						 sortable:false
-					  
-						},{  
-						 id:'gBin0',  
-						 header:'Bin0',  
-						 width:60,  
-						 dataIndex:'bin0',  
-						 sortable:false
-					  
-						},{  
-						 id:'gBin3',  
-						 header:'Bin3',  
-						 width:60,  
-						 dataIndex:'bin3',  
-						 sortable:false
-					  
-						},{  
-						 id:'gBin5',  
-						 header:'Bin5',  
-						 width:60,  
-						 dataIndex:'bin5',  
-						 sortable:false
-					  
-						},{  
-						 id:'gBin10',  
-						 header:'Bin10',  
-						 width:60,  
-						 dataIndex:'bin10',  
-						 sortable:false
-					  
-						},{  
-						 id:'gBin88',  
-						 header:'Bin88',  
-						 width:60,  
-						 dataIndex:'bin88',  
-						 sortable:false
-					  
-						},{  
-						 id:'gBin100',  
-						 header:'Bin100',  
-						 width:60,  
-						 dataIndex:'bin100',  
-						 sortable:false
-					  
-						},{  
-						 id:'gBin101',  
-						 header:'Bin101',  
-						 width:60,  
-						 dataIndex:'bin101',  
-						 sortable:false
-					  
-						},{  
-						 id:'gBin121',  
-						 header:'Bin121',  
-						 width:60,  
-						 dataIndex:'bin121',  
-						 sortable:false
-					  
-						},{  
-						 id:'gBin211',  
-						 header:'Bin211',  
-						 width:60,  
-						 dataIndex:'bin0',  
 						 sortable:false
 					  
 						}
