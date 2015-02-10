@@ -38,8 +38,7 @@ public class CpYieldParser extends Thread {
 	protected final Log logger = LogFactory.getLog(getClass());
 	private MailAlert alert = new MailAlert();
 	
-    PreparedStatement pstmtMT;
-    Methods mod = new Methods();
+
     
     private File fileInUrl;
     private File fileOutUrl;
@@ -257,8 +256,8 @@ public class CpYieldParser extends Thread {
     			fIn.close();
     		}
     		logger.info("ERROR MOVE FILE");
-    		//mod.copyFile(csvFile, new File(fileErrorUrl + "\\" + csvFile.getName()));
-    		//csvFile.delete();
+    		Methods.copyFile(txtFile, new File(fileErrorUrl + "\\" + txtFile.getName()));
+    		txtFile.delete();
         	
         	StackTraceElement[] messages = e.getStackTrace();
         	Exception ex = new Exception(txtFile.getName());
@@ -295,11 +294,10 @@ public class CpYieldParser extends Thread {
 
     public void GetCpYieldFiles(){
 
-        Methods mod = new Methods();
 
         try {
        	    logger.debug("fileInUrl " + fileInUrl.getPath());
-            List fileList = mod.getFiles(fileInUrl);
+            List fileList = Methods.getFiles(fileInUrl);
             fileList =null!=fileList?fileList:new ArrayList();
 
             for (int i = 0; i < fileList.size(); i++) {
@@ -315,13 +313,13 @@ public class CpYieldParser extends Thread {
                 	   	logger.info(fileName + " is Parser false");
                 	   	//alert.setSubject(SystemContext.getConfig("config.himax.mail.subject") + " - " + fileName + " is Parser false");
                 	   	//alert.sendNoFile("CP Yield Parser fail:" + txtFile);
-                        //mod.copyFile(txtFile, new File(fileErrorUrl + "\\" + fileName));
-                        //txtFile.delete();
+                	   	Methods.copyFile(txtFile, new File(fileErrorUrl + "\\" + fileName));
+                        txtFile.delete();
                     } else {
 
                     	logger.info(fileName + " is Parser complete");
-                        //mod.copyFile(excelFile, new File(fileOutUrl + "\\" + file_name));
-                    	//txtFile.delete();
+                    	Methods.copyFile(txtFile, new File(fileOutUrl + "\\" + fileName));
+                    	txtFile.delete();
                     }
                 /*} else {
                     logger.info(file_name + " is not Bump's File");
