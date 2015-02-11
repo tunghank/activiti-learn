@@ -71,6 +71,10 @@ public class CpYieldBackToSMIC extends BaseAction{
 		
 		try {
 			request= ServletActionContext.getRequest();
+			
+			SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+	        SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
+			
 			//for paging        
 	        int total;//分頁。。。數據總數       
 	        int iStart;//分頁。。。每頁開始數據
@@ -93,6 +97,7 @@ public class CpYieldBackToSMIC extends BaseAction{
 	        CpYieldQueryTo queryTo = gson.fromJson(queryEl.toString(), CpYieldQueryTo.class);
 			logger.debug("queryTo " + queryTo.toString());		
 			
+			//1.0 處理Query 字串
 	        String start = queryTo.getStart();
             String limit = queryTo.getLimit();
             iStart = Integer.parseInt(start);
@@ -102,23 +107,51 @@ public class CpYieldBackToSMIC extends BaseAction{
             logger.debug("limit: " + limit);
 			
             
-			/*String lot = queryTo.getLot();
+			String lot = queryTo.getLot();
 			lot = null != lot ? lot : "";
 			logger.debug("lot " + lot);
 			lot = lot.replaceAll("\\'", "");
 			lot = lot.trim();
 			logger.debug("lot " + lot);
 			
-			String cistaProject = queryTo.getCistaProject();
-			cistaProject = null != cistaProject ? cistaProject : "";
-			logger.debug("cistaProject " + cistaProject);
-			cistaProject = cistaProject.replaceAll("\\'", "");
-			cistaProject = cistaProject.trim();
-			logger.debug("cistaProject " + cistaProject);*/
+			String ftpFlag = queryTo.getFtpFlag();
+			ftpFlag = null != ftpFlag ? ftpFlag : "";
+			logger.debug("ftpFlag " + ftpFlag);
+			ftpFlag = ftpFlag.replaceAll("\\'", "");
+			ftpFlag = ftpFlag.trim();
+			logger.debug("ftpFlag " + ftpFlag);
 			
+			String sCdt = queryTo.getsCdt();
+			sCdt = null != sCdt ? sCdt : "";
+			logger.debug("sCdt " + sCdt);
+			sCdt = sCdt.replaceAll("\\'", "");
+			sCdt = sCdt.trim();
+			if(!sCdt.equals("")){
+				df1.parse(sCdt);
+				sCdt = df2.format(df1.parse(sCdt)).toString();
+			}
+			
+			String sFtpSendTime = queryTo.getsFtpSendTime();
+			sFtpSendTime = null != sFtpSendTime ? sFtpSendTime : "";
+			logger.debug("sFtpSendTime " + sFtpSendTime);
+			sFtpSendTime = sFtpSendTime.replaceAll("\\'", "");
+			sFtpSendTime = sFtpSendTime.replaceAll("null", "");
+			sFtpSendTime = sFtpSendTime.trim();
+			if(!sFtpSendTime.equals("")){
+				df1.parse(sFtpSendTime);
+				sFtpSendTime = df2.format(df1.parse(sFtpSendTime)).toString();
+			}
+			
+			logger.debug("sFtpSendTime " + sFtpSendTime);
+			queryTo.setFtpFlag(ftpFlag);
+			queryTo.setsCdt(sCdt);
+			queryTo.setsFtpSendTime(sFtpSendTime);
+			queryTo.setLot(lot);
+
+			logger.debug("queryTo " + queryTo.toString());
 			
             CpYieldLotDao cpYieldLotDao = new CpYieldLotDao();
-			List<CpYieldReportTo> cpYieldList = cpYieldLotDao.getBins();
+			List<CpYieldReportTo> cpYieldList = cpYieldLotDao.getBins(queryTo);
 			
 			
 			//logger.debug("userList Size " + userList.size());
