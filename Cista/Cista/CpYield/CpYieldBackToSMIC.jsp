@@ -32,8 +32,11 @@
 <meta http-equiv="expires" content="0">
 <script type="text/javascript" src="<%=contextPath%>/js/extjs42/exporterExcel.js"></script>
 <script type="text/javascript">
-var cistaProject;
+//var cistaProject;
 var lot;
+var sCdt;
+var ftpFlag;
+var sFtpSendTime;
 var limit=10;
 //下面兩行代碼必須要，不然會報404錯誤  
 Ext.Loader.setConfig({enabled:true});  
@@ -61,8 +64,19 @@ Ext.onReady(function(){
         return value ? value.dateFormat('Y/m/d') : '';
     };
 
+	/*
+	* FTP FLAG
+	*/
+    var ftpFlagStore = Ext.create('Ext.data.Store', {
+    fields: ['name', 'val'],
+    data : [
+        {"name":"Not Send", "val":"N"},
+        {"name":"Success", "val":"S"},
+        {"name":"Fail", "val":"F"}
+		]
+	});
 
-	//User Information
+	//CP Yield Information
 	//Form
 	var queryForm = new  Ext.form.Panel({
         id: 'queryForm',
@@ -112,15 +126,54 @@ Ext.onReady(function(){
 										id:'lot',
 										name: 'lot',
 										fieldLabel : 'Lot',
+										labelWidth: 80,
+										labelAlign: 'right',
 										allowBlank : true,
 										anchor:'90%'
-									},				
+									},
 									{
-										xtype: "textfield",
-										id:'cistaProject',
-										name: 'cistaProject',
-										fieldLabel : 'Cista Project',
+										xtype: 'datefield',
+										id: 'sCdt',
+										name: 'sCdt',
+										fieldLabel: '日期',
+										labelWidth: 80,
+										labelAlign: 'right',
+										emptyText: '請選擇日期',
+										format: 'Ymd',
+										allowBlank : false,
+										maxValue: new Date(),
+										//value:Ext.Date.getFirstDateOfMonth(Ext.Date.DAY),
+										value: new Date(),
+										anchor:'80%'
+									},
+									{
+										xtype: 'datefield',
+										id: 'sFtpSendTime',
+										name: 'sFtpSendTime',
+										fieldLabel: 'FTP Send日期',
+										labelWidth: 80,
+										labelAlign: 'right',
+										emptyText: '請選擇日期',
+										format: 'Ymd',
 										allowBlank : true,
+										maxValue: new Date(),
+										//value:Ext.Date.getFirstDateOfMonth(Ext.Date.DAY),
+										//value: new Date(),
+										anchor:'80%'
+									},
+									{
+										xtype: "combobox",
+										id:'ftpFlag',
+										name: 'ftpFlag',
+										fieldLabel : 'Ftp Flag',
+										labelWidth: 80,
+										labelAlign: 'right',
+										allowBlank : true,
+										store: ftpFlagStore,
+										queryMode: 'local',
+										displayField: 'name',
+										valueField: 'val',
+										value:'N',
 										anchor:'90%'
 									}
 
@@ -133,21 +186,50 @@ Ext.onReady(function(){
 	function submit(){//提交表單
 
 		
+		//Check Form Data
+		//1.0 List Form Items
+		var queryFormItems = queryForm.items;
+		var i = 0;
+		//1.1 Check Must have value
+		for(i = 0; i < queryFormItems.getAt(0).items.length; i++){
+
+
+			if( 
+				queryFormItems.getAt(0).items.getAt(i).allowBlank == false && 
+				( typeof(queryFormItems.getAt(0).items.getAt(i).value) == 'undefined' 
+					|| queryFormItems.getAt(0).items.getAt(i).value == null
+				    || queryFormItems.getAt(0).items.getAt(i).value == "" )
+			   ){
+
+				Ext.MessageBox.alert('Message', 'Message : '+ "'" + queryFormItems.getAt(0).items.getAt(i).fieldLabel + "'" + " Can't be blank" );
+				return;
+				//alert(userFormItems.getAt(0).items.getAt(i).fieldLabel + " " + userFormItems.getAt(0).items.getAt(i).value  + " " + userFormItems.getAt(0).items.getAt(i).xtype);
+			}
+			
+		}
+
 		grid.getStore().removeAll();
 		//Submit & Reset Button Disable
 		//1.0 List Form Button
 		var queryFormSubmit =Ext.getCmp('queryFormSubmit'); 
 		//queryFormSubmit.disable();
 		
+		//Set Query Value
 		lot = queryForm.getForm().findField('lot').getValue();
-		cistaProject = queryForm.getForm().findField('cistaProject').getValue();
+		sCdt = queryForm.getForm().findField('sCdt').getValue();
+		ftpFlag = queryForm.getForm().findField('ftpFlag').getValue();
+		sFtpSendTime = queryForm.getForm().findField('sFtpSendTime').getValue();
+
+		//cistaProject = queryForm.getForm().findField('cistaProject').getValue();
 
 		var query = 
 		{
             query: {
                 start:'0',
                 limit:limit,
-                cistaProject:cistaProject,
+                sCdt:sCdt,
+				ftpFlag:ftpFlag,
+				sFtpSendTime:sFtpSendTime,
                 lot:lot
             }
         };
@@ -175,14 +257,14 @@ Ext.onReady(function(){
 					grid.getStore().totalCount = freeback['total'];
 					grid.getStore().currentPage = 1;
 					grid.getDockedComponent("botPagingtoolbar").onLoad();
-					Ext.getCmp('btnSaveToExcel').enable();
+					Ext.getCmp('btnSaveToSend').enable();
 				},  
 				failure : function(response, options) {  
 					Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
 				}  
 			});
 
-		 queryForm.form.reset();
+		 //queryForm.form.reset();
 
 	}
 
@@ -202,7 +284,7 @@ Ext.onReady(function(){
 	var isEdit = false;   
 	//創建Model  
 	Ext.define(  
-			'FoundryWip',  
+			'CpYieldBin',  
 			{  
 				extend:'Ext.data.Model',  
 				fields:[
@@ -238,7 +320,7 @@ Ext.onReady(function(){
 	var store = Ext.create(  
 			'Ext.data.Store',  
 			{  
-				model:'FoundryWip',  
+				model:'CpYieldBin',  
 				//設置分頁大小  
 				pageSize:10,
 				// allow the grid to interact with the paging scroller by buffering
@@ -256,7 +338,7 @@ Ext.onReady(function(){
 						totalProperty: 'total'  
 					}  
 				},
-				sorters:[{property:"cistaProject",direction:"ASC"}],//按qq倒序
+				sorters:[{property:"cpLot",direction:"ASC"}],//按qq倒序
 				//autoLoad:{params:{start:0,limit:10}}//自動加載，每次加載一頁
 				autoLoad:false  
 			}  
@@ -268,8 +350,8 @@ Ext.onReady(function(){
 			tbar:[ 
 				{  
 					xtype:'button',
-					id:'btnSaveToExcel',
-					text:'Save To Excel',
+					id:'btnSaveToSend',
+					text:'Send To SMIC',
 					border: 2,
 					scale: 'small',
 					iconCls: 'save',

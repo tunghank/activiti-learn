@@ -4,6 +4,7 @@ package com.cista.cpYield.dao;
 import java.util.List;
 
 import com.cista.cpYield.to.CpYieldReportTo;
+import com.cista.cpYield.to.CpYieldQueryTo;
 
 
 import org.springframework.dao.DataAccessException;
@@ -16,7 +17,7 @@ public class CpYieldLotDao extends BaseDao {
 
 	private static final long serialVersionUID = 1L;
 
-	public List<CpYieldReportTo> getBins() throws DataAccessException{
+	public List<CpYieldReportTo> getBins(CpYieldQueryTo queryTo) throws DataAccessException{
 		
 		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();
 		String sql  = " SELECT * FROM ( SELECT A.CP_YIELD_UUID, A.CP_TEST_TIMES, A.CP_LOT, A.WAFER_ID, " +
@@ -24,13 +25,34 @@ public class CpYieldLotDao extends BaseDao {
 					" A.FAIL_DIE, A.TOTEL_DIE, A.FILE_NAME, A.FILE_MIME_TYPE, " +
 					" A.FTP_FLAG, A.FTP_SEND_TIME, A.CDT, B.BIN , B.PERCENTAGE " +
 					" FROM CP_YIELD_LOT A , CP_YIELD_LOT_BIN B " +
-					" WHERE A.CP_YIELD_UUID = B.CP_YIELD_UUID " +
-				" ) C " +
+					" WHERE A.CP_YIELD_UUID = B.CP_YIELD_UUID ";
+			//LOT
+			if( queryTo.getLot() != null && !queryTo.getLot().equals("")){
+				sql = sql + " AND A.CP_LOT LIKE '%" + queryTo.getLot() + "%'";
+			}
+			//Ftp Flag
+			if( queryTo.getFtpFlag() != null && !queryTo.getFtpFlag().equals("")){
+				sql = sql + " AND A.FTP_FLAG = '" + queryTo.getFtpFlag() + "'";
+			}
+			//轉檔日期 Cdt
+			if( queryTo.getsCdt() != null && !queryTo.getsCdt().equals("")){
+				sql = sql + " AND A.CDT >= TO_DATE('" + queryTo.getsCdt() + "','YYYY-MM-DD')";
+			}
+			//FTP Send Time
+			if( queryTo.getsFtpSendTime() != null && !queryTo.getsFtpSendTime().equals("")){
+				sql = sql + " AND A.FTP_SEND_TIME >= TO_DATE('" + queryTo.getsFtpSendTime() + "','YYYY-MM-DD')";
+			}
+			
+			sql = sql +	" ) C " +
 				" PIVOT ( " +
 					" MAX(PERCENTAGE) FOR BIN IN ( 0 AS BIN0, 3 AS BIN3, 5 AS BIN5, " +
 					" 10 AS BIN10, 88 AS BIN88, 100 AS BIN100, 101 AS BIN101, " +
 					" 121 AS BIN121, 211 AS BIN211 ) " +
 					" ) " ;
+		
+			sql = sql + " Order by CP_LOT, CP_TEST_TIMES ";
+			
+		logger.debug("sql " + sql);
 		
     	ParameterizedBeanPropertyRowMapper<CpYieldReportTo> rowMapper = 
     		new ParameterizedBeanPropertyRowMapper<CpYieldReportTo>();

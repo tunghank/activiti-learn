@@ -11,7 +11,7 @@ implements	java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private  String start;
 	private  String limit;
-	private  String cpLot;
+	private  String lot;
 	private  String sCdt;
 	private  String ftpFlag;
 	private  String sFtpSendTime;
@@ -19,16 +19,6 @@ implements	java.io.Serializable {
 	
 	public CpYieldQueryTo() {
 
-	}
-
-
-	public String getCpLot() {
-		return cpLot;
-	}
-
-
-	public void setCpLot(String cpLot) {
-		this.cpLot = cpLot;
 	}
 
 
@@ -79,6 +69,22 @@ implements	java.io.Serializable {
 
 	public void setLimit(String limit) {
 		this.limit = limit;
+	}
+
+
+
+
+
+	public String getLot() {
+		return lot;
+	}
+
+
+
+
+
+	public void setLot(String lot) {
+		this.lot = lot;
 	}
 
 
