@@ -13,7 +13,7 @@ import com.cista.mail.MailAlert;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.apache.commons.io.FilenameUtils;
 import sun.util.logging.resources.logging;
 
 import com.cista.cpYield.dao.CpYieldParserDao;
@@ -72,7 +72,7 @@ public class CpYieldParser extends Thread {
 
     public boolean parserCpYieldTxt(File txtFile) throws Exception{
     	FileInputStream fIn = null;
-    	
+    	String fileNameUid="";
         try {
         	//Using Find Target "|=124" or ",=44" Count
         	DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
@@ -94,6 +94,7 @@ public class CpYieldParser extends Thread {
             logger.debug(txtFile.getName() + "<--讀入資料檔...成功");
             //Using get sign  "\n" 抓行數...
             
+            
             //1.1 讀入行數資料, 略過行數
             int l = -1;
             List<String> lineDataList = new ArrayList<String>();
@@ -108,6 +109,7 @@ public class CpYieldParser extends Thread {
                 }
             }
             
+            
             //1.2 確認有資料開使處理
             if( lineDataList !=null ){
             	CpYieldParserDao cpYieldParserDao = new CpYieldParserDao();
@@ -116,6 +118,9 @@ public class CpYieldParser extends Thread {
             	
             	String cpYieldUuid = UUID.randomUUID().toString().toUpperCase();
                 logger.debug("lineDataList.size() " +lineDataList.size());
+                
+                fileNameUid = FilenameUtils.getBaseName(txtFile.getName())  + "_"  + cpYieldUuid+ "." 
+                			 + FilenameUtils.getExtension(txtFile.getName());
                 //1.2.1 處理每行資料
                 String tmpWaferID = lineDataList.get(1);
                 String arrayWafer[]=tmpWaferID.split("=")[1].trim().split("-");
@@ -163,6 +168,8 @@ public class CpYieldParser extends Thread {
             	Integer die;
             	String percentage;
             	String binString;
+            	
+
             	for(int j=sb; j <= eb; j++ ){
             		cpYieldBinUuid = UUID.randomUUID().toString().toUpperCase();
             		CpYieldLotBinTo cpYieldLotBinTo = new CpYieldLotBinTo();
@@ -233,7 +240,7 @@ public class CpYieldParser extends Thread {
             	cpYieldLotTo.setFlat(flat);
             	
             	String fileMimeType = new MimetypesFileTypeMap().getContentType(txtFile);
-            	cpYieldLotTo.setFileName(txtFile.getName());
+            	cpYieldLotTo.setFileName(fileNameUid);
             	cpYieldLotTo.setFileMimeType(fileMimeType);
             	cpYieldLotTo.setFtpFlag("N");
             	
@@ -248,7 +255,12 @@ public class CpYieldParser extends Thread {
             fIn.close();
             br.close();
             
-
+            
+            logger.info(txtFile.getName() + " is Parser complete");
+            logger.info( fileNameUid  + " is Parser complete");
+        	Methods.copyFile(txtFile, new File(fileOutUrl + "\\" + fileNameUid));
+        	txtFile.delete();
+        	
             //logger.debug(tapeList.size());
             logger.info("---------------------------------");
         } catch (Exception e) {
@@ -317,9 +329,9 @@ public class CpYieldParser extends Thread {
                         txtFile.delete();
                     } else {
 
-                    	logger.info(fileName + " is Parser complete");
-                    	Methods.copyFile(txtFile, new File(fileOutUrl + "\\" + fileName));
-                    	txtFile.delete();
+                    	//logger.info(fileName + " is Parser complete");
+                    	//Methods.copyFile(txtFile, new File(fileOutUrl + "\\" + fileName));
+                    	//txtFile.delete();
                     }
                 /*} else {
                     logger.info(file_name + " is not Bump's File");
