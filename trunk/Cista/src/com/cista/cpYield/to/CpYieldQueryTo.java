@@ -15,7 +15,7 @@ implements	java.io.Serializable {
 	private  String sCdt;
 	private  String ftpFlag;
 	private  String sFtpSendTime;
-
+	private  String cpYieldUuid;
 	
 	public CpYieldQueryTo() {
 
@@ -72,19 +72,23 @@ implements	java.io.Serializable {
 	}
 
 
-
-
-
 	public String getLot() {
 		return lot;
 	}
 
 
-
-
-
 	public void setLot(String lot) {
 		this.lot = lot;
+	}
+
+
+	public String getCpYieldUuid() {
+		return cpYieldUuid;
+	}
+
+
+	public void setCpYieldUuid(String cpYieldUuid) {
+		this.cpYieldUuid = cpYieldUuid;
 	}
 
 
