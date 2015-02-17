@@ -482,7 +482,11 @@
              <result name="success" >/CpYield/CpYieldBackToSMIC.jsp</result>
          </action>         
          
-         
+         <action name="UpdateCpYieldBackToSmicFlag" class="com.cista.cpYield.action.CpYieldBackToSMIC" method="UpdateCpYieldBackToSmicFlag">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success" >/CpYield/CpYieldBackToSMIC.jsp</result>
+         </action>            
          
          
 		<!-- NTLM -->

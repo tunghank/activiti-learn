@@ -357,7 +357,7 @@ Ext.onReady(function(){
 					iconCls: 'save',
 					disabled : true,
 					handler: function(b, e) {
-						downloadExcel()
+						saveToSend()
 						//b.up('grid').downloadExcelXml();
 					}
 				}
@@ -759,57 +759,75 @@ Ext.onReady(function(){
 
 	//store.loadPage(1);
 	//Grid Function
-	function downloadExcel(){
+	function saveToSend(){
+		//alert("ppppp");
+		var record = grid.getSelectionModel().getSelection();
+		if(record.length==0){  
+			 Ext.MessageBox.show({   
+				title:"提示",   
+				msg:"請先選擇您要操作的行!"   
+			 })  
+			return;  
+		}else{  
+			var cpYieldUuid = "";   
+			for(var i = 0; i < record.length; i++){   
+				cpYieldUuid += record[i].get("cpYieldUuid")   
+				if(i<record.length-1){   
+					cpYieldUuid = cpYieldUuid + ",";   
+				}   
+			}  
+			/*Ext.MessageBox.show({   
+					title:"所選ID列表",   
+					msg:cpYieldUuid   
+				}  
+			)*/
 
-		var title = "FoundryWip";
-		var fileName;
-		fileName = title + "-" + Ext.Date.format(new Date(), 'Y-m-d Hi') + '.xls',
-
-		tempForm.getForm().findField('cistaProject').setValue(cistaProject);
-		tempForm.getForm().findField('lot').setValue(lot);
-
-		tempForm.submit({
-			url: '<%=contextPath%>/FoundryWipExcel.action?filename=' + escape(fileName),
-			//waitMsg: 'Loading...',
-			method: 'POST',
-			standardSubmit: true,
-			success: function (form, action) {
-				Ext.MessageBox.alert('SUCCESS', 'SUCCESS' + action.response.responseText);  
-			},
-			failure: function(form, action) {
-				if (action.result.status == true) {
-					console.log('success!');
+			var query = 
+			{
+				query: {
+					start:'0',
+					limit:limit,
+					sCdt:sCdt,
+					ftpFlag:ftpFlag,
+					sFtpSendTime:sFtpSendTime,
+					lot:lot,
+					cpYieldUuid:cpYieldUuid
 				}
-			}
-		});
-		/*var title = "FoundryWip";
-		title = title + "-" + Ext.Date.format(new Date(), 'Y-m-d Hi') + '.xls',
-		alert("cistaProject:" + cistaProject + " lot:" + lot);
-		alert("title:" + title);
-            
-            var form = this.up('uploadForm');
-			alert("form:" + form);
-            if (form) {
-                form.destroy();
-            }
-            form = this.up('window').add({
-                xtype: 'form',
-                itemId: 'uploadForm',
-                hidden: true,
-                standardSubmit: true,
-				url: '<%=contextPath%>/FoundryWipExcel.action?filename=' + escape(title + ".xls"),
-                items: [{
-                    xtype: 'hiddenfield',
-                    name: 'cistaProject',
-                    value: cistaProject
-                },{
-                    xtype: 'hiddenfield',
-                    name: 'lot',
-                    value: lot
-                }]
-            });
-			alert("pppppp");
-            form.getForm().submit();*/
+			};
+
+			//Grid load data Ajax
+			Ext.Ajax.timeout = 120000; // 120 seconds
+			Ext.Ajax.request({  //ajax request test  
+					url : '<%=contextPath%>/UpdateCpYieldBackToSmicFlag.action',  
+					params : {
+						query:Ext.JSON.encode(query)
+					},
+					method : 'POST',
+					scope:this,
+					success : function(response, options) {
+						//parse Json data
+						var freeback = Ext.JSON.decode(response.responseText);
+						
+						//Load Data in store
+						grid.getStore().removeAll();
+						grid.getStore().loadData(freeback['root'], true);
+						//alert(freeback['total']);
+						//alert(grid.getStore().count());
+				
+						grid.getStore().totalCount = freeback['total'];
+						grid.getStore().currentPage = 1;
+						grid.getDockedComponent("botPagingtoolbar").onLoad();
+						//Ext.getCmp('btnSaveToSend').enable();
+					},  
+					failure : function(response, options) {  
+						Ext.MessageBox.alert('Error', 'ERROR：' + response.status);  
+					}  
+				});
+		} 
+		//alert("record.length " + record.length );
+		//alert("record.length " + record.length );
+		//if(record.length==0){  
+		
 	}//End downloadExcel()
 
 });

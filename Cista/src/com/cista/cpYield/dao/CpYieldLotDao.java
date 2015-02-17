@@ -1,6 +1,7 @@
 package com.cista.cpYield.dao;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.cista.cpYield.to.CpYieldReportTo;
@@ -11,6 +12,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import com.cista.system.util.BaseDao;
+
 
 public class CpYieldLotDao extends BaseDao {
 	
@@ -67,4 +69,25 @@ public class CpYieldLotDao extends BaseDao {
 		}	
 	}
 	
+	public int[] updateCpYieldLotSendFlg(List<String> cpYieldUuidList) throws DataAccessException {
+		// TODO Auto-generated method stub
+		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();
+
+        String sql = " Update CP_YIELD_LOT SET FTP_FLAG = 'Y' " +
+        		" WHERE CP_YIELD_UUID = ? ";
+				
+
+		List<Object[]> batch = new ArrayList<Object[]>();
+        for (String cpYieldUuid : cpYieldUuidList) {
+            Object[] values = new Object[] {
+            		cpYieldUuid
+        			};
+            batch.add(values);
+        }
+
+    	logger.debug(sql);
+    	
+    	int result [] = sjt.batchUpdate(sql, batch);
+    	return result;
+	}
 }
