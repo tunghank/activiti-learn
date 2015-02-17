@@ -73,7 +73,7 @@ public class CpYieldLotDao extends BaseDao {
 		// TODO Auto-generated method stub
 		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();
 
-        String sql = " Update CP_YIELD_LOT SET FTP_FLAG = 'Y' " +
+        String sql = " Update CP_YIELD_LOT SET FTP_FLAG = 'Y' , FTP_SEND_TIME = SYSDATE " +
         		" WHERE CP_YIELD_UUID = ? ";
 				
 
