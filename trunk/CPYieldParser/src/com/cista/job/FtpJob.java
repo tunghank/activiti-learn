@@ -1,8 +1,8 @@
 package com.cista.job;
 
-import com.cista.cpYield.parser.CpYieldParser;
+import com.cista.ftp.EdaFTPPut;
 
-public class JobProcessorCOF extends ImportProcessor {
+public class FtpJob extends ImportProcessor {
     private static Integer lock = 0;
 
     //private static final String IMPORT_STG_STATUS = "New";
@@ -13,11 +13,15 @@ public class JobProcessorCOF extends ImportProcessor {
     @Override
     public void run() {
         synchronized (lock) {
-            logger.info("Process start ..."); 
+
             long startTime = System.currentTimeMillis();
-            logger.info("Assy Process start ...");
-            //COFAssyParser assyParser = new COFAssyParser();
-            //assyParser.cofParserGetFiles();
+            logger.info("FTP Send Backup Process start ...");
+            EdaFTPPut edaFTPPut =  new EdaFTPPut();
+            edaFTPPut.putDataFiles();
+            
+            logger.info("FTP Send Backup Process End ...");
+            long endTime = System.currentTimeMillis();
+            logger.info("Total Time : " + (endTime - startTime)); 
             
             try{
             	this.wait(30000);
@@ -25,13 +29,7 @@ public class JobProcessorCOF extends ImportProcessor {
             	
             }
             
-            logger.info("Bump Process start ...");
-            //SMICWipParser smicWipParser =  new SMICWipParser();
-            //smicWipParser.GetSmicWipFiles();
-            
-            logger.info("Process End ...");
-            long endTime = System.currentTimeMillis();
-            logger.info("Total Time : " + (endTime - startTime)); 
+
             
         }
     }
