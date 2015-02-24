@@ -376,10 +376,10 @@ Ext.onReady(function(){
 						{  
 						 id:'gCpYieldUuid',
 						 header:'CpYieldUuid',  
-						 width:50,  
+						 width:0,  
 						 dataIndex:'cpYieldUuid',  
-						 sortable:false,
-						 hidden:true
+						 sortable:false/*,
+						 hidden:true*/
 					  
 						},{  
 						 id:'gCpLot',  
@@ -529,8 +529,13 @@ Ext.onReady(function(){
 						 header:'File Name',  
 						 width:85,  
 						 dataIndex:'fileName',  
-						 sortable:false
-					  
+						 sortable:false,
+						 renderer : function(value, metaData, record) {
+
+									  return '<a href="<%=contextPath%>/OpenCpYiledFile.action?cpYieldUuid=' + record.get("cpYieldUuid") + '" target="_blank">' + value +'</a>';
+
+                          }
+
 						},{  
 						 id:'gFtpFlag',  
 						 header:'Ftp Flag',  
@@ -732,30 +737,14 @@ Ext.onReady(function(){
 									}
 								}
 							},
-							 listeners: {
+							listeners: {
 
-							 }
+							}
 						}
 			]  
 			  
 		}  
 	)  
-
-
-	var tempForm = new  Ext.form.Panel({
-        id: 'tempForm',
-		title: 'tempForm',
-		items: [{
-                    xtype: 'hiddenfield',
-                    name: 'cistaProject'
-                },{
-                    xtype: 'hiddenfield',
-                    name: 'lot'
-                }]
-		
-    });
-
-
 
 	//store.loadPage(1);
 	//Grid Function
@@ -829,6 +818,11 @@ Ext.onReady(function(){
 		//if(record.length==0){  
 		
 	}//End downloadExcel()
+
+	function downloadFile(cpYieldUuid) {
+		alert('pppppp');
+		//document.location.href ='<%=contextPath%>/OpenCpYiledFile.action?cpYieldUuid='+cpYieldUuid;	
+	}
 
 });
 

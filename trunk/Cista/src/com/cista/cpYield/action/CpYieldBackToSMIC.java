@@ -17,9 +17,8 @@ import org.apache.struts2.ServletActionContext;
 
 
 import com.cista.cpYield.dao.CpYieldLotDao;
-
 import com.cista.system.to.ExtJSGridTo;
-
+import com.cista.cpYield.to.CpYieldLotTo;
 import com.cista.cpYield.to.CpYieldQueryTo;
 import com.cista.cpYield.to.CpYieldReportTo;
 
@@ -317,6 +316,39 @@ public class CpYieldBackToSMIC extends BaseAction{
 		}
 		
    		return NONE;
+		
+	}
+	
+	
+	public String OpenCpYiledFile() throws Exception{
+		try {
+
+
+			String cpYieldUuid = request.getParameter("cpYieldUuid");
+			cpYieldUuid = null != cpYieldUuid ? cpYieldUuid : "";
+			logger.debug("cpYieldUuid " + cpYieldUuid);
+			
+			CpYieldLotDao cpYieldLotDao = new CpYieldLotDao();
+			CpYieldLotTo cpYieldLot = cpYieldLotDao.getCpYiledLotFile(cpYieldUuid);
+			String fileName , fileFullName , contentType, ftpFolder , uuid;
+			ftpFolder = CistaUtil.getConfig("config.ftp.folder");
+						
+			if( cpYieldLot != null ){
+				uuid = cpYieldLot.getCpYieldUuid();
+				contentType = cpYieldLot.getFileMimeType();
+				fileFullName = ftpFolder +  File.separator + cpYieldLot.getFileName().replaceAll("\\\\","\\\\\\\\");
+				File rawFile = new File(fileFullName);
+				fileName = rawFile.getName().replaceAll("_" + uuid , "");
+				CistaUtil.downLoadFile(request, response, fileName, fileFullName, contentType);
+			}
+	        return NONE;
+		} catch (Exception e) {
+			this.addActionMessage("ERROR");
+			e.printStackTrace();
+			logger.error(e.toString());
+			addActionMessage(e.toString());
+			return ERROR;
+		}
 		
 	}
 }

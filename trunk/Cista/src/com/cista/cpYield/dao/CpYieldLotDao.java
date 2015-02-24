@@ -4,6 +4,7 @@ package com.cista.cpYield.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cista.cpYield.to.CpYieldLotTo;
 import com.cista.cpYield.to.CpYieldReportTo;
 import com.cista.cpYield.to.CpYieldQueryTo;
 
@@ -89,5 +90,29 @@ public class CpYieldLotDao extends BaseDao {
     	
     	int result [] = sjt.batchUpdate(sql, batch);
     	return result;
+	}
+	
+	public CpYieldLotTo getCpYiledLotFile(String cpYieldUuid) throws DataAccessException{
+		
+		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();
+		String sql  = " SELECT A.CP_YIELD_UUID, A.CP_TEST_TIMES, A.CP_LOT, A.WAFER_ID, " +
+				" A.MACHINE_ID, A.X_MAX_COOR, A.Y_MAX_COOR, A.FLAT, A.PASS_DIE, " +
+				" A.FAIL_DIE, A.TOTEL_DIE, A.FILE_NAME, A.FILE_MIME_TYPE " +
+				" FROM CP_YIELD_LOT A " +
+				" WHERE 1=1 AND A.CP_YIELD_UUID = ?";
+			
+		logger.debug("sql " + sql);
+		
+    	ParameterizedBeanPropertyRowMapper<CpYieldLotTo> rowMapper = 
+    		new ParameterizedBeanPropertyRowMapper<CpYieldLotTo>();
+    	rowMapper.setMappedClass(CpYieldLotTo.class);
+
+    	List<CpYieldLotTo> result = sjt.query(sql,rowMapper, new Object[] { cpYieldUuid } );
+		
+		if (result != null && result.size() > 0) {
+			return result.get(0);
+		} else {
+			return null;
+		}	
 	}
 }
