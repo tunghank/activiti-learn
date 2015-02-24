@@ -88,16 +88,19 @@ public class EdaFTPPut {
           
           SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMM");
           Calendar calendar = Calendar.getInstance();
+          
           String uuid, fileName;
           String ftpFlag;
           if( backLotFiles != null ){
 	          for( int i=0; i<backLotFiles.size(); i++ ){
 	        	  CpYieldLotTo backLotFile = backLotFiles.get(i);
+	        	 
 	        	  fileName = backLotFile.getFileName();
 	        	  uuid = backLotFile.getCpYieldUuid();
+	        	  logger.debug(fileName);
+	        	  File rawFile = new File(folder + File.separator + fileName.replaceAll("\\\\","\\\\\\\\"));
 	        	  
-	        	  File rawFile = new File(folder + File.separator + fileName);
-	        	  
+	        	  logger.debug(rawFile.getName());
 	              if( !rawFile.getName().trim().equals(".") &&
 	                  !rawFile.getName().trim().equals("..") &&
 	                  !rawFile.isDirectory() && rawFile.canWrite() && rawFile.canRead() ) {
@@ -107,7 +110,7 @@ public class EdaFTPPut {
 	            	  logger.info(rawFile.getName());
 	
 	                  FileInputStream fis = new FileInputStream(rawFile);
-	                  boolean flag = ftpClient.storeFile(fileName.replaceAll("_" + uuid , ""), fis);
+	                  boolean flag = ftpClient.storeFile(rawFile.getName().replaceAll("_" + uuid , ""), fis);
 	                  fis.close();
 	                  
 	                  //Delete File
@@ -116,7 +119,7 @@ public class EdaFTPPut {
 	                			  dateFormat.format(calendar.getTime()).toString() );
 	                	  
 	                	  bkFolder.mkdir();
-	                	  File bkFile = new File(bkFolder.getPath().toString() + File.separator + fileName);
+	                	  File bkFile = new File(bkFolder.getPath().toString() + File.separator + rawFile.getName());
 	                	  
 	                	  copyFile(rawFile ,bkFile);
 	                	  logger.debug( rawFile.delete() ) ;
