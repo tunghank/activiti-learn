@@ -540,6 +540,7 @@ public class CistaUtil {
                                    + " not find, config file fail.");
             }
         }
+        //return (String) GLOBAL_PROPERTIES.getProperty(key);
         return (String) GLOBAL_PROPERTIES.get(key);
     }
     
@@ -899,6 +900,7 @@ public class CistaUtil {
       	}
 	}
 
+	
 	public static void ajaxResponseData(HttpServletResponse response, String jsonData) {
 		try{
 					

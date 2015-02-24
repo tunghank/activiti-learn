@@ -488,7 +488,12 @@
              <result name="success" >/CpYield/CpYieldBackToSMIC.jsp</result>
          </action>            
          
-         
+         <action name="OpenCpYiledFile" class="com.cista.cpYield.action.CpYieldBackToSMIC" method="OpenCpYiledFile">
+         	 <interceptor-ref name="LoginInterceptor"></interceptor-ref>
+         	 <interceptor-ref name="defaultStack" ></interceptor-ref>
+             <result name="success" >/CpYield/CpYieldBackToSMIC.jsp</result>
+         </action>
+                  
 		<!-- NTLM -->
          <!-- <action name="NtlmTest" class="com.cista.system.ldap.action.NtlmTestAction" method="ntlmTest"> -->
          	 <!-- <interceptor-ref name="LoginInterceptor"></interceptor-ref> -->
