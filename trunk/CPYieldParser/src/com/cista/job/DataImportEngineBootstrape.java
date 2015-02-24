@@ -39,7 +39,7 @@ public final class DataImportEngineBootstrape {
      */
     private static void printLogo(final long timeCast) {
         int logoWidth = 78;
-        String appName = "Himax Process JOBs";
+        String appName = "Cista Process JOBs";
         int spacesBeforeAppName = (logoWidth - 2 - appName.length()) / 2;
         String timeStr = "Startup success in " + timeCast + "ms.";
         int spacesBeforeTimeStr = (logoWidth - 2 - timeStr.length()) / 2;
