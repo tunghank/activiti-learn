@@ -17,6 +17,8 @@ import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 
 public class CpYieldParserDao extends BaseDao {
 	
+
+	private static final long serialVersionUID = 1L;
 	protected final Log logger = LogFactory.getLog(getClass());
 	
 	public CpYieldParserDao() {
@@ -116,5 +118,49 @@ public class CpYieldParserDao extends BaseDao {
 			return 0;
 		}	
 	}
+
+	public List<CpYieldLotTo> getNeedSendFtpFiles() throws DataAccessException{
+		
+		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();
+		String sql  = "SELECT A.CP_YIELD_UUID, A.CP_LOT, A.FILE_NAME " +
+				" FROM CP_YIELD_LOT A " +
+				" WHERE FTP_FLAG = 'Y' ";
+		
+		logger.debug("sql " + sql);
+		
+    	ParameterizedBeanPropertyRowMapper<CpYieldLotTo> rowMapper = 
+    		new ParameterizedBeanPropertyRowMapper<CpYieldLotTo>();
+    	rowMapper.setMappedClass(CpYieldLotTo.class);
+
+    	List<CpYieldLotTo> result = sjt.query(sql,rowMapper, new Object[] {} );
+		
+		if (result != null ) {
+			return result;
+		} else {
+			return null;
+		}	
+	}
 	
+	public int[] updateFtpSendTime(String ftpFlag, CpYieldLotTo cpYieldLotTo) throws DataAccessException {
+		// TODO Auto-generated method stub
+		SimpleJdbcTemplate sjt = getSimpleJdbcTemplate();
+
+        String sql = " Update CP_YIELD_LOT SET FTP_SENT_TIME = SYSDATE, FTP_FLAG = ? " +
+        		" WHERE CP_YIELD_UUID = ? ";
+				
+
+		List<Object[]> batch = new ArrayList<Object[]>();
+        //for (FoundryWipTo wipTo : foundryWipList) {
+            Object[] values = new Object[] {
+            		ftpFlag,
+            		cpYieldLotTo.getCpYieldUuid()
+        			};
+            batch.add(values);
+        //}
+
+    	logger.debug(sql);
+    	
+    	int result [] = sjt.batchUpdate(sql, batch);
+    	return result;
+	}
 }
