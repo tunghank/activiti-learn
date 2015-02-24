@@ -74,6 +74,10 @@ public class CpYieldParser extends Thread {
     	FileInputStream fIn = null;
     	String fileNameUid="";
         try {
+        	Calendar calendar = Calendar.getInstance();
+            SimpleDateFormat df2 = new SimpleDateFormat("yyyyMM");
+            
+            
         	//Using Find Target "|=124" or ",=44" Count
         	DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         	
@@ -121,6 +125,13 @@ public class CpYieldParser extends Thread {
                 
                 fileNameUid = FilenameUtils.getBaseName(txtFile.getName())  + "_"  + cpYieldUuid+ "." 
                 			 + FilenameUtils.getExtension(txtFile.getName());
+                
+          	  	File bkFolder = new File(fileOutUrl + File.separator + 
+          			  df2.format(calendar.getTime()).toString() );
+          	  
+            	bkFolder.mkdir();
+            	
+            	File bkFile = new File(bkFolder.getPath().toString() + File.separator + fileNameUid);
                 //1.2.1 處理每行資料
                 String tmpWaferID = lineDataList.get(1);
                 String arrayWafer[]=tmpWaferID.split("=")[1].trim().split("-");
@@ -240,12 +251,15 @@ public class CpYieldParser extends Thread {
             	cpYieldLotTo.setFlat(flat);
             	
             	String fileMimeType = new MimetypesFileTypeMap().getContentType(txtFile);
-            	cpYieldLotTo.setFileName(fileNameUid);
+            	cpYieldLotTo.setFileName(df2.format(calendar.getTime()).toString() + File.separator  + fileNameUid);
             	cpYieldLotTo.setFileMimeType(fileMimeType);
             	cpYieldLotTo.setFtpFlag("N");
             	
             	fIn.close();
                 br.close();
+                
+                Methods.copyFile(txtFile, bkFile);
+                txtFile.delete();
             	//1.6 DataBasse
                 //1.6.1 Insert CP Lot Table
                 cpYieldParserDao.insertCpYieldLot(cpYieldLotTo);
@@ -258,8 +272,8 @@ public class CpYieldParser extends Thread {
             
             logger.info(txtFile.getName() + " is Parser complete");
             logger.info( fileNameUid  + " is Parser complete");
-        	Methods.copyFile(txtFile, new File(fileOutUrl + "\\" + fileNameUid));
-        	txtFile.delete();
+
+        	
         	
             //logger.debug(tapeList.size());
             logger.info("---------------------------------");
