@@ -30,11 +30,11 @@ import com.cista.cpYield.to.CpYieldLotTo;
 
 import com.cista.job.SystemContext;
 
-public class edaFTPPut {
+public class EdaFTPPut {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
-    public edaFTPPut() {
+    public EdaFTPPut() {
     }
 
     public void putDataFiles(){
@@ -174,7 +174,7 @@ public class edaFTPPut {
 
 	public static void main(String[] args) {
 
-            edaFTPPut edaftp = new edaFTPPut();
+            EdaFTPPut edaftp = new EdaFTPPut();
             edaftp.putDataFiles();
     }
 }

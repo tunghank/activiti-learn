@@ -11,17 +11,17 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="processors">
 			<list>
 				<bean class="com.cista.job.ImportProcessorConfig">
-					<property name="name"><value>${JobProcessor1}</value></property>
-					<property name="enable"><value>${JobProcessor1_enable}</value></property>
-					<property name="scheduleExpression"><value>${JobProcessor1_schedule}</value></property>
-					<property name="processClass"><value>${JobProcessor1_class}</value></property>
+					<property name="name"><value>${ParserJob}</value></property>
+					<property name="enable"><value>${ParserJob_enable}</value></property>
+					<property name="scheduleExpression"><value>${ParserJob_schedule}</value></property>
+					<property name="processClass"><value>${ParserJob_class}</value></property>
 				</bean>
 		 
 		 		<bean class="com.cista.job.ImportProcessorConfig">
-					<property name="name"><value>${JobProcessor2}</value></property>
-					<property name="enable"><value>${JobProcessor2_enable}</value></property>
-					<property name="scheduleExpression"><value>${JobProcessor2_schedule}</value></property>
-					<property name="processClass"><value>${JobProcessor2_class}</value></property>
+					<property name="name"><value>${FtpJob}</value></property>
+					<property name="enable"><value>${FtpJob_enable}</value></property>
+					<property name="scheduleExpression"><value>${FtpJob_schedule}</value></property>
+					<property name="processClass"><value>${FtpJob_class}</value></property>
 				</bean>
 			</list>
 		</property>
