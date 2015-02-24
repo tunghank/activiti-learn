@@ -54,31 +54,6 @@ public class EdaFTPPut {
         ftpClient.setBufferSize(1024 * 2);
                 
       try{
-    	  ftpClient.setDataTimeout(timeout);
-          // Connect and logon to FTP Server
-    	  int reply;
-    	  //ftpClient.setControlEncoding("UTF-8");
-    	  
-    	  ftpClient.connect( server );
-    	  ftpClient.setSoTimeout(30000);
-    	  ftpClient.login( username, password );
-
-          ftpClient.enterLocalPassiveMode();
-          ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-          reply = ftpClient.getReplyCode();
-
-          if (!FTPReply.isPositiveCompletion(reply)) {
-          	ftpClient.disconnect();
-          	logger.info("FTP server refused connection.");
-          	logger.info(1);
-          }
-          logger.info("Connected to " + server );
-          logger.info(ftpClient.getReplyString());
-
-          // List the files in the directory
-          ftpClient.changeWorkingDirectory( destinationFolder );
-
-          //File rawPath = new File( folder );
 
           //1.1 Get need send back files
           CpYieldParserDao cpYieldParserDao = new CpYieldParserDao();
@@ -92,6 +67,33 @@ public class EdaFTPPut {
           String uuid, fileName;
           String ftpFlag;
           if( backLotFiles != null ){
+        	  
+        	  ftpClient.setDataTimeout(timeout);
+              // Connect and logon to FTP Server
+        	  int reply;
+        	  //ftpClient.setControlEncoding("UTF-8");
+        	  
+        	  ftpClient.connect( server );
+        	  ftpClient.setSoTimeout(30000);
+        	  ftpClient.login( username, password );
+
+              ftpClient.enterLocalPassiveMode();
+              ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+              reply = ftpClient.getReplyCode();
+
+              if (!FTPReply.isPositiveCompletion(reply)) {
+              	ftpClient.disconnect();
+              	logger.info("FTP server refused connection.");
+              	logger.info(1);
+              }
+              logger.info("Connected to " + server );
+              logger.info(ftpClient.getReplyString());
+
+              // List the files in the directory
+              ftpClient.changeWorkingDirectory( destinationFolder );
+        	  
+        	  
+        	  
 	          for( int i=0; i<backLotFiles.size(); i++ ){
 	        	  CpYieldLotTo backLotFile = backLotFiles.get(i);
 	        	 
@@ -135,11 +137,13 @@ public class EdaFTPPut {
 	
 	              }
 	          }
+	          
+	          // Logout from the FTP Server and disconnect
+	          ftpClient.logout();
+	          ftpClient.disconnect();
           }
 
-          // Logout from the FTP Server and disconnect
-          ftpClient.logout();
-          ftpClient.disconnect();
+
       	  }catch (SocketTimeoutException socketTimeoutException) {
       		  logger.info(socketTimeoutException.toString());
       		  socketTimeoutException.printStackTrace();
